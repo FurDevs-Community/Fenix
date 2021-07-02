@@ -1,0 +1,12 @@
+export const defaultPrefix = 'J>';
+export const baseURLHTTPS = 'https://localhost';
+export const baseURLHTTP = 'http://localhost';
+export const dashboardBaseURL = 'https://hozol.xyz';
+export const port = 3300;
+export const shards = 1;
+export const supportServerInvite = '';
+export const clientID = '680948196218109982';
+export const clientSecret = 'CkORH2LnTfkj_kN_151VrB1eqCqJp_V6';
+export const __prod__ = process.env.NODE_ENV === 'production';
+export const primaryColor = '#8800FF';
+export const devs = ['679145795714416661', '852070153804972043'];
