@@ -7,10 +7,8 @@ import { MessageEmbed } from 'discord.js';
 // import { getSpamScore } from '../helper/moderation/getSpamScore';
 import { incrementMessageCount } from '../helper/guild/incrementMessage';
 import { primaryColor } from '../settings';
-// import { applySpamScore } from '../helper/moderation/applySpamScore';
-// import { getSpamScore } from '../helper/moderation/getSpamScore';
-// import { applySpamScore } from '../helper/moderation/applySpamScore';
-// import { IssueDiscipline } from "../helper/moderation/incidents";
+import { applySpamScore } from '../helper/moderation/applySpamScore';
+import { getSpamScore } from '../helper/moderation/getSpamScore';
 
 module.exports = class extends Event {
     constructor() {
@@ -23,15 +21,15 @@ module.exports = class extends Event {
     async run(message: Message) {
         if (!message.guild) return;
         const client = <HozolClient>message.client;
-        // const score = await getSpamScore(client, message);
+        const score = await getSpamScore(client, message);
         const memberSettings = await message.member?.settings();
         const antispamSettings = await message.guild.antispam();
         // const guildAutoModSettings = await message.guild.automoderation();
         const guildSettings = await message.guild.settings();
         if (!guildSettings) return;
         if (antispamSettings.enabled) {
-            // if (score && antispamSettings.enabled)
-            //     await applySpamScore(message, score);
+            if (score && antispamSettings.enabled)
+                await applySpamScore(message, score);
         }
 
         if (guildSettings.muteRole) {
@@ -45,7 +43,9 @@ module.exports = class extends Event {
                 );
             }
         }
+
         incrementMessageCount(message);
+
         if (guildSettings.awaySystem) {
             if (memberSettings?.awayStatus) {
                 // afk user talked
@@ -53,6 +53,7 @@ module.exports = class extends Event {
                     { guildID: message.guild.id, userID: message.author.id },
                     { awayStatus: '' }
                 );
+
                 const embed = new MessageEmbed()
                     .setAuthor(
                         `${message.author.tag}`,
@@ -69,6 +70,7 @@ module.exports = class extends Event {
                     .setTimestamp();
                 (await message.channel.send(embed)).delete({ timeout: 10000 });
             }
+
             if (!message.mentions.members) return;
             for (const member of message.mentions.members?.values()) {
                 const mentionedMember = await member.settings();

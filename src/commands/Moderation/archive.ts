@@ -84,4 +84,4 @@ module.exports = class extends Command {
             );
         return currentChannel.send(archivedEmbed);
     }
-}
+};

@@ -4,6 +4,7 @@ import { Command } from 'nukejs';
 import { IssueDiscipline, usernameResolver } from '../../helper';
 import ms from 'ms';
 import { askReason, askRules } from '../../helper/moderation/askRules';
+import { checkPosition } from '../../helper/discord/checkPosition';
 
 module.exports = class extends Command {
     /**
@@ -38,14 +39,6 @@ module.exports = class extends Command {
             );
         }
         const user = await usernameResolver(message, args[0]);
-        if (
-            user.id === '679145795714416661' &&
-            message.author.id === '679145795714416661'
-        ) {
-            return message.channel.send(
-                'mhm, okay vulpo \n\nhttps://cdn.discordapp.com/attachments/614909956881121308/809763155386302524/ban1.jpg '
-            );
-        }
         if (user === message.author) {
             throw new Error(
                 `Why would you ban yourself? I, ${client.user} will not allow it like every other moderation bot.`
@@ -69,20 +62,10 @@ module.exports = class extends Command {
         const banned = await message.guild?.fetchBan(user).catch(() => {});
         if (banned) throw new Error('The User is already banned!');
         const member = message.guild?.members.cache.get(user.id);
+
         if (member) {
-            const botPosition = message.guild?.me?.roles.highest.position;
-            const userPosition = member.roles.highest.position;
-            const modPosition = message.member?.roles.highest.position;
-            if (botPosition! <= userPosition) {
-                throw new Error(
-                    `The bot's highest role (${message.guild?.me?.roles.highest}) must be above the user's highest role (${member.roles.highest}) in order to ban that user`
-                );
-            }
-            if (modPosition! <= userPosition) {
-                throw new Error(
-                    `Your highest role (${message.member?.roles.highest}) must be higher than the user's highest role (${member.roles.highest}) in order for me to ban that user`
-                );
-            }
+            const [passed, failedMessage] = checkPosition(message, member);
+            if (!passed) throw new Error(failedMessage as string);
         }
 
         const guildSettings = await message.guild.settings();
@@ -117,4 +100,4 @@ module.exports = class extends Command {
             await message.channel.send(embed);
         });
     }
-}
+};
