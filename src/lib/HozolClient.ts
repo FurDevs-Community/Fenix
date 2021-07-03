@@ -14,6 +14,7 @@ import mongoose, { Connection } from 'mongoose';
 import { Collection, Snowflake } from 'discord.js';
 import moment from 'moment-timezone';
 import { defaultPrefix, port } from './../settings';
+import * as Sentry from '@sentry/node';
 import winston, { Logger } from 'winston';
 
 // This extends the client to have more propeties
@@ -33,9 +34,13 @@ export default class HozolClient extends Client {
     public logger: Logger;
     public constructor(options: NukeClientOptions) {
         super(options);
+
         this.schedules = {};
+
         this.moment = moment;
+
         this.port = port;
+
         this.loader = new CommandLoader(this, {
             allowMention: true,
             directory: './dist/commands',
@@ -51,19 +56,26 @@ export default class HozolClient extends Client {
             blockBot: true,
             blockClient: true,
         });
+
         this.logEventLoader = new EventLoader(this, {
             directory: './dist/events',
             extensions: ['js'],
         });
+
         this.eventLoader = new EventLoader(this, {
             directory: './dist/logging',
             extensions: ['js'],
         });
+
         this.inhibitorLoader = new InhibitorLoader(this, {
             directory: './dist/inhibitors',
         });
+
         this.commands = this.loader.Commands;
+
         this.developers = ['679145795714416661'];
+
+        // Create Logger
         this.logger = winston.createLogger({
             level: 'info',
             format: winston.format.json(),
@@ -75,6 +87,38 @@ export default class HozolClient extends Client {
                 }),
                 new winston.transports.File({ filename: 'logs/combined.log' }),
             ],
+        });
+
+        // Start Sentry
+        Sentry.init({
+            dsn: process.env.SENTRYDSN,
+            tracesSampleRate: 1.0,
+        });
+
+        // Connects and Initiates the Database
+        this.connectDB(process.env.DB);
+
+        // Login the Bot
+        this.login(process.env.TOKEN).catch((e) =>
+            this.error('Problems Running the bot!: ' + e)
+        );
+
+        this.moment.tz.setDefault('UTC');
+
+        this.on('rateLimit', () => {
+            this.error(`Hit Ratelimit!`);
+        });
+
+        this.on(`warn`, (warning) => {
+            this.warn(warning);
+        });
+
+        this.on(`debug`, (debug) => {
+            this.debug(debug);
+        });
+
+        this.on(`error`, (err) => {
+            this.error(err.message);
         });
     }
 
@@ -108,6 +152,7 @@ export default class HozolClient extends Client {
 
     async error(msg: any) {
         console.log(`${cyan('[')}${blue('Hozol - Error')}${cyan(']')} ${msg}`);
+        Sentry.captureEvent(msg);
         this.logger.error('error', msg);
     }
 

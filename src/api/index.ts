@@ -1,7 +1,7 @@
 // Imports
 import express from 'express';
 import { __prod__ } from './../settings';
-import { baseURLHTTP, port } from './../settings';
+import { developmentURL, port } from './../settings';
 import apiRouter from './routes/api';
 import cors from 'cors';
 import HozolClient from '../lib/HozolClient';
@@ -55,6 +55,6 @@ export const api = (client: HozolClient) => {
         });
     } else {
         app.listen(port);
-        client.log(`Listening on ${baseURLHTTP}:${port}`);
+        client.log(`Listening on ${developmentURL}:${port}`);
     }
 };
