@@ -25,10 +25,13 @@ export async function removeRole(
         return false;
     }
 
-    // If the member has the role, return false.
-    if (member.roles.cache.has(guildSettings[role])) return true;
+    // If the member doesn't has the role, return false.
+    if (!member.roles.cache.has(guildSettings[role])) return false;
 
     // If we reach here, remove the role.
-    await member.roles.remove(guildSettings[role], reason);
+    await member.roles.remove(guildSettings[role], reason).catch((e) => {
+        console.log(e);
+        return false;
+    });
     return true;
 }

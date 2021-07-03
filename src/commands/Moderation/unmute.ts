@@ -47,7 +47,11 @@ module.exports = class extends Command {
             throw new Error(`The user doesn't exist in the server`);
         }
         const memberSettings = await member.settings();
-        if (!memberSettings.muted) {
+        console.log(member.roles.cache.has(settings['muteRole']));
+        if (
+            !memberSettings.muted &&
+            !member.roles.cache.has(settings['muteRole'])
+        ) {
             throw new Error(`The user is not muted`);
         }
         let reason: string | undefined;
@@ -71,8 +75,8 @@ module.exports = class extends Command {
         }
 
         await unMuteUser(message.guild.id, user.id);
-        await removeRole(
-            message.member!,
+        const result = await removeRole(
+            member,
             'muteRole',
             `${
                 reason
@@ -80,6 +84,8 @@ module.exports = class extends Command {
                     : 'No reason was provided; contact ' + message.author.tag
             }`
         );
+        if (!result)
+            throw new Error("Couldn't removed the mute role from that use");
         const embed = new MessageEmbed()
             .setTitle('Unmute')
             .setAuthor(
