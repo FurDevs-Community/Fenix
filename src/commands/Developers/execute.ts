@@ -63,7 +63,7 @@ module.exports = class extends Command {
                 // If the response is length (more than 1024 characters) the generate/send a hastebin link
                 try {
                     require('hastebin-gen')(response.toString(), {
-                        url: 'https://drago.probably.booped.me',
+                        url: 'https://hastebin.com',
                     }).then((r: string) => {
                         const embed = new MessageEmbed()
                             .setAuthor(

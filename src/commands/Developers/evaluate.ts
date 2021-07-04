@@ -57,7 +57,7 @@ module.exports = class extends Command {
             // If the result of what's eval larger than 1500 characters, then go ahead and make a pastebin
             if (evaled.toString().length >= 1024) {
                 await require('hastebin-gen')(evaled, {
-                    url: 'https://drago.probably.booped.me',
+                    url: 'https://hastebin.com',
                 }).then((result: string) => {
                     res = result;
                 });
@@ -69,7 +69,7 @@ module.exports = class extends Command {
             // Do the same thing that we just did with the eval but is a promise
             if (promisedEval.toString().length >= 1024) {
                 await require('hastebin-gen')(promisedEval, {
-                    url: 'https://drago.probably.booped.me',
+                    url: 'https://hastebin.com/',
                 }).then((result: string) => {
                     promisedResult = result;
                 });
