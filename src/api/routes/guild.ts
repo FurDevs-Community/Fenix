@@ -30,6 +30,8 @@ router.get('/:guildID/settings', async (req, res) => {
             const settings = await guild?.settings();
             const antiraid = await guild?.antiraid();
             const antispam = await guild?.antispam();
+            const channels = guild.channels.cache.toJSON();
+            const roles = guild.roles.cache.toJSON();
             console.log('got all infos. sending...');
             res.json({
                 moderation,
@@ -38,6 +40,8 @@ router.get('/:guildID/settings', async (req, res) => {
                 antiraid,
                 antispam,
                 guild,
+                channels,
+                roles
             });
         } else {
             res.json({ error: 'Guild cannot be found' });
@@ -46,6 +50,7 @@ router.get('/:guildID/settings', async (req, res) => {
         res.json({ error: 'haha you tried lmfao, go suck a duck' });
     }
 });
+
 
 // router.post('/:guildID/user/:id/moderation/new', async (req, res) => {
 //     // TODO
