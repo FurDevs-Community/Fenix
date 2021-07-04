@@ -2,7 +2,6 @@
 import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import { execute } from '../../helper';
 import { primaryColor } from '../../settings';
 
 module.exports = class extends Command {
@@ -38,18 +37,13 @@ module.exports = class extends Command {
             )
             .setTitle('⚠️ Reloading the Bot.')
             .setColor(primaryColor)
-            .setDescription('⏲️ This may take a bit...')
+            .setDescription('⏲️ This may take a bit.')
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
         message.channel.send(embed).then(async (msg) => {
             try {
                 // Executes this command then reload the commands
-                await execute('rm -rf dist/; tsc').then(async () => {
-                    await client.loader.reload();
-                });
-                client.log(
-                    `Commands has been reload by ${message.author.username}.`
-                );
+                await process.exit();
                 embed.setTitle('The bot has been reloaded.');
                 embed.setDescription("The bot's commands has been reloaded!");
                 await msg.edit(embed);
@@ -59,4 +53,4 @@ module.exports = class extends Command {
             }
         });
     }
-}
+};
