@@ -80,4 +80,4 @@ module.exports = class extends Command {
             await msg.edit(complete);
         }
     }
-}
+};
