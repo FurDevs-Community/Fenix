@@ -1,8 +1,8 @@
 import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import { execute } from '../../helper';
 import { primaryColor } from '../../settings';
+import { execSync as exec } from 'child_process';
 
 module.exports = class extends Command {
     /**
@@ -44,12 +44,23 @@ module.exports = class extends Command {
         // Makes what is sent a message variable
         const msg = await message.channel.send(embed);
 
-        // Execute the update script
-        const result: any = await execute('sh update.sh');
-
-        // Send the result
-        if (result[0]) {
-            const output = result[0];
+        try {
+            await exec('git stash').toString();
+            const gitPull = await exec('git pull origin master').toString();
+            const npmInstall = await exec('npm install').toString();
+            const complete = new MessageEmbed()
+                .setAuthor(
+                    `${message.author.tag}`,
+                    `${message.author.displayAvatarURL({ dynamic: true })}`
+                )
+                .setColor(primaryColor)
+                .setTitle('Update - Bot was updated!')
+                .addField(`Git Pull`, `\`\`\`${gitPull}\`\`\``)
+                .addField(`NPM Install`, `\`\`\`${npmInstall}\`\`\``)
+                .setTimestamp()
+                .setFooter(`User ID: ${message.author.id}`);
+            await msg.edit(complete);
+        } catch (e) {
             const error = new MessageEmbed()
                 .setAuthor(
                     `${message.author.tag}`,
@@ -58,26 +69,11 @@ module.exports = class extends Command {
                 .setColor(primaryColor)
                 .setTitle("ERROR! - Bot didn't update!")
                 .setDescription(
-                    `Please pray the lords and hope that the update didn't mess up the prod files.(Please ssh into the server and resolve the errors) \n \`\`\`${output}\`\`\``
+                    `Please pray the lords and hope that the update didn't mess up the prod files.(Please ssh into the server and resolve the errors) \n \`\`\`${e}\`\`\``
                 )
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);
             return message.channel.send(error);
-        } else {
-            const output = result.slice(1);
-            const complete = new MessageEmbed()
-                .setAuthor(
-                    `${message.author.tag}`,
-                    `${message.author.displayAvatarURL({ dynamic: true })}`
-                )
-                .setColor(primaryColor)
-                .setTitle('Update - Bot was updated!')
-                .setDescription(
-                    `You may now use the reload command to reload the bot with the New Features. \n \`\`\`${output}\`\`\``
-                )
-                .setTimestamp()
-                .setFooter(`User ID: ${message.author.id}`);
-            await msg.edit(complete);
         }
     }
 };
