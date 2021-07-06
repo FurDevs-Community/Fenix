@@ -148,4 +148,4 @@ module.exports = class extends Command {
                 msg.edit('The bug report has been cancelled');
             });
     }
-}
+};
