@@ -32,6 +32,7 @@ const client = new HozolClient({
                 'GUILD_PRESENCES',
                 'GUILD_MESSAGE_REACTIONS',
                 'GUILD_BANS',
+                'GUILD_VOICE_STATES'
             ],
         },
     },
