@@ -4,6 +4,8 @@ import { Command } from 'nukejs';
 import { channelResolver, checkTextChannel } from './../../helper/index';
 import ms from 'ms';
 import { primaryColor } from './../../settings';
+import { addSchedule } from '../../helper/schedules/schedules';
+import { Schedules } from '../../database';
 
 module.exports = class extends Command {
     constructor(file: any) {
@@ -63,5 +65,20 @@ module.exports = class extends Command {
         const msg = await channel.send(embed);
         await msg.react('✅');
         await msg.react('❌');
+        console.log('here');
+        await Schedules.create({
+            uid: `vote-${msg.id}`,
+            task: 'voteEnd',
+            data: {
+                user: message.author.id,
+                guild: message.guild.id,
+                channel: message.channel.id,
+                messageID: msg.id,
+                nextRun: client.moment().add(duration, 'ms').toISOString(true),
+            },
+        }).then(async (data) => {
+            await addSchedule(client, data);
+            console.log(data);
+        });
     }
-}
+};
