@@ -1,7 +1,10 @@
 import HozolClient from '../../lib/HozolClient';
 import chrono from 'chrono-node';
 
-export async function chronoTimeResolver(client: HozolClient, dateString: any) {
+export async function chronoTimeResolver(
+    client: HozolClient,
+    dateString: string
+) {
     const date = chrono.parse(dateString, new Date(), {
         forwardDate: true,
     });
