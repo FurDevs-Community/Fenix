@@ -59,4 +59,4 @@ module.exports = class extends Command {
             return message.channel.send(reportEmbed);
         }
     }
-}
+};
