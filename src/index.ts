@@ -3,7 +3,7 @@ import HozolClient from './lib/HozolClient';
 import { MessageEmbed } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { Clients } from './database';
-import { defaultPrefix, devs, primaryColor } from './settings';
+import { defaultPrefix, devs, port, primaryColor, __prod__, port } from './settings';
 import { api } from './api';
 import { cron } from './helper/general/cron';
 dotenv.config();
@@ -32,7 +32,7 @@ const client = new HozolClient({
                 'GUILD_PRESENCES',
                 'GUILD_MESSAGE_REACTIONS',
                 'GUILD_BANS',
-                'GUILD_VOICE_STATES'
+                'GUILD_VOICE_STATES',
             ],
         },
     },
@@ -52,10 +52,18 @@ client.on('ready', async () => {
         .setTitle('Hozol is ready!')
         .setColor(primaryColor)
         .addField('Version', require('./../package.json').version)
+        .addField(
+            'API',
+            __prod__ ? 'https://api.hozol.xyz' : `http://localhost:${port}`
+        )
+        .addField(
+            'Dashboard',
+            __prod__ ? 'https://hozol.xyz' : `http://localhost:3000`
+        )
         .setThumbnail(
             'https://cdn.discordapp.com/emojis/758388154465517578.png?v=1'
         );
-    client.users.cache.get('679145795714416661')?.send(embed);
+    client.users.cache.get('852070153804972043')?.send(embed);
 
     // Sets the Status
     client.user?.setActivity({
