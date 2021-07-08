@@ -46,7 +46,7 @@ module.exports = class extends Command {
 
         try {
             await exec('git stash').toString();
-            const gitPull = await exec('📥 git pull origin master').toString();
+            const gitPull = await exec('git pull origin master').toString();
             const npmInstall = await exec('yarn').toString();
             const complete = new MessageEmbed()
                 .setAuthor(
