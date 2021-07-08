@@ -55,8 +55,8 @@ module.exports = class extends Command {
                 )
                 .setColor(primaryColor)
                 .setTitle('Update - Bot was updated!')
-                .addField(`Git Pull`, `\`\`\`${gitPull}\`\`\``)
-                .addField(`NPM Install`, `\`\`\`${npmInstall}\`\`\``)
+                .addField(`📥 Git Pull`, `\`\`\`${gitPull}\`\`\``)
+                .addField(`🧶 Yarn Install`, `\`\`\`${npmInstall}\`\`\``)
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);
             await msg.edit(complete);
