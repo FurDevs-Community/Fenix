@@ -44,24 +44,19 @@ module.exports = class extends Command {
         if (!reason && guildSettings?.reasonSpecify !== 'ignore') {
             let correct = false;
             while (!correct) {
-                const reasonMsg = <Message>(
-                    (<unknown>(
-                        await askQuestion(
-                            message,
-                            `❓ Why are you wanting to unban this member?\nPlease note this is ${
-                                guildSettings?.reasonSpecify
-                                    ? '**required** therefore you must provide a reason'
-                                    : '**optional** therefore you can put "none"'
-                            }`
-                        )
-                    ))
+                // eslint-disable-next-line no-unused-vars
+                const [_, answer] = await askQuestion(
+                    message,
+                    `❓ Why are you wanting to unban this member?\nPlease note this is ${
+                        guildSettings?.reasonSpecify
+                            ? '**required** therefore you must provide a reason'
+                            : '**optional** therefore you can put "none"'
+                    }`
                 );
-                if (
-                    reasonMsg.content &&
-                    reasonMsg.content.toLowerCase() !== 'none'
-                ) {
+                if (!answer) return;
+                if (answer.content && answer.content.toLowerCase() !== 'none') {
                     correct = true;
-                    reason = reasonMsg.content;
+                    reason = answer.content;
                 }
             }
         }
@@ -97,4 +92,4 @@ module.exports = class extends Command {
                 );
             });
     }
-}
+};
