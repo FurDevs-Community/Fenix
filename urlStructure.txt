@@ -3,8 +3,8 @@
 Mod logs             |  guild/:id/user/:id/moderation/:uid
 Add discipline       |  guild/:id/user/:id/moderation/new
 Guild settings       |  guild/:id/settings
-User profile         |  guild/:id/user/:id
-User profile edit    |  guild/:id/user/:id/edit
+User profile          |  guild/:id/user/:id
+User profile edit     |  guild/:id/user/:id/edit
 User badges          |  guild/:id/user/:id/badges
 Logging              |  guild/:id/logging
 Logging Details      |  guild/:id/logging/:id
