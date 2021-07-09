@@ -4,6 +4,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import beautify from 'beautify';
 import { primaryColor } from '../../settings';
+import { hasteful } from '../../helper';
 
 module.exports = class extends Command {
     /**
@@ -56,11 +57,7 @@ module.exports = class extends Command {
             let res;
             // If the result of what's eval larger than 1500 characters, then go ahead and make a pastebin
             if (evaled.toString().length >= 1024) {
-                await require('hastebin-gen')(evaled, {
-                    url: 'https://hastebin.com',
-                }).then((result: string) => {
-                    res = result;
-                });
+                res = await hasteful(evaled);
             } else {
                 res = evaled;
             }
@@ -68,11 +65,7 @@ module.exports = class extends Command {
 
             // Do the same thing that we just did with the eval but is a promise
             if (promisedEval.toString().length >= 1024) {
-                await require('hastebin-gen')(promisedEval, {
-                    url: 'https://hastebin.com/',
-                }).then((result: string) => {
-                    promisedResult = result;
-                });
+                promisedResult = await hasteful(promisedEval);
             } else {
                 promisedResult = promisedEval;
             }
