@@ -5,7 +5,7 @@ export async function chronoTimeResolver(
     client: HozolClient,
     dateString: string
 ) {
-    const date = chrono.parse(dateString, new Date(), {
+    const date = chrono.parseDate(dateString, new Date(), {
         forwardDate: true,
     });
     if (date === null) {

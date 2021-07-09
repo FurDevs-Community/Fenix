@@ -130,8 +130,7 @@ module.exports = class extends Command {
                     allowedPerms.length > 0
                         ? `✅ \`${allowedPerms.join('`, `')}\``
                         : 'No Allowed Permission'
-                }`,
-                true
+                }`
             );
             embed.addField(
                 'Disallowed Permissions',
@@ -139,13 +138,12 @@ module.exports = class extends Command {
                     disallowedPerms.length > 0
                         ? `❌ \`${disallowedPerms.join('`, `')}\``
                         : 'No Disallowed Permission'
-                }`,
-                true
+                }`
             );
             await message.channel.send(embed);
         }
     }
-}
+};
 
 function colors(memberID: string) {
     switch (memberID) {
