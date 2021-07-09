@@ -48,8 +48,7 @@ module.exports = class extends Command {
 
         try {
             // Evaluate the script
-            // eslint-disable-next-line no-eval
-            const evaluated: any = eval(script);
+            const evaluated = eval(script);
             const evaled = require('util').inspect(evaluated, { depth: 5 });
             // Resolves any promises this eval has
             const promisedEval: any = await Promise.resolve(evaluated);
