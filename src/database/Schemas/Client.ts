@@ -1,4 +1,4 @@
-import { TextChannel } from 'discord.js';
+import { Role, TextChannel } from 'discord.js';
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IClient extends Document {
@@ -8,6 +8,7 @@ export interface IClient extends Document {
     botLogChannel: TextChannel;
     supportGuildID: TextChannel;
     botErrorsChannel: TextChannel;
+    subscribeRole: Role;
 }
 
 const Client: Schema = new Schema({
@@ -33,6 +34,10 @@ const Client: Schema = new Schema({
         default: null,
     },
     botErrorsChannel: {
+        type: String,
+        default: null,
+    },
+    subscribeRole: {
         type: String,
         default: null,
     },
