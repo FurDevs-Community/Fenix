@@ -3,7 +3,13 @@ import HozolClient from './lib/HozolClient';
 import { MessageEmbed } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { Clients } from './database';
-import { defaultPrefix, devs, port, primaryColor, __prod__, port } from './settings';
+import {
+    defaultPrefix,
+    devs,
+    port,
+    primaryColor,
+    __prod__
+} from './settings';
 import { api } from './api';
 import { cron } from './helper/general/cron';
 dotenv.config();

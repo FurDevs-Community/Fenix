@@ -3,6 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import { primaryColor } from '../../settings';
 import { execSync as exec } from 'child_process';
+import hastebin from 'hastebin-gen';
 
 module.exports = class extends Command {
     /**
@@ -46,8 +47,13 @@ module.exports = class extends Command {
 
         try {
             await exec('git stash').toString();
-            const gitPull = await exec('git pull origin master').toString();
-            const npmInstall = await exec('yarn').toString();
+            let gitPull = await exec('git pull origin master').toString();
+            let npmInstall = await exec('yarn').toString();
+            if (gitPull.length > 1024 || npmInstall.length > 1024) {
+                npmInstall = await hastebin(npmInstall);
+                gitPull = await hastebin(gitPull);
+            }
+
             const complete = new MessageEmbed()
                 .setAuthor(
                     `${message.author.tag}`,

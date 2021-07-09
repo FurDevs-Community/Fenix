@@ -1,7 +1,7 @@
 export async function hasteful(code: string) {
     try {
         require('hastebin-gen')(code, {
-            url: 'https://drago.probably.booped.me',
+            url: 'https://hastebin.com/',
         }).then((result: string) => {
             return result;
         });
