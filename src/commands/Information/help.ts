@@ -32,12 +32,8 @@ module.exports = class extends Command {
         const initEmbed = new MessageEmbed()
             .setTitle('Hozols Help Menu')
             .setColor(primaryColor)
-            .setFooter(
-                `User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`
-            )
-            .setDescription(
-                `To seek more information to a specific command. Run \`${prefix}help [Command]\``
-            )
+            .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
+            .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``)
             .addFields(
                 {
                     name: 'ℹ️ Information Commands',
@@ -57,23 +53,20 @@ module.exports = class extends Command {
                 }
             );
         if (client.developers.includes(message.author.id)) {
-            initEmbed.addField(
-                '💻 Developer Commands',
-                'View Commands that are reserved for Developers.'
-            );
+            initEmbed.addField('💻 Developer Commands', 'View Commands that are reserved for Developers.');
             initEmbed
                 .addField('❌ Exit', 'Exit the Help menu.')
                 .addField(
                     'For Bug Reports',
-                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/R49nqt2k3g)`
+                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
                 )
                 .addField(
                     'For Suggestions',
-                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/R49nqt2k3g)`
+                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
                 )
                 .addField(
                     'For Security Issues',
-                    `Join our [Support Server](https://discord.gg/R49nqt2k3g) and contact \`${
+                    `Join our [Support Server](https://discord.gg/FVnxSJ4mE3) and contact \`${
                         client.users.cache.get('679145795714416661')?.tag
                     }\``
                 );
@@ -82,34 +75,27 @@ module.exports = class extends Command {
                 .addField('❌ Exit', 'Exit the Help menu.')
                 .addField(
                     'For Bug Reports',
-                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/R49nqt2k3g)`
+                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
                 )
                 .addField(
                     'For Suggestions',
-                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/R49nqt2k3g)`
+                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
                 )
                 .addField(
                     'For Security Issues',
-                    `Join our [Support Server](https://discord.gg/R49nqt2k3g) and contact \`${
+                    `Join our [Support Server](https://discord.gg/FVnxSJ4mE3) and contact \`${
                         client.users.cache.get('679145795714416661')?.tag
                     }\``
                 );
         }
         const msg = await message.channel.send(initEmbed);
-        await Promise.all([
-            msg.react('ℹ️'),
-            msg.react('⚙'),
-            msg.react('🔨'),
-            msg.react('💁‍♂️'),
-        ]);
+        await Promise.all([msg.react('ℹ️'), msg.react('⚙'), msg.react('🔨'), msg.react('💁‍♂️')]);
         if (client.developers.includes(message.author.id)) {
             msg.react('💻');
             msg.react('❌');
             const filter = (reaction: MessageReaction, user: User) => {
                 return (
-                    ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(
-                        reaction.emoji.name
-                    ) && user.id === message.author.id
+                    ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(reaction.emoji.name) && user.id === message.author.id
                 );
             };
             msg.awaitReactions(filter, {
@@ -147,11 +133,7 @@ module.exports = class extends Command {
                 });
         } else {
             const filter = (reaction: MessageReaction, user: User) => {
-                return (
-                    ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(
-                        reaction.emoji.name
-                    ) && user.id === message.author.id
-                );
+                return ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
             };
             msg.awaitReactions(filter, {
                 max: 1,
@@ -185,21 +167,13 @@ module.exports = class extends Command {
                 });
         }
 
-        const starting = async (
-            client: HozolClient,
-            message: Message,
-            msg: Message
-        ) => {
+        const starting = async (client: HozolClient, message: Message, msg: Message) => {
             await msg.reactions.removeAll().catch(() => {});
             const embed = new MessageEmbed()
                 .setTitle('Hozols Help Menu')
                 .setColor(primaryColor)
-                .setFooter(
-                    `User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`
-                )
-                .setDescription(
-                    `To seek more information to a specific command. Run \`${prefix}help [Command]\``
-                )
+                .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
+                .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``)
                 .addFields(
                     {
                         name: 'ℹ️ Information Commands',
@@ -220,29 +194,20 @@ module.exports = class extends Command {
                 );
 
             if (client.developers.includes(message.author.id)) {
-                embed.addField(
-                    '💻 Developer Commands',
-                    'View Commands that are reserved for Developers.'
-                );
+                embed.addField('💻 Developer Commands', 'View Commands that are reserved for Developers.');
                 embed.addField('❌ Exit', 'Exit the Help menu.');
             } else {
                 embed.addField('❌ Exit', 'Exit the Help menu.');
             }
             msg.edit(embed);
-            await Promise.all([
-                msg.react('ℹ️'),
-                msg.react('⚙'),
-                msg.react('🔨'),
-                msg.react('💁‍♂️'),
-            ]);
+            await Promise.all([msg.react('ℹ️'), msg.react('⚙'), msg.react('🔨'), msg.react('💁‍♂️')]);
             if (client.developers.includes(message.author.id)) {
                 await msg.react('💻');
                 await msg.react('❌');
                 const filter = (reaction: MessageReaction, user: User) => {
                     return (
-                        ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(
-                            reaction.emoji.name
-                        ) && user.id === message.author.id
+                        ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(reaction.emoji.name) &&
+                        user.id === message.author.id
                     );
                 };
                 msg.awaitReactions(filter, {
@@ -281,11 +246,7 @@ module.exports = class extends Command {
             } else {
                 await msg.react('❌');
                 const filter = (reaction: MessageReaction, user: User) => {
-                    return (
-                        ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(
-                            reaction.emoji.name
-                        ) && user.id === message.author.id
-                    );
+                    return ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
                 };
                 msg.awaitReactions(filter, {
                     max: 1,
@@ -324,23 +285,14 @@ module.exports = class extends Command {
             client: HozolClient,
             message: Message,
             msg: Message,
-            category:
-                | 'Information'
-                | 'Management'
-                | 'Moderation'
-                | 'Developers'
-                | 'Support'
+            category: 'Information' | 'Management' | 'Moderation' | 'Developers' | 'Support'
         ) => {
             await msg.reactions.removeAll().catch(() => {});
             const embed = new MessageEmbed()
                 .setTitle(`Hozols Help Menu - ${category}`)
                 .setColor(primaryColor)
-                .setFooter(
-                    `User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`
-                )
-                .setDescription(
-                    `To seek more information to a specific command. Run \`${prefix}help [Command]\``
-                );
+                .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
+                .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``);
             await client.loader.Commands.map((cmd) => {
                 if (cmd.category === category) {
                     embed.addField(`${prefix}${cmd.name}`, cmd.description);
@@ -351,10 +303,7 @@ module.exports = class extends Command {
             await msg.react('◀️');
             await msg.react('❌');
             const filter = (reaction: MessageReaction, user: User) => {
-                return (
-                    ['◀️', '❌'].includes(reaction.emoji.name) &&
-                    user.id === message.author.id
-                );
+                return ['◀️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
             };
             msg.awaitReactions(filter, {
                 max: 1,
@@ -379,4 +328,4 @@ module.exports = class extends Command {
                 });
         };
     }
-}
+};
