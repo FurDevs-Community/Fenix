@@ -49,9 +49,7 @@
         "ts-node": "^9.1.1",
         "winston": "^3.3.3",
         "yt-search": "^2.9.0",
-        "ytdl-core": "^4.8.3"
-    },
-    "devDependencies": {
+        "ytdl-core": "^4.8.3",
         "@types/beautify": "0.0.0",
         "@types/changelog-parser": "^2.7.1",
         "@types/diff": "^5.0.0",
@@ -76,7 +74,6 @@
         "@types/express-session": "^1.17.3",
         "@types/string-similarity": "^4.0.0",
         "@types/yt-search": "^2.3.1"
-
     },
     "scripts": {
         "start": "rm -rf dist/; tsc; node dist/index.js",
