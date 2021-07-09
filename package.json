@@ -11,16 +11,11 @@
         "@discordjs/opus": "^0.5.3",
         "@sentry/node": "^6.8.0",
         "@sentry/tracing": "^6.8.0",
-        "@types/cors": "^2.8.9",
-        "@types/cron": "^1.7.2",
-        "@types/express-session": "^1.17.3",
-        "@types/string-similarity": "^4.0.0",
-        "@types/yt-search": "^2.3.1",
         "@vitalets/google-translate-api": "^7.0.0",
         "beautify": "^0.0.8",
         "chalk": "^4.1.0",
         "changelog-parser": "^2.8.0",
-        "chrono-node": "^2.2.7",
+        "chrono-node": "1.4.8",
         "connect-mongo": "^3.2.0",
         "cors": "^2.8.5",
         "cron": "^1.8.2",
@@ -75,7 +70,13 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.3.1",
         "prettier": "^2.3.1",
-        "typescript": "^4.3.2"
+        "typescript": "^4.3.2",
+        "@types/cors": "^2.8.9",
+        "@types/cron": "^1.7.2",
+        "@types/express-session": "^1.17.3",
+        "@types/string-similarity": "^4.0.0",
+        "@types/yt-search": "^2.3.1"
+
     },
     "scripts": {
         "start": "rm -rf dist/; tsc; node dist/index.js",

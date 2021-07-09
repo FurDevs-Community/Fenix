@@ -5,6 +5,7 @@ import { removeBan } from '../tasks/removeBan';
 import { removeMute } from '../tasks/removeMute';
 import { updateStats } from '../tasks/updateStats';
 import { Guild } from 'discord.js';
+import { voteEnd } from '../tasks/voteEnd';
 import { minuteBotTask } from '../tasks/SYS-MIN';
 
 export async function executeTask(client: HozolClient, record: ISchedule) {
@@ -30,6 +31,14 @@ export async function executeTask(client: HozolClient, record: ISchedule) {
             break;
         case 'SYSMIN':
             minuteBotTask();
+            break;
+        case 'voteEnd':
+            voteEnd(
+                client,
+                record.data.guild,
+                record.data.messageID!,
+                record.data.channel!
+            )
             break;
     }
 }

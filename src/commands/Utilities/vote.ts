@@ -4,6 +4,8 @@ import { Command } from 'nukejs';
 import { channelResolver, checkTextChannel } from './../../helper/index';
 import ms from 'ms';
 import { primaryColor } from './../../settings';
+import { addSchedule } from '../../helper/schedules/schedules';
+import { Schedules } from '../../database';
 
 module.exports = class extends Command {
     constructor(file: any) {
@@ -40,7 +42,7 @@ module.exports = class extends Command {
             }
         } else {
             if (ms(args[0])) {
-                duration = args[0];
+                duration = ms(args[0]);
                 voteMsg = args.slice(1);
             } else {
                 voteMsg = args.slice(0);
@@ -55,7 +57,9 @@ module.exports = class extends Command {
             .setFooter(
                 `${
                     duration
-                        ? `Ends at ${duration}`
+                        ? `Ends at ${client
+                              .moment(client.moment().add(duration, 'ms'))
+                              .format('LLLL')}`
                         : 'This vote will never last.'
                 }`
             );
@@ -63,5 +67,20 @@ module.exports = class extends Command {
         const msg = await channel.send(embed);
         await msg.react('✅');
         await msg.react('❌');
+        console.log('here');
+        await Schedules.create({
+            uid: `vote-${msg.id}`,
+            task: 'voteEnd',
+            data: {
+                user: message.author.id,
+                guild: message.guild.id,
+                channel: message.channel.id,
+                messageID: msg.id,
+            },
+            nextRun: client.moment().add(duration, 'ms').toISOString(true),
+        }).then(async (data) => {
+            await addSchedule(client, data);
+            console.log(data);
+        });
     }
-}
+};
