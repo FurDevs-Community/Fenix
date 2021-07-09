@@ -33,9 +33,7 @@ module.exports = class extends Command {
 
         // If no arguments are specified... then throw an error saying to provide code to evaluate
         if (!args[0]) {
-            throw new Error(
-                'Please Provide JS Code you would like to Evaluate'
-            );
+            throw new Error('Please Provide JS Code you would like to Evaluate');
         }
 
         // Takes the arguments and join them to become a string
@@ -71,17 +69,11 @@ module.exports = class extends Command {
 
             // Process the output
             const embed = new MessageEmbed()
-                .setAuthor(
-                    `${message.author.tag}`,
-                    `${message.author.displayAvatarURL({ dynamic: true })}`
-                )
+                .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
                 .setTitle('Evaluate')
                 .setColor(primaryColor)
                 .setTimestamp()
-                .addField(
-                    ':inbox_tray: Input: ',
-                    `\`\`\`ts\n${beautify(script, { format: 'js' })} \`\`\``
-                )
+                .addField(':inbox_tray: Input: ', `\`\`\`ts\n${beautify(script, { format: 'js' })} \`\`\``)
 
                 .addField(':outbox_tray: Output', `\`\`\`ts\n${res}\`\`\``)
 
@@ -93,10 +85,7 @@ module.exports = class extends Command {
 
             // If what is provided a promise then, provide the resolved promise (or link) in the embed
             if (evaluated && evaluated.then) {
-                embed.addField(
-                    ':outbox_tray: Promise Output',
-                    `\`\`\`js\n${promisedResult}\`\`\``
-                );
+                embed.addField(':outbox_tray: Promise Output', `\`\`\`js\n${promisedResult}\`\`\``);
             }
 
             // Add a type of what is the type of what's evaluated

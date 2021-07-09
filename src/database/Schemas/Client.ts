@@ -8,7 +8,9 @@ export interface IClient extends Document {
     botLogChannel: TextChannel;
     supportGuildID: TextChannel;
     botErrorsChannel: TextChannel;
-    subscribeRole: Role;
+    subscribesNewsRole: Role;
+    subscribesUpdatesRole: Role;
+    subscribesImportantRole: Role;
 }
 
 const Client: Schema = new Schema({
@@ -37,7 +39,15 @@ const Client: Schema = new Schema({
         type: String,
         default: null,
     },
-    subscribeRole: {
+    subscribesNewsRole: {
+        type: String,
+        default: null,
+    },
+    subscribesUpdatesRole: {
+        type: String,
+        default: null,
+    },
+    subscribesImportantRole: {
         type: String,
         default: null,
     },
