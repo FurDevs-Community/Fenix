@@ -1,8 +1,9 @@
 import HozolClient from '../../lib/HozolClient';
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import { roleNameResolver } from '../../helper';
 import { Clients } from '../../database';
+import { primaryColor } from '../../settings';
 
 module.exports = class extends Command {
     /**
@@ -33,5 +34,12 @@ module.exports = class extends Command {
         if (subscribeRole) {
             Clients.updateOne({ id: 1 }, { subscribeRole: subscribeRole });
         }
+        const embed = new MessageEmbed()
+            .setTitle('Subscriber is set')
+            .addField('Role has been set', `Subscribe Role: ${subscribeRole.name}`)
+            .setColor(primaryColor)
+            .setTimestamp()
+            .setFooter(`User ID: ${message.author.id}`);
+        message.channel.send(embed);
     }
 };
