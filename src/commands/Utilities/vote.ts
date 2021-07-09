@@ -42,7 +42,7 @@ module.exports = class extends Command {
             }
         } else {
             if (ms(args[0])) {
-                duration = args[0];
+                duration = ms(args[0]);
                 voteMsg = args.slice(1);
             } else {
                 voteMsg = args.slice(0);
@@ -57,7 +57,9 @@ module.exports = class extends Command {
             .setFooter(
                 `${
                     duration
-                        ? `Ends at ${duration}`
+                        ? `Ends at ${client
+                              .moment(client.moment().add(duration, 'ms'))
+                              .format('LLLL')}`
                         : 'This vote will never last.'
                 }`
             );
@@ -74,8 +76,8 @@ module.exports = class extends Command {
                 guild: message.guild.id,
                 channel: message.channel.id,
                 messageID: msg.id,
-                nextRun: client.moment().add(duration, 'ms').toISOString(true),
             },
+            nextRun: client.moment().add(duration, 'ms').toISOString(true),
         }).then(async (data) => {
             await addSchedule(client, data);
             console.log(data);
