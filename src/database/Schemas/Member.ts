@@ -35,17 +35,6 @@ const Member: Schema = new Schema({
         type: Array,
         default: [],
     },
-
-    XP: {
-        type: Number,
-        default: 0,
-    },
-
-    coins: {
-        type: Number,
-        default: 0,
-    },
-
     notes: {
         type: Array,
         default: [],
@@ -66,8 +55,6 @@ export interface IMember extends Document {
     spamScoreStamp: string;
     muted: boolean;
     reports: string[];
-    XP: number;
-    coins: number;
     notes: string[];
     awayStatus: string;
 }

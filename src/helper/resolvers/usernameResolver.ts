@@ -7,13 +7,9 @@ const { userResolver } = require('./../resolvers/userResolver');
 const userOrMemberRegex = /^(?:<@!?)?(\d{17,19})>?$/;
 const _ = require('lodash');
 
-export async function usernameResolver(
-    message: Message,
-    username: string
-): Promise<User> {
+export async function usernameResolver(message: Message, username: string): Promise<User> {
     if (!username) throw new Error('Username was not provided');
-    const regExpEsc = (str: string) =>
-        str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regExpEsc = (str: string) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
     if (!message.guild) {
         return userResolver(username);
@@ -89,10 +85,7 @@ export async function usernameResolver(
                             .setFooter(`User ID: ${message.author.id}`)
                             .setTimestamp();
                         group.map((child: User) => {
-                            groupEmbed.addField(
-                                child.username,
-                                `ID: ${child.id}`
-                            );
+                            groupEmbed.addField(child.username, `ID: ${child.id}`);
                         });
                         return groupEmbed;
                     }),
@@ -115,14 +108,10 @@ function resolveUser(query: any, guild: Guild) {
     if (query instanceof User) return query;
     if (typeof query === 'string') {
         if (userOrMemberRegex.test(query)) {
-            return guild.client.users
-                .fetch(userOrMemberRegex.exec(query)![1])
-                .catch(() => null);
+            return guild.client.users.fetch(userOrMemberRegex.exec(query)![1]).catch(() => null);
         }
         if (/\w{1,32}#\d{4}/.test(query)) {
-            const res = guild.members.cache.find(
-                (member: GuildMember) => member.user.tag === query
-            );
+            const res = guild.members.cache.find((member: GuildMember) => member.user.tag === query);
             return res ? res.user : null;
         }
     }

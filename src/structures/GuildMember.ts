@@ -2,6 +2,7 @@
 import HozolClient from '../lib/HozolClient';
 import { Guild, Structures } from 'discord.js';
 import {
+    addMoney,
     addReputation,
     findMemberModeration,
     findOneMemberProfile,
@@ -11,6 +12,7 @@ import {
     IMember,
     IModeration,
     IProfile,
+    removeMoney,
     removeReputation,
 } from './../database';
 
@@ -22,6 +24,8 @@ declare module 'discord.js' {
         moderation(): Promise<IModeration[]>;
         addReputation(reps: number): Promise<boolean>;
         removeReputation(reps: number): Promise<boolean>;
+        addMoney(money: number): Promise<boolean>;
+        removeMoney(money: number): Promise<boolean>;
     }
 }
 
@@ -82,6 +86,42 @@ Structures.extend('GuildMember', (GuildMember) => {
          */
         public removeReputation(reps: number) {
             return removeReputation(this.guild.id, this.id, reps);
+        }
+
+        /**
+         * Add Money to the user's account (cash)
+         * @param money Money you would like to add
+         * @returns {Promise<boolean>}
+         */
+        public addMoney(money: number) {
+            return addMoney(this.guild.id, this.id, money);
+        }
+
+        /**
+         * Removes Money to the user's account (cash)
+         * @param money money you would like to remove
+         * @returns {Promise<boolean>}
+         */
+        public removeMoney(money: number) {
+            return removeMoney(this.guild.id, this.id, money);
+        }
+
+        /**
+         * Add Money to the user's bank account
+         * @param money money you would like to add to the user's bank
+         * @returns {Promise<boolean>}
+         */
+        public addMoneyToBank(money: number) {
+            return removeMoney(this.guild.id, this.id, money);
+        }
+
+        /**
+         * Removes Money to the user's bank account
+         * @param money money you would like to remove from their bank
+         * @returns {Promise<boolean>}
+         */
+        public removeMoneyToBank(money: number) {
+            return removeMoney(this.guild.id, this.id, money);
         }
     }
 

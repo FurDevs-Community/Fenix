@@ -30,20 +30,14 @@ module.exports = class extends Command {
         await message.delete();
         const msg = await message.channel.send('Flying...');
         const embed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.username}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('🏓 Pong!')
             .addField('ws/API Latency', `${Math.round(client.ws.ping)}ms`)
-            .addField(
-                'Message Latency is',
-                `${Date.now() - msg.createdTimestamp}ms`
-            )
+            .addField('Message Latency is', `${Date.now() - msg.createdTimestamp}ms`)
             .setColor(primaryColor)
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
         msg.delete();
         message.channel.send(embed);
     }
-}
+};

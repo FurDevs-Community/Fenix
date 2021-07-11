@@ -32,18 +32,9 @@ export const api = (client: HozolClient) => {
 
     // Starts the API On the port specified on the config and an incremented one version for the http
     if (process.env.NODE_ENV === 'production') {
-        const privateKey = fs.readFileSync(
-            path.join(__dirname, 'cert', 'key.pem'),
-            'utf-8'
-        );
-        const certificate = fs.readFileSync(
-            path.join(__dirname, 'cert', 'cert.pem'),
-            'utf-8'
-        );
-        const ca = fs.readFileSync(
-            path.join(__dirname, 'cert', 'ca.pem'),
-            'utf-8'
-        );
+        const privateKey = fs.readFileSync('/etc/letsencrypt/live/hozol.xyz/privkey.pem', 'utf8');
+        const certificate = fs.readFileSync('/etc/letsencrypt/live/hozol.xyz/cert.pem', 'utf8');
+        const ca = fs.readFileSync('/etc/letsencrypt/live/hozol.xyz/chain.pem', 'utf8');
         const credentials = {
             key: privateKey,
             cert: certificate,

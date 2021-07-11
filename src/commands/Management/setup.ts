@@ -16,12 +16,7 @@ module.exports = class extends Command {
             enabled: true,
             ignoredInhibitors: [],
             userPerms: ['MANAGE_GUILD'],
-            botPerms: [
-                'MANAGE_CHANNELS',
-                'MANAGE_ROLES',
-                'SEND_MESSAGES',
-                'MANAGE_MESSAGES',
-            ],
+            botPerms: ['MANAGE_CHANNELS', 'MANAGE_ROLES', 'SEND_MESSAGES', 'MANAGE_MESSAGES'],
         });
     }
     /**
@@ -34,10 +29,7 @@ module.exports = class extends Command {
         await message.delete();
         let string: string;
         const embed = new MessageEmbed()
-            .setAuthor(
-                message.author.tag,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle('Hozol Setup Wizard')
             .setDescription(
                 `Welcome to Hozol's Setup Wizard! We'll go ahead and ask you a couple of question on how Hozol™️ should behave in your guild.
@@ -71,4 +63,4 @@ module.exports = class extends Command {
             }
         });
     }
-}
+};

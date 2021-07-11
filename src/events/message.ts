@@ -28,15 +28,11 @@ module.exports = class extends Event {
         const guildSettings = await message.guild.settings();
         if (!guildSettings) return;
         if (antispamSettings.enabled) {
-            if (score && antispamSettings.enabled)
-                await applySpamScore(message, score);
+            if (score && antispamSettings.enabled) await applySpamScore(message, score);
         }
 
         if (guildSettings.muteRole) {
-            if (
-                memberSettings?.muted &&
-                !message.member?.roles.cache.has(guildSettings.muteRole)
-            ) {
+            if (memberSettings?.muted && !message.member?.roles.cache.has(guildSettings.muteRole)) {
                 message.member?.roles.add(
                     guildSettings.muteRole,
                     "The useru is supposed to be muted (If this is a mistake go ahead and unmute the user by using the unmute command or remove the user's mute role)"
@@ -82,9 +78,7 @@ module.exports = class extends Event {
                                 dynamic: true,
                             })}`
                         )
-                        .setTitle(
-                            `${member.user.username}#${member.user.discriminator} is currently away.`
-                        )
+                        .setTitle(`${member.user.username}#${member.user.discriminator} is currently away.`)
                         .setDescription(mentionedMember.awayStatus)
                         .setColor(primaryColor)
                         .setFooter(`User ID: ${message.author.id}`)
@@ -99,9 +93,7 @@ module.exports = class extends Event {
         const mentionRegex = RegExp(`^<@!${client.user?.id}>$`);
         if (message.content.match(mentionRegex)) {
             return message.channel.send(
-                `Heya ${message.author}! My Prefix set for this guild is \`${
-                    (await message.guild.settings()).prefix
-                }\``
+                `Heya ${message.author}! My Prefix set for this guild is \`${(await message.guild.settings()).prefix}\``
             );
         }
     }

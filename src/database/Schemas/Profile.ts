@@ -31,6 +31,21 @@ const Profile: Schema = new Schema({
         default: 0,
     },
 
+    XP: {
+        type: Number,
+        default: 0,
+    },
+
+    coins: {
+        type: Number,
+        default: 0,
+    },
+
+    coinsInBank: {
+        type: Number,
+        default: 0,
+    },
+
     socialMedia: {
         type: Array,
     },
@@ -50,6 +65,9 @@ export interface IProfile extends Document {
     reputation: number;
     socialMedia: object[];
     information: string;
+    XP: number;
+    coins: number;
+    coinsInBank: number;
 }
 
 export const Profiles = mongoose.model<IProfile>('Profile', Profile);

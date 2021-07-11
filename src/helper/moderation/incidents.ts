@@ -4,15 +4,10 @@
 /* eslint-disable brace-style */
 /* eslint-disable array-callback-return */
 import HozolClient from '../../lib/HozolClient';
-import {
-    Guild,
-    GuildMember,
-    MessageEmbed,
-    TextChannel,
-    User,
-} from 'discord.js';
+import { Guild, GuildMember, MessageEmbed, TextChannel, User } from 'discord.js';
 import {
     IMember,
+    IProfile,
     Members as Member,
     Moderations as Moderation,
     muteUser,
@@ -66,6 +61,7 @@ export class IssueDiscipline {
     private guildSettings: any;
     private memberSettings: IMember;
     private guildMember: GuildMember;
+    private memberProfile: IProfile;
     private readonly publicEmbed: MessageEmbed;
     private readonly userEmbed: MessageEmbed;
 
@@ -246,9 +242,7 @@ export class IssueDiscipline {
                         : '.'
                 }` +
                     '\n\n' +
-                    `:hash: You are in violation of rule number(s): ${this.rules.join(
-                        ', '
-                    )}` +
+                    `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                     '\n' +
                     `Reason: ${this.reason}`
             )
@@ -263,9 +257,7 @@ export class IssueDiscipline {
                     '\n' +
                     `#️⃣ Case ID: ${this.case}`
             );
-        this.publicEmbed
-            .setDescription(`${this.user} has been warned!`)
-            .addField('Reason', this.reason);
+        this.publicEmbed.setDescription(`${this.user} has been warned!`).addField('Reason', this.reason);
     }
 
     public async disciplineUser() {
@@ -273,15 +265,11 @@ export class IssueDiscipline {
         this.banDuration = 0;
         this.type = 'discipline';
         this.userEmbed
-            .setTitle(
-                ':octagonal_sign: **__YOU HAVE BEEN DISCIPLINED__** :octagonal_sign:'
-            )
+            .setTitle(':octagonal_sign: **__YOU HAVE BEEN DISCIPLINED__** :octagonal_sign:')
             .setDescription(
                 'You have recently violated our rules and have been issued basic discipline. Please read the following information carefully. You may ask questions or request help to develop an a plan in this channel.' +
                     '\n\n' +
-                    `:hash: You are in violation of rule number(s): ${this.rules.join(
-                        ', '
-                    )}` +
+                    `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                     '\n' +
                     `Reason: ${this.reason}`
             )
@@ -311,9 +299,7 @@ export class IssueDiscipline {
             .setDescription(
                 'You have been muted by the automatic antispam system. Please read the following information carefully.' +
                     '\n\n' +
-                    `:hash: You are in violation of rule number(s): ${this.rules.join(
-                        ', '
-                    )}` +
+                    `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                     '\n' +
                     `Reason: ${this.reason}`
             )
@@ -337,15 +323,11 @@ export class IssueDiscipline {
         this.banDuration = null;
         this.type = 'task';
         this.userEmbed
-            .setTitle(
-                ':notebook: **__YOU ARE REQUIRED TO COMPLETE TASKS__** :notebook:'
-            )
+            .setTitle(':notebook: **__YOU ARE REQUIRED TO COMPLETE TASKS__** :notebook:')
             .setDescription(
                 'You have recently violated our rules. We need you to complete one or more tasks to be allowed full access again in the guild. Please read the following information carefully. You may ask questions or request help in this channel.' +
                     '\n\n' +
-                    `:hash: You are in violation of rule number(s): ${this.rules.join(
-                        ', '
-                    )}` +
+                    `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                     '\n' +
                     `Reason: ${this.reason}`
             )
@@ -374,7 +356,7 @@ export class IssueDiscipline {
             if (this.guildMember.kickable) {
                 try {
                     this.guildMember.kick();
-                } catch (e) {
+                } catch (e: any) {
                     throw new Error(e);
                 }
             } else {
@@ -393,55 +375,38 @@ export class IssueDiscipline {
         this.muteDuration = null;
         if (!this.banDuration) {
             this.userEmbed
-                .setTitle(
-                    ':no_entry_sign: **__YOU HAVE BEEN BANNED INDEFINITELY__** :no_entry_sign:'
-                )
+                .setTitle(':no_entry_sign: **__YOU HAVE BEEN BANNED INDEFINITELY__** :no_entry_sign:')
                 .setDescription(
                     `Your behavior cannot be tolerated in our guild. An indefinite ban has been issued against you. We hope you enjoyed your stay and wish you the best in your future endeavors. Please read the following information carefully${
-                        this.channel
-                            ? '. You may ask questions in this channel.'
-                            : '.'
+                        this.channel ? '. You may ask questions in this channel.' : '.'
                     }` +
                         '\n\n' +
-                        `:hash: You are in violation of rule number(s): ${this.rules.join(
-                            ', '
-                        )}` +
+                        `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                         '\n' +
                         `Reason: ${this.reason}`
                 );
             this.publicEmbed
-                .setDescription(
-                    `An Indefinite Ban has been place on ${this.user}`
-                )
+                .setDescription(`An Indefinite Ban has been place on ${this.user}`)
                 .addField('Reason', this.reason);
         } else {
             this.userEmbed
-                .setTitle(
-                    ':no_entry: **__YOU HAVE BEEN BANNED TEMPORARILY__** :no_entry:'
-                )
+                .setTitle(':no_entry: **__YOU HAVE BEEN BANNED TEMPORARILY__** :no_entry:')
                 .setDescription(
                     `Your conduct has caused significant problems in the community.${
                         this.channel
                             ? 'You are required to leave for a temporary time to reflect on, and improve, your behavior.'
                             : ' '
                     }  Please read the following information carefully.${
-                        this.channel
-                            ? '. You may ask questions in this channel.'
-                            : '.'
+                        this.channel ? '. You may ask questions in this channel.' : '.'
                     }` +
                         '\n\n' +
-                        `:hash: You are in violation of rule number(s): ${this.rules.join(
-                            ', '
-                        )}` +
+                        `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                         '\n' +
                         `Reason: ${this.reason}`
                 )
                 .addField(
                     'Your Ban will be lifted on',
-                    this.client
-                        .moment(Date.now())
-                        .add(this.banDuration, 'days')
-                        .format('LLLL')
+                    this.client.moment(Date.now()).add(this.banDuration, 'days').format('LLLL')
                 )
                 .setFooter(
                     `${
@@ -471,15 +436,11 @@ export class IssueDiscipline {
         this.muteDuration = 0;
         this.banDuration = null;
         this.userEmbed
-            .setTitle(
-                ':mag: **__YOU HAVE BEEN MUTED FOR FURTHER INVESTIGATION__** :mag:'
-            )
+            .setTitle(':mag: **__YOU HAVE BEEN MUTED FOR FURTHER INVESTIGATION__** :mag:')
             .setDescription(
                 "You have recently violated the law or Discord's Terms of Service. You have been muted while we file a report and an investigation is conducted. Please read the following information carefully." +
                     '\n\n' +
-                    `:hash: You are in violation of rule number(s): ${this.rules.join(
-                        ', '
-                    )}` +
+                    `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                     '\n' +
                     `Reason: ${this.reason}`
             )
@@ -504,21 +465,15 @@ export class IssueDiscipline {
                 .setTitle('🔇 **__YOU HAVE BEEN MUTED INDEFINITELY__** 🔇')
                 .setDescription(
                     `Your behavior cannot be tolerated in our guild. An indefinite mute has been issued against you and can be lifted by staff. Please read the following information carefully${
-                        this.channel
-                            ? '. You may ask questions in this channel.'
-                            : '.'
+                        this.channel ? '. You may ask questions in this channel.' : '.'
                     }` +
                         '\n\n' +
-                        `:hash: You are in violation of rule number(s): ${this.rules.join(
-                            ', '
-                        )}` +
+                        `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                         '\n' +
                         `Reason: ${this.reason}`
                 );
             this.publicEmbed
-                .setDescription(
-                    `An Indefinite Mute has been place on ${this.user}`
-                )
+                .setDescription(`An Indefinite Mute has been place on ${this.user}`)
                 .addField('Reason', this.reason);
         } else {
             this.banDuration = null;
@@ -526,14 +481,10 @@ export class IssueDiscipline {
                 .setTitle('🔇 **__YOU HAVE BEEN MUTED TEMPORARILY__** 🔇')
                 .setDescription(
                     `Your conduct has caused significant problems in the community. Please read the following information carefully.${
-                        this.channel
-                            ? '. You may ask questions in this channel.'
-                            : '.'
+                        this.channel ? '. You may ask questions in this channel.' : '.'
                     }` +
                         '\n\n' +
-                        `:hash: You are in violation of rule number(s): ${this.rules.join(
-                            ', '
-                        )}` +
+                        `:hash: You are in violation of rule number(s): ${this.rules.join(', ')}` +
                         '\n' +
                         `Reason: ${this.reason}`
                 );
@@ -571,9 +522,7 @@ export class IssueDiscipline {
 
         if (this.banDuration !== null && !this.channel) {
             await this.banEmbed();
-            await this.sendUserEmbed().catch(() =>
-                this.client.error('Unable to send that user')
-            );
+            await this.sendUserEmbed().catch(() => this.client.error('Unable to send that user'));
             // If the ban is permanent
             if (this.banDuration === 0) {
                 this.guild.members.ban(this.user, {
@@ -599,10 +548,7 @@ export class IssueDiscipline {
                             user: this.user.id,
                             guild: this.guild.id,
                         },
-                        nextRun: this.client
-                            .moment()
-                            .add(this.banDuration, 'days')
-                            .toISOString(true),
+                        nextRun: this.client.moment().add(this.banDuration, 'days').toISOString(true),
                     }).then(async (data) => {
                         await addSchedule(this.client, data);
                     });
@@ -623,10 +569,7 @@ export class IssueDiscipline {
             if (this.muteDuration === 0) {
                 await this.sendUserEmbed();
                 this.guildMember.roles
-                    .add(
-                        muteRole,
-                        `Muted was issued on this user by ${this.issuer.tag}`
-                    )
+                    .add(muteRole, `Muted was issued on this user by ${this.issuer.tag}`)
                     .then(async () => {
                         await muteUser(this.guild.id, this.user.id);
                     });
@@ -673,10 +616,9 @@ export class IssueDiscipline {
 
     private async getSettings() {
         this.guildSettings = await this.guild.settings();
-        // @ts-ignore
-        this.guildMember = await this.guild.members.resolve(this.user);
-        // @ts-ignore
+        // this.guildMember = await this.guild.members.cache.get(this.user);
         this.memberSettings = await this.user.guildSettings(this.guild.id);
+        this.memberProfile = await this.user.guildProfile(this.guild.id);
     }
 
     private async getOrCreateCase() {
@@ -689,17 +631,11 @@ export class IssueDiscipline {
 
     private async setBaseEmbed() {
         this.publicEmbed
-            .setAuthor(
-                `Issued by: ${this.issuer.tag}`,
-                `${this.issuer.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`Issued by: ${this.issuer.tag}`, `${this.issuer.displayAvatarURL({ dynamic: true })}`)
             .addField('User', this.user.tag)
             .setTimestamp();
         this.userEmbed
-            .setAuthor(
-                `Issued by: ${this.issuer.tag}`,
-                `${this.issuer.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`Issued by: ${this.issuer.tag}`, `${this.issuer.displayAvatarURL({ dynamic: true })}`)
             .addField('🧍‍♂️ User', this.user.tag)
             .addField('🏠 Guild', this.guild.name)
             .setColor(colour(this.type))
@@ -777,11 +713,7 @@ export class IssueDiscipline {
     }
 
     private async mute() {
-        if (
-            this.muteDuration !== null &&
-            this.muteDuration > 0 &&
-            (!this.banDuration || !this.guildMember)
-        ) {
+        if (this.muteDuration !== null && this.muteDuration > 0 && (!this.banDuration || !this.guildMember)) {
             await Schedules.create({
                 uid: `d-${this.case}`,
                 task: 'removeMute',
@@ -789,18 +721,12 @@ export class IssueDiscipline {
                     user: this.user.id,
                     guild: this.guild.id,
                 },
-                nextRun: this.client
-                    .moment()
-                    .add(this.muteDuration, 'minutes')
-                    .toISOString(true),
+                nextRun: this.client.moment().add(this.muteDuration, 'minutes').toISOString(true),
             }).then(async (data) => {
                 await addSchedule(this.client, data);
             });
 
-            await Moderation.updateOne(
-                { uid: this.case },
-                { schedule: `d-${uid}` }
-            );
+            await Moderation.updateOne({ uid: this.case }, { schedule: `d-${uid}` });
         }
     }
 
@@ -812,13 +738,7 @@ export class IssueDiscipline {
                 const theChannel = this.guild.channels.resolve(channel);
 
                 if (theChannel) {
-                    channelNames.push(
-                        `${
-                            theChannel.parent
-                                ? `${theChannel.parent.name} -> `
-                                : ''
-                        }${theChannel.name}`
-                    );
+                    channelNames.push(`${theChannel.parent ? `${theChannel.parent.name} -> ` : ''}${theChannel.name}`);
                     theChannel.createOverwrite(
                         this.user,
                         {
@@ -842,10 +762,7 @@ export class IssueDiscipline {
                 if (theRole) {
                     roleNames.push(theRole.name);
                     if (this.guildMember) {
-                        this.guildMember.roles.add(
-                            theRole,
-                            `Discipline case ${uid}`
-                        );
+                        this.guildMember.roles.add(theRole, `Discipline case ${uid}`);
                     } else {
                         const roles = this.memberSettings.roles;
                         roles.push(theRole.id);
@@ -877,15 +794,10 @@ export class IssueDiscipline {
                 if (theRole) {
                     roleNames.push(theRole.name);
                     if (this.guildMember) {
-                        this.guildMember.roles.remove(
-                            theRole,
-                            `Discipline case ${uid}`
-                        );
+                        this.guildMember.roles.remove(theRole, `Discipline case ${uid}`);
                     } else {
                         // TODO: Get
-                        const roles = this.memberSettings.roles.filter(
-                            (role: any) => role.id !== theRole?.id
-                        );
+                        const roles = this.memberSettings.roles.filter((role: any) => role.id !== theRole?.id);
                         await Member.updateOne(
                             {
                                 guildID: this.guild.id,
@@ -902,20 +814,12 @@ export class IssueDiscipline {
 
             this.userEmbed.addField(
                 ':closed_lock_with_key: **Roles were removed**',
-                `These roles have been removed from you: ${roleNames.join(
-                    ', '
-                )}`
+                `These roles have been removed from you: ${roleNames.join(', ')}`
             );
         }
         if (this.cannotUseVoiceChannels && this.guildMember) {
-            this.guildMember.voice.setDeaf(
-                true,
-                'User disciplined with cannotUseVoiceChannels restriction.'
-            );
-            this.guildMember.voice.setMute(
-                true,
-                'User disciplined with cannotUseVoiceChannels restriction.'
-            );
+            this.guildMember.voice.setDeaf(true, 'User disciplined with cannotUseVoiceChannels restriction.');
+            this.guildMember.voice.setMute(true, 'User disciplined with cannotUseVoiceChannels restriction.');
         }
         if (this.cannotUseVoiceChannels) {
             this.userEmbed.addField(
@@ -968,7 +872,7 @@ export class IssueDiscipline {
         if (this.xp > 0) {
             this.userEmbed.addField(
                 `:fleur_de_lis: **${this.xp} XP has been retracted from you**`,
-                `You now have ${this.memberSettings.XP - this.xp} XP.`
+                `You now have ${this.memberProfile.XP - this.xp} XP.`
             );
             await Member.updateOne(
                 {
@@ -976,7 +880,7 @@ export class IssueDiscipline {
                     userID: this.user.id,
                 },
                 {
-                    XP: this.memberSettings.XP - this.xp,
+                    XP: this.memberProfile.XP - this.xp,
                 }
             );
 
@@ -985,10 +889,11 @@ export class IssueDiscipline {
         }
 
         // remove coins
+        // TODO: Make it also effective to the bank
         if (this.coins > 0) {
             this.userEmbed.addField(
                 `:gem: **You were fined $${this.coins} coins**`,
-                `You now have $${this.memberSettings.coins - this.coins} coins.`
+                `You now have $${this.memberProfile.coins - this.coins} coins.`
             );
             await Member.updateOne(
                 {
@@ -996,7 +901,7 @@ export class IssueDiscipline {
                     userID: this.user.id,
                 },
                 {
-                    coins: this.memberSettings.coins - this.coins,
+                    coins: this.memberProfile.coins - this.coins,
                 }
             );
         }
@@ -1006,9 +911,7 @@ export class IssueDiscipline {
             // TODO: VPT decay
             this.userEmbed.addField(
                 `:broken_heart: **${this.vpts} Violation Points were added**`,
-                `You now have ${
-                    this.memberSettings.vpts + this.vpts
-                } violation points.` +
+                `You now have ${this.memberSettings.vpts + this.vpts} violation points.` +
                     '\n' +
                     'Staff may decide to issue more severe discipline when you have more violation points on your account.'
             );
@@ -1016,10 +919,7 @@ export class IssueDiscipline {
 
         // Additional info
         if (this.additionalInfo) {
-            this.userEmbed.addField(
-                ':notepad_spiral: **Additional information / discipline**',
-                this.additionalInfo
-            );
+            this.userEmbed.addField(':notepad_spiral: **Additional information / discipline**', this.additionalInfo);
         }
 
         // If the member is no longer in the guild, issue the ban or tempban immediately, and undo the mute

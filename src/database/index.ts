@@ -46,10 +46,7 @@ export async function findOrCreateAntiSpam(guildID: Snowflake) {
     }
 }
 
-export async function findOrCreateMemberSettings(
-    guildID: Snowflake,
-    userID: Snowflake
-) {
+export async function findOrCreateMemberSettings(guildID: Snowflake, userID: Snowflake) {
     let data = await Member.findOne({ guildID: guildID, userID: userID });
     if (data) {
         return data;
@@ -60,10 +57,7 @@ export async function findOrCreateMemberSettings(
     }
 }
 
-export async function findOrCreateProfile(
-    guildID: Snowflake,
-    userID: Snowflake
-) {
+export async function findOrCreateProfile(guildID: Snowflake, userID: Snowflake) {
     let data = await Profile.findOne({ guildID: guildID, userID: userID });
     if (data) {
         return data;
@@ -110,11 +104,9 @@ export async function findGuild(guildID: Snowflake) {
 }
 
 export async function findAntiSpam(guildID: Snowflake) {
-    const data = await AntiSpam.findOne({ guildID: guildID }).catch(
-        (err: any) => {
-            return err;
-        }
-    );
+    const data = await AntiSpam.findOne({ guildID: guildID }).catch((err: any) => {
+        return err;
+    });
     return data;
 }
 
@@ -126,37 +118,29 @@ export async function addNote(guildID: string, userID: string, note: string) {
         return err;
     });
     const notes = data.notes.push(note);
-    const newData = await AntiRaid.updateOne(
-        { guildID: guildID, userID: userID },
-        { notes: notes }
-    ).catch((err: any) => {
-        return err;
-    });
+    const newData = await AntiRaid.updateOne({ guildID: guildID, userID: userID }, { notes: notes }).catch(
+        (err: any) => {
+            return err;
+        }
+    );
     return newData;
 }
 
 export async function findAntiRaid(guildID: Snowflake) {
-    const data = await AntiRaid.findOne({ guildID: guildID }).catch(
-        (err: any) => {
-            return err;
-        }
-    );
+    const data = await AntiRaid.findOne({ guildID: guildID }).catch((err: any) => {
+        return err;
+    });
     return data;
 }
 
 export async function findModeration(guildID: Snowflake) {
-    const data = await Moderation.find({ guildID: guildID }).catch(
-        (err: any) => {
-            return err;
-        }
-    );
+    const data = await Moderation.find({ guildID: guildID }).catch((err: any) => {
+        return err;
+    });
     return data;
 }
 
-export async function findMemberModeration(
-    guildID: Snowflake,
-    userID: Snowflake
-) {
+export async function findMemberModeration(guildID: Snowflake, userID: Snowflake) {
     const data = await Moderation.find({
         guildID: guildID,
         userID: userID,
@@ -166,10 +150,7 @@ export async function findMemberModeration(
     return data;
 }
 
-export async function findOneMemberSettings(
-    guildID: Snowflake,
-    userID: Snowflake
-): Promise<IMember> {
+export async function findOneMemberSettings(guildID: Snowflake, userID: Snowflake): Promise<IMember> {
     const data = await Member.findOne({
         guildID: guildID,
         userID: userID,
@@ -179,10 +160,7 @@ export async function findOneMemberSettings(
     return data;
 }
 
-export async function findOneMemberProfile(
-    guildID: Snowflake,
-    userID: Snowflake
-) {
+export async function findOneMemberProfile(guildID: Snowflake, userID: Snowflake) {
     const data = await Profile.findOne({
         guildID: guildID,
         userID: userID,
@@ -200,40 +178,28 @@ export async function findRules(guildID: Snowflake) {
 }
 
 export async function updatePrefix(guildID: Snowflake, prefix: string) {
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { prefix: prefix }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { prefix: prefix }).catch((err: any) => {
         console.error(err);
     });
     return data;
 }
 
 export async function updateChannel(guildID: any, channel: any, type: any) {
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { [type]: channel }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { [type]: channel }).catch((err: any) => {
         console.error(err);
     });
     return data;
 }
 
 export async function updateRole(guildID: any, role: any, type: any) {
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { [type]: role }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { [type]: role }).catch((err: any) => {
         console.error(err);
     });
     return data;
 }
 
 export async function updateValue(guildID: any, role: any, type: any) {
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { [type]: role }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { [type]: role }).catch((err: any) => {
         console.error(err);
     });
     return data;
@@ -245,62 +211,41 @@ export async function updateBoolean(guildID: any, stat: any, type: any) {
     } else {
         stat = false;
     }
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { [type]: stat }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { [type]: stat }).catch((err: any) => {
         console.error(err);
     });
     return data;
 }
 
 export async function updateSpecify(guildID: any, stat: any, type: any) {
-    const data = await Guild.updateOne(
-        { guildID: guildID },
-        { [type]: stat }
-    ).catch((err: any) => {
+    const data = await Guild.updateOne({ guildID: guildID }, { [type]: stat }).catch((err: any) => {
         console.error(err);
     });
     return data;
 }
 
 export async function findAutoModeration(guildID: Snowflake) {
-    const data = await AutoModeration.findOne({ guildID: guildID }).catch(
-        (err: any) => {
-            return err;
-        }
-    );
-    return data;
-}
-
-export async function muteUser(guildID: Snowflake, userID: Snowflake) {
-    const data = await Member.updateOne(
-        { guildID: guildID, userID: userID },
-        { muted: true }
-    ).catch((err: any) => {
+    const data = await AutoModeration.findOne({ guildID: guildID }).catch((err: any) => {
         return err;
     });
     return data;
 }
 
-export async function unMuteUser(
-    guildID: Snowflake,
-    userID: Snowflake
-): Promise<void> {
-    await Member.updateOne(
-        { guildID: guildID, userID: userID },
-        { muted: false }
-    ).catch((err: any) => {
+export async function muteUser(guildID: Snowflake, userID: Snowflake) {
+    const data = await Member.updateOne({ guildID: guildID, userID: userID }, { muted: true }).catch((err: any) => {
+        return err;
+    });
+    return data;
+}
+
+export async function unMuteUser(guildID: Snowflake, userID: Snowflake): Promise<void> {
+    await Member.updateOne({ guildID: guildID, userID: userID }, { muted: false }).catch((err: any) => {
         return err;
     });
     return;
 }
 
-export async function addReputation(
-    guildID: Snowflake,
-    userID: Snowflake,
-    count: number
-) {
+export async function addReputation(guildID: Snowflake, userID: Snowflake, count: number) {
     const data = await Profile.findOne({ guildID: guildID, userID: userID });
     if (data) {
         const reps = data.reputation;
@@ -316,11 +261,7 @@ export async function addReputation(
     return false;
 }
 
-export async function removeReputation(
-    guildID: Snowflake,
-    userID: Snowflake,
-    count: number
-) {
+export async function removeReputation(guildID: Snowflake, userID: Snowflake, count: number) {
     const data = await Profile.findOne({ guildID: guildID, userID: userID });
     if (data) {
         const reps = data.reputation;
@@ -330,7 +271,62 @@ export async function removeReputation(
             {
                 reputation: newReps,
             }
-        );
+        ).catch((e) => {
+            console.error(e);
+            return false;
+        });
+        return true;
+    }
+    return false;
+}
+
+export async function addMoney(guildID: Snowflake, userID: Snowflake, moneyAdding: number) {
+    const data = await Profile.findOne({ guildID: guildID, userID: userID });
+    if (data) {
+        const money = data.coins + moneyAdding;
+        await Profile.updateOne({ guildID: guildID, userID: userID }, { coins: money }).catch((e) => {
+            console.error(e);
+            return false;
+        });
+        return true;
+    }
+    return false;
+}
+
+export async function removeMoney(guildID: Snowflake, userID: Snowflake, moneyAdding: number) {
+    const data = await Profile.findOne({ guildID: guildID, userID: userID });
+    if (data) {
+        const money = data.coins - moneyAdding;
+        await Profile.updateOne({ guildID: guildID, userID: userID }, { coins: money }).catch((e) => {
+            console.error(e);
+            return false;
+        });
+        return true;
+    }
+    return false;
+}
+
+export async function addMoneyToBank(guildID: Snowflake, userID: Snowflake, moneyAdding: number) {
+    const data = await Profile.findOne({ guildID: guildID, userID: userID });
+    if (data) {
+        const money = data.coinsInBank - moneyAdding;
+        await Profile.updateOne({ guildID: guildID, userID: userID }, { coinsInBank: money }).catch((e) => {
+            console.error(e);
+            return false;
+        });
+        return true;
+    }
+    return false;
+}
+
+export async function removeMoneyToBank(guildID: Snowflake, userID: Snowflake, moneyAdding: number) {
+    const data = await Profile.findOne({ guildID: guildID, userID: userID });
+    if (data) {
+        const money = data.coinsInBank - moneyAdding;
+        await Profile.updateOne({ guildID: guildID, userID: userID }, { coinsInBank: money }).catch((e) => {
+            console.error(e);
+            return false;
+        });
         return true;
     }
     return false;
