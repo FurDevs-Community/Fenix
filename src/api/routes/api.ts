@@ -14,4 +14,5 @@ router.get(`/modLogs`, async (req, res) => {
     const modLogs = await Moderations.find({});
     res.json({ modLogs: modLogs.length });
 });
+
 export default router;

@@ -3,15 +3,19 @@
 Mod logs             |  guild/:id/user/:id/moderation/:uid
 Add discipline       |  guild/:id/user/:id/moderation/new
 Guild settings       |  guild/:id/settings
-User profile          |  guild/:id/user/:id
-User profile edit     |  guild/:id/user/:id/edit
+User profile         |  guild/:id/user/:id
+User profile edit    |  guild/:id/user/:id/edit
 User badges          |  guild/:id/user/:id/badges
 Logging              |  guild/:id/logging
 Logging Details      |  guild/:id/logging/:id
 
 
 // API Routes
-Bot Version          |  api/botVersion/
-Mod Logs Count       |  api/modLogs/
-Total Members Count  |  api/totalMembers
-Total Guilds Count   |  api/totalGuilds
+Bot Version          |  latest/botVersion
+Mod Logs Count       |  latest/modLogs
+Total Members Count  |  latest/totalMembers
+Total Guilds Count   |  latest/totalGuilds
+User Moderation      |  latest/:guildID/user/:id/moderation/:uid
+Guild settings       |  latest/:guildID/settings
+Create Moderation    |  latest/:guildID/user/:id/moderation/new
+Get Members Settings |  latest/:id/user/:userID

@@ -25,8 +25,8 @@ export const api = (client: HozolClient) => {
         req.client = client;
         next();
     });
-    app.use('/api', apiRouter);
-    app.get(`/api/totalGuilds`, (req, res) => {
+    app.use('/latest', apiRouter);
+    app.get(`/latest/totalGuilds`, (req, res) => {
         res.json({ guilds: client.guilds.cache.size });
     });
 
