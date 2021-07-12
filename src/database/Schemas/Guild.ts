@@ -238,8 +238,7 @@ const Guild: Schema = new Schema({
 
     welcomeMessage: {
         type: String,
-        default:
-            'Welcome %username% to %guild%! Please make sure you read the rules',
+        default: 'Welcome %username% to %guild%! Please make sure you read the rules',
     },
 
     verificationMethod: {
@@ -250,6 +249,11 @@ const Guild: Schema = new Schema({
     sendWelcomeMessage: {
         type: Boolean,
         default: false,
+    },
+
+    currency: {
+        type: String,
+        default: '$',
     },
 });
 
@@ -269,6 +273,7 @@ export interface IGuild extends Document {
     kickLogChannel: string;
     modLogChannel: string;
     publicModLogChannel: string;
+    currency: string;
     joinLogChannel: string;
     leaveLogChannel: string;
     autoModLogChannel: string;

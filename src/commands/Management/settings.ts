@@ -1,13 +1,7 @@
 import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import {
-    AntiSpams,
-    updateBoolean,
-    updateChannel,
-    updateRole,
-    updateSpecify,
-} from '../../database';
+import { AntiSpams, updateBoolean, updateChannel, updateRole, updateSpecify } from '../../database';
 import { roleNameResolver } from '../../helper';
 import { primaryColor } from '../../settings';
 
@@ -53,23 +47,13 @@ module.exports = class extends Command {
                             )
                             .setColor(primaryColor)
                             .setTitle('Logging Settings')
-                            .addField(
-                                'Guild ID:',
-                                `${GuildSettings.guildID}`,
-                                true
-                            )
-                            .addField(
-                                'Prefix:',
-                                `${GuildSettings.prefix}`,
-                                true
-                            )
+                            .addField('Guild ID:', `${GuildSettings.guildID}`, true)
+                            .addField('Prefix:', `${GuildSettings.prefix}`, true)
                             .addField(
                                 'incidentsCategory',
                                 `${
                                     GuildSettings.incidentsCategory
-                                        ? message.guild.channels.resolve(
-                                              GuildSettings.incidentsCategory
-                                          )?.name
+                                        ? message.guild.channels.resolve(GuildSettings.incidentsCategory)?.name
                                         : 'Not set!'
                                 }`,
                                 true
@@ -78,9 +62,7 @@ module.exports = class extends Command {
                                 'banLogChannel',
                                 `${
                                     GuildSettings.banLogChannel
-                                        ? message.guild.channels.resolve(
-                                              GuildSettings.banLogChannel
-                                          )
+                                        ? message.guild.channels.resolve(GuildSettings.banLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -89,9 +71,7 @@ module.exports = class extends Command {
                                 'kickLogChannel',
                                 `${
                                     GuildSettings.kickLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.kickLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.kickLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -100,9 +80,7 @@ module.exports = class extends Command {
                                 'modLogChannel',
                                 `${
                                     GuildSettings.modLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.modLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.modLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -111,9 +89,7 @@ module.exports = class extends Command {
                                 'publicModLogChannel',
                                 `${
                                     GuildSettings.publicModLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.publicModLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.publicModLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -122,9 +98,7 @@ module.exports = class extends Command {
                                 'joinLogChannel',
                                 `${
                                     GuildSettings.joinLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.joinLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.joinLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -133,9 +107,7 @@ module.exports = class extends Command {
                                 'leaveLogChannel',
                                 `${
                                     GuildSettings.leaveLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.leaveLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.leaveLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -144,9 +116,7 @@ module.exports = class extends Command {
                                 'autoModLogChannel',
                                 `${
                                     GuildSettings.autoModLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.autoModLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.autoModLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -155,9 +125,7 @@ module.exports = class extends Command {
                                 'channelLogChannel',
                                 `${
                                     GuildSettings.channelLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.channelLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.channelLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -166,9 +134,7 @@ module.exports = class extends Command {
                                 'messageLogChannel',
                                 `${
                                     GuildSettings.messageLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.messageLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.messageLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -177,9 +143,7 @@ module.exports = class extends Command {
                                 'userLogChannel',
                                 `${
                                     GuildSettings.userLogChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.userLogChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.userLogChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -188,9 +152,7 @@ module.exports = class extends Command {
                                 'generalChannel',
                                 `${
                                     GuildSettings.generalChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.generalChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.generalChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -199,9 +161,7 @@ module.exports = class extends Command {
                                 'announcementsChannel',
                                 `${
                                     GuildSettings.announcementsChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.announcementsChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.announcementsChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -210,9 +170,7 @@ module.exports = class extends Command {
                                 'Flag Channel',
                                 `${
                                     GuildSettings.flagChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.flagChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.flagChannel)
                                         : 'Not set!'
                                 }`,
                                 true
@@ -221,9 +179,7 @@ module.exports = class extends Command {
                                 'Stats Channel',
                                 `${
                                     GuildSettings.statsChannel
-                                        ? message.guild?.channels.resolve(
-                                              GuildSettings.statsChannel
-                                          )
+                                        ? message.guild?.channels.resolve(GuildSettings.statsChannel)
                                         : 'Not set!'
                                 }`
                             )
@@ -274,39 +230,24 @@ module.exports = class extends Command {
                                 )}\n\`\`\``
                             );
                         }
-                        const channel =
-                            message.mentions.channels.first() ||
-                            message.guild?.channels.cache.get(args[2]);
+                        const channel = message.mentions.channels.first() || message.guild?.channels.cache.get(args[2]);
                         if (!channel && args[2]) {
-                            throw new Error(
-                                'The 3rd parameter you provided is not a valid channel nor channel id.'
-                            );
+                            throw new Error('The 3rd parameter you provided is not a valid channel nor channel id.');
                         }
                         if (channel && type) {
                             updateChannel(channel.guild.id, channel.id, type);
                             let change;
-                            if (
-                                channel?.type === 'category' ||
-                                channel.type === 'voice'
-                            ) {
+                            if (channel?.type === 'category' || channel.type === 'voice') {
                                 change = channel.name;
                             } else {
                                 change = channel;
                             }
-                            message.reply(
-                                `Alrighty! ${type} is now set to send messages to ${change}`
-                            );
+                            message.reply(`Alrighty! ${type} is now set to send messages to ${change}`);
                         } else {
                             const settings = await message.guild.settings();
                             if (settings) {
-                                const chan = message.guild?.channels.resolve(
-                                    settings[type]
-                                );
-                                message.reply(
-                                    `The current channel for type \`${type}\` is ${
-                                        chan || 'Not Set'
-                                    }!`
-                                );
+                                const chan = message.guild?.channels.resolve(settings[type]);
+                                message.reply(`The current channel for type \`${type}\` is ${chan || 'Not Set'}!`);
                             } else {
                                 throw new Error(
                                     'How do you get this error... This is there just to make typescript stop whining...'
@@ -328,54 +269,16 @@ module.exports = class extends Command {
                             .setURL('https://www.google.com')
                             .setColor(primaryColor)
                             .setTitle('Guild Settings')
-                            .addField(
-                                'Guild ID:',
-                                `${GuildSettings.guildID}`,
-                                true
-                            )
-                            .addField(
-                                'Prefix:',
-                                `${GuildSettings.prefix}`,
-                                true
-                            )
-                            .addField(
-                                'Mute Role:',
-                                `${GuildSettings.muteRole}`,
-                                true
-                            )
-                            .addField(
-                                'Manager Role:',
-                                `${GuildSettings.botManagerRole}`,
-                                true
-                            )
-                            .addField(
-                                'Mod Role:',
-                                `${GuildSettings.botModRole}`,
-                                true
-                            )
-                            .addField(
-                                'Bot Verified Role:',
-                                `${GuildSettings.verifiedRole}`,
-                                true
-                            )
-                            .addField(
-                                'Reputation System:',
-                                `${GuildSettings.reputationSystem}`,
-                                true
-                            )
-                            .addField(
-                                'Away System:',
-                                `${GuildSettings.awaySystem}`,
-                                true
-                            )
-                            .addField(
-                                'Welcome Incidents Message:',
-                                `\`\`\`${GuildSettings.welcomeIncidentText}\`\`\``
-                            )
-                            .addField(
-                                'Welcome Incidents Message:',
-                                `\`\`\`${GuildSettings.announcementsChannel}\`\`\``
-                            )
+                            .addField('Guild ID:', `${GuildSettings.guildID}`, true)
+                            .addField('Prefix:', `${GuildSettings.prefix}`, true)
+                            .addField('Mute Role:', `${GuildSettings.muteRole}`, true)
+                            .addField('Manager Role:', `${GuildSettings.botManagerRole}`, true)
+                            .addField('Mod Role:', `${GuildSettings.botModRole}`, true)
+                            .addField('Bot Verified Role:', `${GuildSettings.verifiedRole}`, true)
+                            .addField('Reputation System:', `${GuildSettings.reputationSystem}`, true)
+                            .addField('Away System:', `${GuildSettings.awaySystem}`, true)
+                            .addField('Welcome Incidents Message:', `\`\`\`${GuildSettings.welcomeIncidentText}\`\`\``)
+                            .addField('Welcome Incidents Message:', `\`\`\`${GuildSettings.announcementsChannel}\`\`\``)
                             .setFooter(
                                 `User ID: ${message.author.id}`,
                                 `${message.author.displayAvatarURL({
@@ -440,49 +343,31 @@ module.exports = class extends Command {
                             );
                         }
 
-                        if (
-                            type === 'welcomeCategory' ||
-                            type === 'incidentsCategory'
-                        ) {
+                        if (type === 'welcomeCategory' || type === 'incidentsCategory') {
                             const channel =
-                                message.mentions.channels.first() ||
-                                message.guild?.channels.cache.get(args[2]);
+                                message.mentions.channels.first() || message.guild?.channels.cache.get(args[2]);
                             if (!channel && args[2]) {
                                 throw new Error(
                                     'The 3rd parameter you provided is not a valid channel nor channel id.'
                                 );
                             }
                             if (channel && type) {
-                                updateChannel(
-                                    channel.guild.id,
-                                    channel.id,
-                                    type
-                                );
+                                updateChannel(channel.guild.id, channel.id, type);
                                 let change;
-                                if (
-                                    channel?.type === 'category' ||
-                                    channel.type === 'voice'
-                                ) {
+                                if (channel?.type === 'category' || channel.type === 'voice') {
                                     change = channel.name;
                                 } else {
                                     change = channel;
                                 }
-                                message.reply(
-                                    `Alrighty! ${type} is now set to send messages to ${change}`
-                                );
+                                message.reply(`Alrighty! ${type} is now set to send messages to ${change}`);
                             } else {
                                 const settings = await message.guild?.settings;
                                 if (settings) {
-                                    const chan =
-                                        message.guild?.channels.resolve(
-                                            // @ts-ignore
-                                            settings[type]
-                                        );
-                                    message.reply(
-                                        `The current channel for type \`${type}\` is ${
-                                            chan || 'Not Set'
-                                        }!`
+                                    const chan = message.guild?.channels.resolve(
+                                        // @ts-ignore
+                                        settings[type]
                                     );
+                                    message.reply(`The current channel for type \`${type}\` is ${chan || 'Not Set'}!`);
                                 } else {
                                     throw new Error(
                                         'How do you get this error... This is there just to make typescript stop whining...'
@@ -498,15 +383,11 @@ module.exports = class extends Command {
                             if (!args[2]) {
                                 const settings = await message.guild.settings();
                                 if (settings) {
-                                    const role = message.guild?.roles.resolve(
-                                        settings[type]
-                                    );
+                                    const role = message.guild?.roles.resolve(settings[type]);
                                     const embed = new MessageEmbed()
                                         .setColor('BLUE')
                                         .setDescription(
-                                            `The current channel for type \`${type}\` is ${
-                                                role || 'Not Set'
-                                            }!`
+                                            `The current channel for type \`${type}\` is ${role || 'Not Set'}!`
                                         );
                                     message.channel.send(embed);
                                 } else {
@@ -515,20 +396,12 @@ module.exports = class extends Command {
                                     );
                                 }
                             } else {
-                                const role = await roleNameResolver(
-                                    message,
-                                    args[2]
-                                );
+                                const role = await roleNameResolver(message, args[2]);
                                 if (args[2] && role) {
-                                    await updateRole(
-                                        message.guild?.id,
-                                        role,
-                                        type
+                                    await updateRole(message.guild?.id, role, type);
+                                    const embed = new MessageEmbed().setDescription(
+                                        `Alrighty, ${type} is now set to ${role.name}`
                                     );
-                                    const embed =
-                                        new MessageEmbed().setDescription(
-                                            `Alrighty, ${type} is now set to ${role.name}`
-                                        );
                                     message.reply(embed);
                                 }
                             }
@@ -541,9 +414,7 @@ module.exports = class extends Command {
                             if (!args[1]) {
                                 const settings = await message.guild.settings();
                                 if (settings) {
-                                    message.reply(
-                                        `The current channel for type \`${type}\` is ${settings[type]}!`
-                                    );
+                                    message.reply(`The current channel for type \`${type}\` is ${settings[type]}!`);
                                 } else {
                                     throw new Error(
                                         'How do you get this error... This is there just to make typescript stop whining...'
@@ -556,94 +427,49 @@ module.exports = class extends Command {
                                         'Please provide whether or not it should be true (to enable) or false (to disable)'
                                     );
                                 else {
-                                    await updateBoolean(
-                                        message.guild?.id,
-                                        args[2],
-                                        type
-                                    );
-                                    message.reply(
-                                        `Alrighty! ${type} is now set to send messages to ${args[2]}`
-                                    );
+                                    await updateBoolean(message.guild?.id, args[2], type);
+                                    message.reply(`Alrighty! ${type} is now set to send messages to ${args[2]}`);
                                 }
                             }
-                        } else if (
-                            type === 'rulesSpecify' ||
-                            type === 'reasonSpecify'
-                        ) {
+                        } else if (type === 'rulesSpecify' || type === 'reasonSpecify') {
                             if (!args[1]) {
                                 const settings = await message.guild.settings();
                                 if (settings) {
-                                    message.reply(
-                                        `The current channel for type \`${type}\` is ${settings[type]}!`
-                                    );
+                                    message.reply(`The current channel for type \`${type}\` is ${settings[type]}!`);
                                 } else {
                                     throw new Error(
                                         'How do you get this error... This is there just to make typescript stop whining...'
                                     );
                                 }
                             } else {
-                                const correctValues = [
-                                    'required',
-                                    'optional',
-                                    'ignore',
-                                ];
+                                const correctValues = ['required', 'optional', 'ignore'];
                                 if (!correctValues.includes(args[2]))
-                                    throw new Error(
-                                        'Please provide either "required", "optional" "ignore"'
-                                    );
+                                    throw new Error('Please provide either "required", "optional" "ignore"');
                                 else {
-                                    await updateSpecify(
-                                        message.guild?.id,
-                                        args[2],
-                                        type
-                                    );
-                                    message.reply(
-                                        `Alrighty! ${type} is now set to ${args[2]}`
-                                    );
+                                    await updateSpecify(message.guild?.id, args[2], type);
+                                    message.reply(`Alrighty! ${type} is now set to ${args[2]}`);
                                 }
                             }
                         } else if (type === 'statsMessage') {
-                            await updateSpecify(
-                                message.guild.id,
-                                args[2],
-                                'statsMessage'
-                            );
-                            message.reply(
-                                `Alrighty! ${type} is now set to ${args[2]}`
-                            );
+                            await updateSpecify(message.guild.id, args[2], 'statsMessage');
+                            message.reply(`Alrighty! ${type} is now set to ${args[2]}`);
                         } else if (type === 'verificationMethod') {
                             if (!args[1]) {
                                 const settings = await message.guild.settings();
                                 if (settings) {
-                                    message.reply(
-                                        `The current channel for type \`${type}\` is ${settings[type]}!`
-                                    );
+                                    message.reply(`The current channel for type \`${type}\` is ${settings[type]}!`);
                                 } else {
                                     throw new Error(
                                         'How do you get this error... This is there just to make typescript stop whining...'
                                     );
                                 }
                             } else {
-                                const correctValues = [
-                                    'manual',
-                                    'email',
-                                    'puzzle',
-                                    'captcha',
-                                    'incidents',
-                                ];
+                                const correctValues = ['manual', 'email', 'puzzle', 'captcha', 'incidents'];
                                 if (!correctValues.includes(args[2]))
-                                    throw new Error(
-                                        'Please provide either "manual", "email" "puzzle" or "captch"'
-                                    );
+                                    throw new Error('Please provide either "manual", "email" "puzzle" or "captch"');
                                 else {
-                                    await updateSpecify(
-                                        message.guild?.id,
-                                        args[2],
-                                        type
-                                    );
-                                    message.reply(
-                                        `Alrighty! ${type} is now set to ${args[2]}`
-                                    );
+                                    await updateSpecify(message.guild?.id, args[2], type);
+                                    message.reply(`Alrighty! ${type} is now set to ${args[2]}`);
                                 }
                             }
                         } else if (
@@ -655,25 +481,15 @@ module.exports = class extends Command {
                             if (!args[1]) {
                                 const settings = await message.guild.settings();
                                 if (settings) {
-                                    message.reply(
-                                        `The current channel for type \`${type}\` is ${settings[type]}!`
-                                    );
+                                    message.reply(`The current channel for type \`${type}\` is ${settings[type]}!`);
                                 } else {
                                     throw new Error(
                                         'How do you get this error... This is there just to make typescript stop whining...'
                                     );
                                 }
                             } else {
-                                await updateSpecify(
-                                    message.guild?.id,
-                                    args.slice(2).join(' '),
-                                    type
-                                );
-                                message.reply(
-                                    `Alrighty! ${type} is now set to ${args
-                                        .slice(2)
-                                        .join(' ')}`
-                                );
+                                await updateSpecify(message.guild?.id, args.slice(2).join(' '), type);
+                                message.reply(`Alrighty! ${type} is now set to ${args.slice(2).join(' ')}`);
                             }
                         }
                     }
@@ -691,46 +507,14 @@ module.exports = class extends Command {
                             .setURL('https://www.google.com')
                             .setColor(primaryColor)
                             .setTitle('Antispam Settings')
-                            .addField(
-                                'Guild ID:',
-                                `${AntiSpamSettings.guildID}`,
-                                true
-                            )
-                            .addField(
-                                'Enabled:',
-                                `${AntiSpamSettings.enabled}`,
-                                true
-                            )
-                            .addField(
-                                'Flag Threshold:',
-                                `${AntiSpamSettings.flagThreshold}`,
-                                true
-                            )
-                            .addField(
-                                'Threshold:',
-                                `${AntiSpamSettings.threshold}`,
-                                true
-                            )
-                            .addField(
-                                'Decay Fast:',
-                                `${AntiSpamSettings.decayFast}`,
-                                true
-                            )
-                            .addField(
-                                'Decay Slow:',
-                                `${AntiSpamSettings.decaySlow}`,
-                                true
-                            )
-                            .addField(
-                                'Muted Multiplier:',
-                                `${AntiSpamSettings.mutedMultiplier}`,
-                                true
-                            )
-                            .addField(
-                                'Base Multiplier:',
-                                `${AntiSpamSettings.baseMultiplier}`,
-                                true
-                            )
+                            .addField('Guild ID:', `${AntiSpamSettings.guildID}`, true)
+                            .addField('Enabled:', `${AntiSpamSettings.enabled}`, true)
+                            .addField('Flag Threshold:', `${AntiSpamSettings.flagThreshold}`, true)
+                            .addField('Threshold:', `${AntiSpamSettings.threshold}`, true)
+                            .addField('Decay Fast:', `${AntiSpamSettings.decayFast}`, true)
+                            .addField('Decay Slow:', `${AntiSpamSettings.decaySlow}`, true)
+                            .addField('Muted Multiplier:', `${AntiSpamSettings.mutedMultiplier}`, true)
+                            .addField('Base Multiplier:', `${AntiSpamSettings.baseMultiplier}`, true)
                             .addField(
                                 'Less Strict Role Multiplier:',
                                 `${AntiSpamSettings.lessStrictRoleMultiplier}`,
@@ -741,91 +525,27 @@ module.exports = class extends Command {
                                 `${AntiSpamSettings.lessStrictChannelMultiplier}`,
                                 true
                             )
-                            .addField(
-                                'Base Score:',
-                                `${AntiSpamSettings.baseScore}`,
-                                true
-                            )
-                            .addField(
-                                'Mention Score:',
-                                `${AntiSpamSettings.mentionScore}`,
-                                true
-                            )
-                            .addField(
-                                'Everyone Here Score:',
-                                `${AntiSpamSettings.everyoneHereScore}`,
-                                true
-                            )
-                            .addField(
-                                'Embeds Score:',
-                                `${AntiSpamSettings.embedsScore}`,
-                                true
-                            )
-                            .addField(
-                                'Attachment Score:',
-                                `${AntiSpamSettings.attachmentScore}`,
-                                true
-                            )
-                            .addField(
-                                'Characters Per Second:',
-                                `${AntiSpamSettings.charactersPerSecond}`,
-                                true
-                            )
-                            .addField(
-                                'Message History Minutes:',
-                                `${AntiSpamSettings.charactersPerSecond}`,
-                                true
-                            )
-                            .addField(
-                                'Similarity Percent:',
-                                `${AntiSpamSettings.similarityPercent}`,
-                                true
-                            )
-                            .addField(
-                                'Similarity Score:',
-                                `${AntiSpamSettings.similarityScore}`,
-                                true
-                            )
-                            .addField(
-                                'Shout Percent:',
-                                `${AntiSpamSettings.shoutPercent}`,
-                                true
-                            )
-                            .addField(
-                                'Shout Score:',
-                                `${AntiSpamSettings.shoutScore}`,
-                                true
-                            )
-                            .addField(
-                                'Repeat Characters:',
-                                `${AntiSpamSettings.repeatCharacters}`,
-                                true
-                            )
-                            .addField(
-                                'Repeat Character Score:',
-                                `${AntiSpamSettings.repeatCharactersScore}`,
-                                true
-                            )
+                            .addField('Base Score:', `${AntiSpamSettings.baseScore}`, true)
+                            .addField('Mention Score:', `${AntiSpamSettings.mentionScore}`, true)
+                            .addField('Everyone Here Score:', `${AntiSpamSettings.everyoneHereScore}`, true)
+                            .addField('Embeds Score:', `${AntiSpamSettings.embedsScore}`, true)
+                            .addField('Attachment Score:', `${AntiSpamSettings.attachmentScore}`, true)
+                            .addField('Characters Per Second:', `${AntiSpamSettings.charactersPerSecond}`, true)
+                            .addField('Message History Minutes:', `${AntiSpamSettings.charactersPerSecond}`, true)
+                            .addField('Similarity Percent:', `${AntiSpamSettings.similarityPercent}`, true)
+                            .addField('Similarity Score:', `${AntiSpamSettings.similarityScore}`, true)
+                            .addField('Shout Percent:', `${AntiSpamSettings.shoutPercent}`, true)
+                            .addField('Shout Score:', `${AntiSpamSettings.shoutScore}`, true)
+                            .addField('Repeat Characters:', `${AntiSpamSettings.repeatCharacters}`, true)
+                            .addField('Repeat Character Score:', `${AntiSpamSettings.repeatCharactersScore}`, true)
                             .addField(
                                 'New Lines Allowed Per Characters:',
                                 `${AntiSpamSettings.newLinesAllowedPerCharacters}`,
                                 true
                             )
-                            .addField(
-                                'New Lines Score:',
-                                `${AntiSpamSettings.newLinesScore}`,
-                                true
-                            )
-                            .addField(
-                                'Originality Percent:',
-                                `${AntiSpamSettings.originalityPercent}`,
-                                true
-                            )
-                            .addField(
-                                'Profanity Score:',
-                                `${AntiSpamSettings.profanityScore}`,
-                                true
-                            )
+                            .addField('New Lines Score:', `${AntiSpamSettings.newLinesScore}`, true)
+                            .addField('Originality Percent:', `${AntiSpamSettings.originalityPercent}`, true)
+                            .addField('Profanity Score:', `${AntiSpamSettings.profanityScore}`, true)
                             .setFooter(
                                 `User ID: ${message.author.id}`,
                                 `${message.author.displayAvatarURL({
@@ -873,23 +593,13 @@ module.exports = class extends Command {
 
                         if (type === 'enabled') {
                             if (['on', 'yes', 'true'].includes(args[2])) {
-                                AntiSpams.updateOne(
-                                    { guildID: message.guild.id },
-                                    { enabled: true }
-                                );
+                                AntiSpams.updateOne({ guildID: message.guild.id }, { enabled: true });
                                 message.reply('Antispam has been activated!');
-                            } else if (
-                                ['off', 'no', 'false'].includes(args[2])
-                            ) {
-                                AntiSpams.updateOne(
-                                    { guildID: message.guild.id },
-                                    { enabled: false }
-                                );
+                            } else if (['off', 'no', 'false'].includes(args[2])) {
+                                AntiSpams.updateOne({ guildID: message.guild.id }, { enabled: false });
                                 message.reply('Antispam has been deactivated!');
                             } else {
-                                throw new Error(
-                                    'Please use either "on" or "off"'
-                                );
+                                throw new Error('Please use either "on" or "off"');
                             }
                         } else if (
                             [
@@ -919,23 +629,12 @@ module.exports = class extends Command {
                                 'profanityScore',
                             ].includes(type)
                         ) {
-                            if (isNaN(Number(args[2])))
-                                throw new Error(
-                                    'Your Settings value must be numeric'
-                                );
+                            if (isNaN(Number(args[2]))) throw new Error('Your Settings value must be numeric');
 
-                            AntiSpams.updateOne(
-                                { guildID: message.guild.id },
-                                { [args[1]]: Number(args[2]) }
-                            );
-                            message.reply(
-                                `Value for **${type}** changed to **${args[2]}**!`
-                            );
+                            AntiSpams.updateOne({ guildID: message.guild.id }, { [args[1]]: Number(args[2]) });
+                            message.reply(`Value for **${type}** changed to **${args[2]}**!`);
                         } else {
-                            throw new Error(
-                                'Setting not found!\nChoose from:\n\n' +
-                                    settings.join(', ')
-                            );
+                            throw new Error('Setting not found!\nChoose from:\n\n' + settings.join(', '));
                         }
                     }
                     break;
@@ -943,8 +642,7 @@ module.exports = class extends Command {
                     throw new Error(
                         `Missing parameters what settings would you like to view/modify\n\n\`${await (
                             await message.guild.settings()
-                        )
-                            .prefix}settings logging [channelType] [channel]\`\n\`${await (
+                        ).prefix}settings logging [channelType] [channel]\`\n\`${await (
                             await message.guild.settings()
                         ).prefix}settings guild [guildSettingType] [Value]\``
                     );
@@ -959,4 +657,4 @@ module.exports = class extends Command {
             );
         }
     }
-}
+};
