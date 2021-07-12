@@ -1,6 +1,6 @@
 // Imports
 import { Router } from 'express';
-import { Moderations } from '../../database/Schemas/Moderation';
+import { Moderations } from '../../database';
 // eslint-disable-next-line new-cap
 const router = Router();
 import GuildRouter from './guild';
