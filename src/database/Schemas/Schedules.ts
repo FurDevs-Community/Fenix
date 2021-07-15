@@ -1,6 +1,6 @@
-import mongoose, { Document } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
-const ScheduleSchema = new mongoose.Schema({
+const ScheduleSchema = new Schema({
     uid: {
         type: String,
         require: true,
@@ -32,13 +32,7 @@ const ScheduleSchema = new mongoose.Schema({
 
 export interface ISchedule extends Document {
     uid: string;
-    task:
-        | 'removeMute'
-        | 'removeBan'
-        | 'minuteTask'
-        | 'updateStats'
-        | 'SYSMIN'
-        | 'voteEnd';
+    task: 'removeMute' | 'removeBan' | 'minuteTask' | 'updateStats' | 'SYSMIN' | 'voteEnd';
     data: {
         user: string;
         guild: string;
@@ -51,20 +45,4 @@ export interface ISchedule extends Document {
     cron: string;
 }
 
-// When it gets created
-// ScheduleSchema.methods.schedule = () => {
-
-// };
-// ScheduleSchema.queue("schedule", []);
-
-// ScheduleSchema.post("updateOne", async function (res, next) {
-//     // TODO: Re-Schedule the schedule
-//     return next();
-// });
-
-// ScheduleSchema.post("remove", async function (res, next) {
-//     // TODO: Remove the schedule
-//     return next();
-// });
-
-export const Schedules = mongoose.model<ISchedule>('Schedule', ScheduleSchema);
+export const Schedules = model<ISchedule>('Schedule', ScheduleSchema);
