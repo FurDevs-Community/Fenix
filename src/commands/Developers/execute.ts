@@ -3,7 +3,6 @@ import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import { exec } from 'child_process';
 import { primaryColor } from '../../settings';
-
 module.exports = class extends Command {
     /**
      * @param {any} file
@@ -56,10 +55,7 @@ module.exports = class extends Command {
 
         exec(`${script}`, async (error, stdout) => {
             const response = error || stdout;
-            if (
-                response.toString().length > 1024 ||
-                response.toString().length > 1024
-            ) {
+            if (response.toString().length > 1024 || response.toString().length > 1024) {
                 // If the response is length (more than 1024 characters) the generate/send a hastebin link
                 try {
                     require('hastebin-gen')(response.toString(), {
@@ -73,9 +69,7 @@ module.exports = class extends Command {
                                 })}`
                             )
                             .setTitle('Execute')
-                            .setDescription(
-                                `**Ran: ${script}**\n\n[\`${r}\`](${r})`
-                            )
+                            .setDescription(`**Ran: ${script}**\n\n[\`${r}\`](${r})`)
                             .setThumbnail(
                                 client.user?.displayAvatarURL({
                                     dynamic: true,
@@ -103,9 +97,7 @@ module.exports = class extends Command {
                             })}`
                         )
                         .setTitle('Execute')
-                        .setDescription(
-                            `**Ran: ${script}**\n\`\`\`js\n${response.toString()} \n\`\`\``
-                        )
+                        .setDescription(`**Ran: ${script}**\n\`\`\`js\n${response.toString()} \n\`\`\``)
                         .setThumbnail(
                             client.user?.displayAvatarURL({
                                 dynamic: true,

@@ -32,10 +32,7 @@ module.exports = class extends Command {
 
         // Sends an embed showing the it's updating the bot
         const embed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('📥  Update - Updating bot...')
             .setColor(primaryColor)
             .setDescription('⏲️ This may take a bit...')
@@ -55,10 +52,7 @@ module.exports = class extends Command {
             }
 
             const complete = new MessageEmbed()
-                .setAuthor(
-                    `${message.author.tag}`,
-                    `${message.author.displayAvatarURL({ dynamic: true })}`
-                )
+                .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
                 .setColor(primaryColor)
                 .setTitle('Update - Bot was updated!')
                 .addField(`📥 Git Pull`, `\`\`\`${gitPull}\`\`\``)
@@ -68,10 +62,7 @@ module.exports = class extends Command {
             await msg.edit(complete);
         } catch (e) {
             const error = new MessageEmbed()
-                .setAuthor(
-                    `${message.author.tag}`,
-                    `${message.author.displayAvatarURL({ dynamic: true })}`
-                )
+                .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
                 .setColor(primaryColor)
                 .setTitle("ERROR! - Bot didn't update!")
                 .setDescription(
