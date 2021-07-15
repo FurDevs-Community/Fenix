@@ -6,6 +6,7 @@ import apiRouter from './routes/api';
 import cors from 'cors';
 import HozolClient from '../lib/HozolClient';
 import fs from 'fs';
+import morgan from 'morgan';
 import path from 'path';
 
 /**
@@ -21,6 +22,7 @@ export const api = (client: HozolClient) => {
             credentials: true,
         })
     );
+    app.use(morgan('common'));
     app.use((req, res, next) => {
         req.client = client;
         next();

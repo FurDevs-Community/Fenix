@@ -1,14 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import { ISchedule } from './Schedules';
 
-const Member: Schema = new Schema({
+const User: Schema = new Schema({
     reminders: {
         type: Array,
     },
 });
 
-export interface IMember extends Document {
+export interface IUser extends Document {
     reminders: ISchedule[];
 }
 
-export const Members = mongoose.model<IMember>('Member', Member);
+export const Users = mongoose.model<IUser>('User', User);

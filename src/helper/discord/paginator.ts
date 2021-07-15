@@ -14,7 +14,7 @@ export class DiscordMenu {
         channel: TextChannel,
         uid: string,
         pages: MessageEmbed[],
-        messages: { message: string; fn: any }[],
+        messages: { message: string; fn: any }[] = [],
         time = 180000,
         reactions = { first: '⏪', back: '◀', next: '▶', last: '⏩', stop: '⏹' }
     ) {
