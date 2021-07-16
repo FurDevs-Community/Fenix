@@ -1,8 +1,9 @@
 /* eslint-disable array-callback-return */
 import HozolClient from '../../lib/HozolClient';
 import { Command } from 'nukejs';
-import { Message, MessageEmbed, MessageReaction, User } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { primaryColor } from '../../settings';
+import { MessageActionRow, MessageButton, MessageComponent } from 'discord-buttons';
 
 module.exports = class extends Command {
     /**
@@ -26,306 +27,144 @@ module.exports = class extends Command {
      */
     async run(message: Message, args: string[], client: HozolClient) {
         if (!message.guild) return;
-        message.delete().catch(() => {});
         const settings = await message.guild.settings();
         const prefix = settings?.prefix || 'J>';
-        const initEmbed = new MessageEmbed()
-            .setTitle('Hozols Help Menu')
-            .setColor(primaryColor)
-            .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
-            .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``)
-            .addFields(
-                {
-                    name: 'ℹ️ Information Commands',
-                    value: 'View Commands that shows information about the Bot, a Members or Guild',
-                },
-                {
-                    name: '⚙  Management Commands',
-                    value: "View Commands that configures the bot's behaviors",
-                },
-                {
-                    name: '🔨 Moderation Commands',
-                    value: 'View Commands that relates to Moderation',
-                },
-                {
-                    name: '💁‍♂️ Bot Support Commands',
-                    value: 'View Commands that relates to bot support where you can suggest or report things about Hozol',
-                }
-            );
-        if (client.developers.includes(message.author.id)) {
-            initEmbed.addField('💻 Developer Commands', 'View Commands that are reserved for Developers.');
-            initEmbed
-                .addField('❌ Exit', 'Exit the Help menu.')
-                .addField(
-                    'For Bug Reports',
-                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
-                )
-                .addField(
-                    'For Suggestions',
-                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
-                )
-                .addField(
-                    'For Security Issues',
-                    `Join our [Support Server](https://discord.gg/FVnxSJ4mE3) and contact \`${
-                        client.users.cache.get('679145795714416661')?.tag
-                    }\``
-                );
-        } else {
-            initEmbed
-                .addField('❌ Exit', 'Exit the Help menu.')
-                .addField(
-                    'For Bug Reports',
-                    `It would be best using the \`${settings.prefix}report\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
-                )
-                .addField(
-                    'For Suggestions',
-                    `It would be best using the \`${settings.prefix}suggest\` command and joining our [Support Server](https://discord.gg/FVnxSJ4mE3)`
-                )
-                .addField(
-                    'For Security Issues',
-                    `Join our [Support Server](https://discord.gg/FVnxSJ4mE3) and contact \`${
-                        client.users.cache.get('679145795714416661')?.tag
-                    }\``
-                );
-        }
-        const msg = await message.channel.send(initEmbed);
-        await Promise.all([msg.react('ℹ️'), msg.react('⚙'), msg.react('🔨'), msg.react('💁‍♂️')]);
-        if (client.developers.includes(message.author.id)) {
-            msg.react('💻');
-            msg.react('❌');
-            const filter = (reaction: MessageReaction, user: User) => {
-                return (
-                    ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(reaction.emoji.name) && user.id === message.author.id
-                );
-            };
-            msg.awaitReactions(filter, {
-                max: 1,
-                time: 1000 * 60,
-                errors: ['time'],
-            })
-                .then(async (collected) => {
-                    const reaction = collected.first();
-                    switch (reaction?.emoji.name) {
-                        case 'ℹ️':
-                            category(client, message, msg, 'Information');
-                            break;
-                        case '⚙':
-                            category(client, message, msg, 'Management');
-                            break;
-                        case '🔨':
-                            category(client, message, msg, 'Moderation');
-                            break;
-                        case '💁‍♂️':
-                            category(client, message, msg, 'Support');
-                            break;
-                        case '💻':
-                            category(client, message, msg, 'Developers');
-                            break;
-                        case '❌':
-                            msg.delete().catch(() => {});
-                            break;
-                    }
-                })
-                .catch(() => {
-                    if (msg.deletable) {
-                        return msg.delete();
-                    }
-                });
-        } else {
-            const filter = (reaction: MessageReaction, user: User) => {
-                return ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
-            };
-            msg.awaitReactions(filter, {
-                max: 1,
-                time: 1000 * 60,
-                errors: ['time'],
-            })
-                .then(async (collected) => {
-                    const reaction = collected.first();
-                    switch (reaction?.emoji.name) {
-                        case 'ℹ️':
-                            category(client, message, msg, 'Information');
-                            break;
-                        case '⚙':
-                            category(client, message, msg, 'Management');
-                            break;
-                        case '🔨':
-                            category(client, message, msg, 'Moderation');
-                            break;
-                        case '💁‍♂️':
-                            category(client, message, msg, 'Support');
-                            break;
-                        case '❌':
-                            msg.delete().catch(() => {});
-                            break;
-                    }
-                })
-                .catch(() => {
-                    if (msg.deletable) {
-                        return msg.delete().catch(() => {});
-                    }
-                });
-        }
-
-        const starting = async (client: HozolClient, message: Message, msg: Message) => {
-            await msg.reactions.removeAll().catch(() => {});
-            const embed = new MessageEmbed()
+        message.delete().catch(() => {});
+        const homeMenu = async (btn: MessageComponent | null) => {
+            const [infoButton, managementButton, modButton, supportButton, closeButton] = generateButtons('menu');
+            const rowOne = new MessageActionRow().addComponents(infoButton, managementButton);
+            const rowTwo = new MessageActionRow().addComponents(modButton, supportButton, closeButton);
+            const initEmbed = new MessageEmbed()
                 .setTitle('Hozols Help Menu')
                 .setColor(primaryColor)
-                .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
-                .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``)
-                .addFields(
-                    {
-                        name: 'ℹ️ Information Commands',
-                        value: 'View Commands that shows information about the Bot, a Members or Guild',
-                    },
-                    {
-                        name: '⚙  Management Commands',
-                        value: "View Commands that configures the bot's behaviors",
-                    },
-                    {
-                        name: '🔨 Moderation Commands',
-                        value: 'View Commands that relates to Moderation',
-                    },
-                    {
-                        name: '💁‍♂️ Bot Support Commands',
-                        value: 'View Commands that relates to bot support where you can suggest or report things about Hozol',
-                    }
+                .setDescription(
+                    `To seek more information to a specific command. Run \`${settings.prefix}help [Command]\``
                 );
-
-            if (client.developers.includes(message.author.id)) {
-                embed.addField('💻 Developer Commands', 'View Commands that are reserved for Developers.');
-                embed.addField('❌ Exit', 'Exit the Help menu.');
-            } else {
-                embed.addField('❌ Exit', 'Exit the Help menu.');
-            }
-            msg.edit(embed);
-            await Promise.all([msg.react('ℹ️'), msg.react('⚙'), msg.react('🔨'), msg.react('💁‍♂️')]);
-            if (client.developers.includes(message.author.id)) {
-                await msg.react('💻');
-                await msg.react('❌');
-                const filter = (reaction: MessageReaction, user: User) => {
-                    return (
-                        ['ℹ️', '⚙', '🔨', '💁‍♂️', '💻', '❌'].includes(reaction.emoji.name) &&
-                        user.id === message.author.id
-                    );
-                };
-                msg.awaitReactions(filter, {
-                    max: 1,
-                    time: 1000 * 60,
-                    errors: ['time'],
-                })
-                    .then(async (collected) => {
-                        const reaction = collected.first();
-                        switch (reaction?.emoji.name) {
-                            case 'ℹ️':
-                                category(client, message, msg, 'Information');
-                                break;
-                            case '⚙':
-                                category(client, message, msg, 'Management');
-                                break;
-                            case '🔨':
-                                category(client, message, msg, 'Moderation');
-                                break;
-                            case '💁‍♂️':
-                                category(client, message, msg, 'Support');
-                                break;
-                            case '💻':
-                                category(client, message, msg, 'Developers');
-                                break;
-                            case '❌':
-                                msg.delete().catch(() => {});
-                                break;
-                        }
-                    })
-                    .catch(() => {
-                        if (msg.deletable) {
-                            return msg.delete().catch(() => {});
-                        }
-                    });
-            } else {
-                await msg.react('❌');
-                const filter = (reaction: MessageReaction, user: User) => {
-                    return ['ℹ️', '⚙', '🔨', '💁‍♂️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
-                };
-                msg.awaitReactions(filter, {
-                    max: 1,
-                    time: 1000 * 60,
-                    errors: ['time'],
-                })
-                    .then(async (collected) => {
-                        const reaction = collected.first();
-                        switch (reaction?.emoji.name) {
-                            case 'ℹ️':
-                                category(client, message, msg, 'Information');
-                                break;
-                            case '⚙':
-                                category(client, message, msg, 'Management');
-                                break;
-                            case '🔨':
-                                category(client, message, msg, 'Moderation');
-                                break;
-                            case '💁‍♂️':
-                                category(client, message, msg, 'Support');
-                                break;
-                            case '❌':
-                                msg.delete().catch(() => {});
-                                break;
-                        }
-                    })
-                    .catch(() => {
-                        if (msg.deletable) {
-                            return msg.delete().catch(() => {});
-                        }
-                    });
-            }
-        };
-
-        const category = async (
-            client: HozolClient,
-            message: Message,
-            msg: Message,
-            category: 'Information' | 'Management' | 'Moderation' | 'Developers' | 'Support'
-        ) => {
-            await msg.reactions.removeAll().catch(() => {});
-            const embed = new MessageEmbed()
-                .setTitle(`Hozols Help Menu - ${category}`)
-                .setColor(primaryColor)
-                .setFooter(`User ID: ${message.author.id} | Make sure the bot is finished reacting before interacting`)
-                .setDescription(`To seek more information to a specific command. Run \`${prefix}help [Command]\``);
-            await client.loader.Commands.map((cmd) => {
-                if (cmd.category === category) {
-                    embed.addField(`${prefix}${cmd.name}`, cmd.description);
-                }
-            });
-            embed.addField('❌ Exit', 'Exit the Help menu.');
-            msg.edit(embed);
-            await msg.react('◀️');
-            await msg.react('❌');
-            const filter = (reaction: MessageReaction, user: User) => {
-                return ['◀️', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
-            };
-            msg.awaitReactions(filter, {
-                max: 1,
-                time: 1000 * 60,
-                errors: ['time'],
-            })
-                .then(async (collected) => {
-                    const reaction = collected.first();
-                    switch (reaction?.emoji.name) {
-                        case '◀️':
-                            starting(client, message, msg);
-                            break;
-                        case '❌':
-                            msg.delete().catch(() => {});
-                            break;
-                    }
-                })
-                .catch(() => {
-                    if (msg.deletable) {
-                        return msg.delete().catch(() => {});
-                    }
+            if (!btn) {
+                return await message.channel.send({
+                    embed: initEmbed,
+                    components: [rowOne, rowTwo],
                 });
+            } else {
+                await btn.message.edit('', {
+                    embed: initEmbed,
+                    components: [rowOne, rowTwo],
+                });
+            }
         };
+        await homeMenu(null);
+
+        client.on('clickButton', async (btn) => {
+            const [homeButton, closeButton] = generateButtons('cmd');
+            switch (btn.id) {
+                case 'infoHelp':
+                    const infoEmbed = new MessageEmbed()
+                        .setTitle(`Hozols Help Menu - Information`)
+                        .setColor(primaryColor)
+                        .setFooter(`User ID: ${message.author.id}`)
+                        .setDescription(
+                            `To seek more information to a specific command. Run \`${prefix}help [Command]\``
+                        );
+                    client.loader.Commands.map((cmd) => {
+                        if (cmd.category === 'Information') {
+                            infoEmbed.addField(`${prefix}${cmd.name}`, cmd.description);
+                        }
+                    });
+                    await btn.message.edit('', { embed: infoEmbed, buttons: [homeButton, closeButton] });
+                    await btn.reply.defer(true);
+                    break;
+                case 'homeHelp':
+                    await homeMenu(btn);
+                    await btn.reply.defer(true);
+                    break;
+                case 'closeHelp':
+                    await btn.reply.defer(true);
+                    await btn.message.delete();
+                    break;
+                case 'mgmtHelp':
+                    const mgmtHelp = new MessageEmbed()
+                        .setTitle(`Hozols Help Menu - Management`)
+                        .setColor(primaryColor)
+                        .setFooter(`User ID: ${message.author.id}`)
+                        .setDescription(
+                            `To seek more information to a specific command. Run \`${prefix}help [Command]\``
+                        );
+                    client.loader.Commands.map((cmd) => {
+                        if (cmd.category === 'Management') {
+                            mgmtHelp.addField(`${prefix}${cmd.name}`, cmd.description);
+                        }
+                    });
+                    await btn.message.edit('', { embed: mgmtHelp, buttons: [homeButton, closeButton] });
+                    await btn.reply.defer(true);
+                    break;
+                case 'modHelp':
+                    const modHelp = new MessageEmbed()
+                        .setTitle(`Hozols Help Menu - Moderation`)
+                        .setColor(primaryColor)
+                        .setFooter(`User ID: ${message.author.id}`)
+                        .setDescription(
+                            `To seek more information to a specific command. Run \`${prefix}help [Command]\``
+                        );
+                    client.loader.Commands.map((cmd) => {
+                        if (cmd.category === 'Moderation') {
+                            modHelp.addField(`${prefix}${cmd.name}`, cmd.description);
+                        }
+                    });
+                    await btn.message.edit('', { embed: modHelp, buttons: [homeButton, closeButton] });
+                    await btn.reply.defer(true);
+                    break;
+                case 'supportHelp':
+                    const supportHelp = new MessageEmbed()
+                        .setTitle(`Hozols Help Menu - Support`)
+                        .setColor(primaryColor)
+                        .setFooter(`User ID: ${message.author.id}`)
+                        .setDescription(
+                            `To seek more information to a specific command. Run \`${prefix}help [Command]\``
+                        );
+                    client.loader.Commands.map((cmd) => {
+                        if (cmd.category === 'Support') {
+                            supportHelp.addField(`${prefix}${cmd.name}`, cmd.description);
+                        }
+                    });
+                    await btn.message.edit('', { embed: supportHelp, buttons: [homeButton, closeButton] });
+                    await btn.reply.defer(true);
+                    break;
+            }
+        });
+    }
+};
+
+const generateButtons = (type: 'menu' | 'cmd' = 'menu') => {
+    if (type === 'cmd') {
+        const homeButton = new MessageButton()
+            .setEmoji('◀')
+            .setID('homeHelp')
+            .setLabel('Return to Menu')
+            .setStyle('blurple');
+        const closeButton = new MessageButton().setEmoji('❌').setID('closeHelp').setLabel('Exit').setStyle('red');
+        return [homeButton, closeButton];
+    } else {
+        const infoButton = new MessageButton()
+            .setEmoji('ℹ️')
+            .setID('infoHelp')
+            .setLabel('Information Commands')
+            .setStyle('blurple');
+        const managementButton = new MessageButton()
+            .setEmoji('⚙')
+            .setID('mgmtHelp')
+            .setLabel('Management Commands')
+            .setStyle('blurple');
+        const modButton = new MessageButton()
+            .setEmoji('🔨')
+            .setID('modHelp')
+            .setLabel('Moderation Commands')
+            .setStyle('blurple');
+        const supportButton = new MessageButton()
+            .setEmoji('💁')
+            .setID('supportHelp')
+            .setLabel('Support Commands')
+            .setStyle('blurple');
+        const closeButton = new MessageButton().setEmoji('❌').setID('closeHelp').setLabel('Exit').setStyle('red');
+        return [infoButton, managementButton, modButton, supportButton, closeButton];
     }
 };

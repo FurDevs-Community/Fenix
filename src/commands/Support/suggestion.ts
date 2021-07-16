@@ -2,6 +2,7 @@ import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import { primaryColor } from '../../settings';
+import { MessageButton } from 'discord-buttons';
 
 module.exports = class extends Command {
     /**
@@ -26,6 +27,13 @@ module.exports = class extends Command {
      * @param {HozolClient} client
      */
     async run(message: Message, args: string[], client: HozolClient) {
+        const githubButton = new MessageButton()
+            .setStyle('url')
+            .setLabel('Make an Feature Request')
+            .setURL(
+                'https://github.com/VulpoTheDev/Hozol/issues/new?assignees=VulpoTheDev&labels=bug&template=bug_report.md&title=%5BBug%5D'
+            )
+            .setEmoji('865700094162370560');
         const embed = new MessageEmbed()
             .setTitle('Have a Suggestion?')
             .setDescription(
@@ -34,6 +42,9 @@ module.exports = class extends Command {
             .setColor(primaryColor)
             .setTimestamp()
             .setFooter(`User ID ${message.author.id}`);
-        await message.channel.send(embed);
+        await message.channel.send('', {
+            embed: embed,
+            button: githubButton,
+        });
     }
 };
