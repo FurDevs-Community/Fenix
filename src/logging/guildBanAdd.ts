@@ -1,9 +1,9 @@
 import { Event } from 'nukejs';
-import { send } from '../helper';
+import { send, uid } from '../helper';
 import { Guild, MessageEmbed, User } from 'discord.js';
 
 import HozolClient from '../lib/HozolClient';
-
+import { Disciplines, Moderations } from '../database';
 module.exports = class extends Event {
     constructor() {
         super({
@@ -19,8 +19,6 @@ module.exports = class extends Event {
             await user.fetch();
         }
 
-        // TODO: Add discipline records for bans not issued by the main bot.
-
         // Add a 1 second timeout to allow audit logs to process
         setTimeout(async () => {
             // Find out who applied the ban
@@ -28,32 +26,17 @@ module.exports = class extends Event {
                 limit: 5,
                 type: 'MEMBER_BAN_ADD',
             });
-            const auditLog = fetchedLogs.entries.find(
-                (entry: any) => entry.target.id === user.id
-            );
+            const auditLog = fetchedLogs.entries.find((entry: any) => entry.target.id === user.id);
 
             // If the ban was executed by the bot
             if (auditLog && auditLog.executor.id === client.user?.id) {
                 const bannedEmbedBot = new MessageEmbed()
-                    .setAuthor(
-                        `${client.user?.tag}`,
-                        `${client.user?.displayAvatarURL({ dynamic: true })}`
-                    )
+                    .setAuthor(`${client.user?.tag}`, `${client.user?.displayAvatarURL({ dynamic: true })}`)
                     .setTitle(':no_entry: User Banned')
                     .setDescription('A ban was applied on a user by the bot.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Banned',
-                        `<@${user.id}> (${user.tag} / ${user.id})`
-                    )
-                    .addField(
-                        'Reason for Ban',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'Unspecified or Unknown'
-                        }`
-                    )
+                    .addField('User Banned', `<@${user.id}> (${user.tag} / ${user.id})`)
+                    .addField('Reason for Ban', `${auditLog.reason ? auditLog.reason : 'Unspecified or Unknown'}`)
                     .setTimestamp()
                     .setFooter('The ban was applied by the bot');
                 await send('banLogChannel', guild, '', {
@@ -61,6 +44,23 @@ module.exports = class extends Event {
                 });
             } else if (auditLog && auditLog.executor) {
                 // The ban was executed by someone else, either another bot or a member via Discord's ban
+                const mod = await Moderations.create({
+                    cases: await uid(),
+                    guildID: guild.id,
+                    userID: user.id,
+                    issuer: auditLog.executor.id,
+                    reason: `**[Banned via Discord Ban]** ${auditLog.reason ? auditLog.reason : 'Built in Reason'}`,
+                    rules: ['Not Applicable'],
+                    type: 'discord-ban',
+                });
+
+                Disciplines.create({
+                    cases: mod.cases,
+                    action: 'Ban',
+                    description: auditLog.reason,
+                    status: 'active',
+                });
+
                 const bannedEmbed = new MessageEmbed()
                     .setAuthor(
                         `${auditLog.executor.tag}`,
@@ -71,18 +71,8 @@ module.exports = class extends Event {
                     .setTitle(':no_entry: User Banned')
                     .setDescription('A user was banned from the guild.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Banned',
-                        `<@${user.id}> (${user.tag} / ${user.id})`
-                    )
-                    .addField(
-                        'Reason for Ban',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'Unspecified or Unknown'
-                        }`
-                    )
+                    .addField('User Banned', `<@${user.id}> (${user.tag} / ${user.id})`)
+                    .addField('Reason for Ban', `${auditLog.reason ? auditLog.reason : 'Unspecified or Unknown'}`)
                     .setTimestamp()
                     .setFooter(`Executor ID: ${auditLog.executor.id}`);
                 await send('banLogChannel', guild, '', {
@@ -95,10 +85,7 @@ module.exports = class extends Event {
                     .setTitle(':no_entry: User Banned')
                     .setDescription('A user was banned from the guild.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Banned',
-                        `<@${user.id}> (${user.tag} / ${user.id})`
-                    )
+                    .addField('User Banned', `<@${user.id}> (${user.tag} / ${user.id})`)
                     .addField('Reason for Ban', 'Unknown Reason')
                     .setTimestamp();
                 await send('banLogChannel', guild, '', {

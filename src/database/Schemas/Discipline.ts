@@ -29,33 +29,12 @@ export interface IDiscipline extends Document {
 
 const Discipline: Schema = new Schema({
     cases: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: 'Moderation',
     },
 
     action: {
         type: String,
-        enum: [
-            'XP retraction',
-            'Coin fine',
-            'Violation points',
-            'Channel ban',
-            'Role added',
-            'Role removed',
-            'Cannot use voice channels',
-            'Cannot give reputation',
-            'Cannot use staff command',
-            'Cannot report members',
-            'Cannot use support command',
-            'Cannot use conflict command',
-            'Cannot purchase ads',
-            'Cannot edit profile',
-            'Task',
-            'Mute',
-            'Ban',
-            'Note',
-            'Other discipline',
-        ],
         required: true,
     },
     description: {
@@ -70,4 +49,4 @@ const Discipline: Schema = new Schema({
     },
 });
 
-export const Disciplines = mongoose.model('Discipline', Discipline);
+export const Disciplines = mongoose.model<IDiscipline>('Discipline', Discipline);
