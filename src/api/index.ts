@@ -22,7 +22,7 @@ export const api = (client: HozolClient) => {
             credentials: true,
         })
     );
-    app.use(morgan('common'));
+    app.use(morgan('tiny'));
     app.use((req, res, next) => {
         req.client = client;
         next();
@@ -34,15 +34,14 @@ export const api = (client: HozolClient) => {
 
     // Starts the API On the port specified on the config and an incremented one version for the http
     if (process.env.NODE_ENV === 'production') {
-        const privateKey = fs.readFileSync(path.join(__dirname, 'cert', 'key.pem'), 'utf-8');
-        const certificate = fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'), 'utf-8');
-        const ca = fs.readFileSync(path.join(__dirname, 'cert', 'ca.pem'), 'utf-8');
-        const credentials = {
-            key: privateKey,
-            cert: certificate,
-            ca: ca,
-        };
-        const https = require('https').createServer(credentials, app);
+        const https = require('https').createServer(
+            {
+                key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem'), 'utf-8'),
+                cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'), 'utf-8'),
+                ca: fs.readFileSync(path.join(__dirname, 'cert', 'ca.pem'), 'utf-8'),
+            },
+            app
+        );
         https.listen(port, () => {
             console.log('Listening to https://api.hozol.xyz');
         });
