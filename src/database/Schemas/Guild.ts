@@ -255,6 +255,11 @@ const Guild: Schema = new Schema({
         type: String,
         default: '$',
     },
+
+    logLoggings: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 export interface IGuild extends Document {
@@ -300,6 +305,7 @@ export interface IGuild extends Document {
     welcomeMessage: string;
     verificationMethod: 'incidents' | 'manual' | 'email' | 'puzzle' | 'captcha';
     sendWelcomeMessage: boolean;
+    logLoggings: boolean;
     // TODO: conflictSystem
 }
 
