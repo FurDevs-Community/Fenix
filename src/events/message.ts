@@ -9,6 +9,7 @@ import { incrementMessageCount } from '../helper/guild/incrementMessage';
 import { primaryColor } from '../settings';
 import { applySpamScore } from '../helper/moderation/applySpamScore';
 import { getSpamScore } from '../helper/moderation/getSpamScore';
+import { getXPScore } from '../helper/leveling/generateXP';
 
 module.exports = class extends Event {
     constructor() {
@@ -41,6 +42,7 @@ module.exports = class extends Event {
         }
 
         incrementMessageCount(message);
+        console.log(getXPScore(client, message));
 
         if (guildSettings.awaySystem) {
             if (memberSettings?.awayStatus) {
