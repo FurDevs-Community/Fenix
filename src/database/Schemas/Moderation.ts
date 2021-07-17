@@ -49,7 +49,6 @@ const Moderation: Schema = new Schema({
 });
 
 export interface IModeration extends Document {
-    length: any;
     cases: string;
     guildID: string;
     userID: string;
@@ -67,11 +66,7 @@ export interface IModeration extends Document {
         | 'kick'
         | 'ban'
         | 'discord-ban'
-        | 'investigation'
-        | null;
+        | 'investigation';
 }
 
-export const Moderations = mongoose.model<IModeration>(
-    'Moderation',
-    Moderation
-);
+export const Moderations = mongoose.model<IModeration>('Moderation', Moderation);

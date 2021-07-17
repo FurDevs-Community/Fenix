@@ -1,5 +1,5 @@
 import HozolClient from './../../lib/HozolClient';
-import { GuildEmoji, Message, MessageEmbed } from 'discord.js';
+import { GuildEmoji, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Command } from 'nukejs';
 import { primaryColor } from '../../settings';
 import _ from 'lodash';
@@ -52,7 +52,7 @@ module.exports = class extends Command {
             children2.push(_.cloneDeep(_children));
         }
         new DiscordMenu(
-            message.channel,
+            message.channel as TextChannel,
             message.author.id,
             children2.map((group: any) => {
                 const groupEmbed = new MessageEmbed()
@@ -71,4 +71,4 @@ module.exports = class extends Command {
             })
         );
     }
-}
+};

@@ -14,8 +14,7 @@ module.exports = class extends Command {
             runIn: ['text'],
             aliases: [],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
-            description:
-                "Get the bot's information invite link for the server and the bot itself",
+            description: "Get the bot's information invite link for the server and the bot itself",
             enabled: true,
             usage: '',
         });

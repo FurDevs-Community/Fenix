@@ -60,7 +60,7 @@ export class IssueDiscipline {
     public case: string | null;
     private guildSettings: any;
     private memberSettings: IMember;
-    private guildMember: GuildMember;
+    private guildMember: GuildMember | null;
     private memberProfile: IProfile;
     private readonly publicEmbed: MessageEmbed;
     private readonly userEmbed: MessageEmbed;
@@ -223,7 +223,6 @@ export class IssueDiscipline {
         if (this.rules.length === 0) {
             this.rules.push('`Not Provided`');
         }
-
         await this.getSettings();
         await this.getOrCreateCase();
         await this.setBaseEmbed();
@@ -567,25 +566,28 @@ export class IssueDiscipline {
             // If the mute is permanent
             const muteRole = await this.guildSettings.muteRole;
             if (this.muteDuration === 0) {
-                await this.sendUserEmbed();
-                this.guildMember.roles
-                    .add(muteRole, `Muted was issued on this user by ${this.issuer.tag}`)
-                    .then(async () => {
-                        await muteUser(this.guild.id, this.user.id);
-                    });
+                if (this.guildMember) {
+                    await this.sendUserEmbed();
+                    this.guildMember.roles
+                        .add(muteRole, `Muted was issued on this user by ${this.issuer.tag}`)
+                        .then(async () => {
+                            await muteUser(this.guild.id, this.user.id);
+                        });
+                }
             }
             // If there's a duration specified other than zero temporarily mute that user
             else {
-                await this.sendUserEmbed();
-                this.guildMember.roles
-                    .add(
-                        muteRole,
-                        `Muted was issued on this user by ${this.issuer.tag}. The mute will be cleared in ${this.muteDuration} minutes`
-                    )
-                    .then(async () => {
-                        await muteUser(this.guild.id, this.user.id);
-                    });
-
+                if (this.guildMember) {
+                    await this.sendUserEmbed();
+                    this.guildMember.roles
+                        .add(
+                            muteRole,
+                            `Muted was issued on this user by ${this.issuer.tag}. The mute will be cleared in ${this.muteDuration} minutes`
+                        )
+                        .then(async () => {
+                            await muteUser(this.guild.id, this.user.id);
+                        });
+                }
                 this.mute();
             }
         } else if (this.banDuration !== null && this.channel) {
@@ -616,7 +618,7 @@ export class IssueDiscipline {
 
     private async getSettings() {
         this.guildSettings = await this.guild.settings();
-        // this.guildMember = await this.guild.members.cache.get(this.user);
+        this.guildMember = this.guild.members.cache.get(this.user.id) || null;
         this.memberSettings = await this.user.guildSettings(this.guild.id);
         this.memberProfile = await this.user.guildProfile(this.guild.id);
     }

@@ -10,14 +10,14 @@ module.exports = class extends Command {
      */
     constructor(file: any) {
         super(file, {
-            name: 'addmoney',
+            name: 'removemoney',
             category: 'Economy',
             runIn: ['text'],
-            aliases: ['addcoins'],
+            aliases: ['removecoins'],
             userPerms: ['MANAGE_ROLES'],
-            description: "Add money to the User's Wallet.",
+            description: "Remove money to the User's Wallet.",
             enabled: true,
-            extendedHelp: "Add money to the User's Wallet.",
+            extendedHelp: "Remove money to the User's Wallet.",
             usage: '',
         });
     }
@@ -32,28 +32,28 @@ module.exports = class extends Command {
         await message.delete();
         if (!args)
             throw new Error(
-                'You must provide a user you would like to add money to and the amount of money you would like to add'
+                'You must provide a user you would like to remove money to and the amount of money you would like to remove'
             );
         const guildSettings = await message.guild.settings();
         const target = await message.guild?.members.cache.get((await usernameResolver(message, args[0])).id);
         if (!target) throw new Error('There was a problem getting the target specified');
-        const moneyAdding = parseInt(args[1]);
-        if (moneyAdding > 0 && !isNaN(moneyAdding)) {
-            if (await target.addMoney(moneyAdding)) {
+        const moneyRemoving = parseInt(args[1]);
+        if (moneyRemoving > 0 && !isNaN(moneyRemoving)) {
+            if (await target.removeMoney(moneyRemoving)) {
                 const targetProfile = await target?.profile();
                 const embed = new MessageEmbed()
                     .setTitle(`Added Money to ${target.user.username}'s Wallet`)
-                    .addField('Money Added', `${guildSettings.currency}${moneyAdding}`)
+                    .addField('Money Removed', `-${guildSettings.currency}${moneyRemoving}`)
                     .addField('Wallet Balance', `${guildSettings.currency}${targetProfile.coins}`)
                     .setColor(primaryColor)
                     .setTimestamp()
-                    .setFooter(`User ID ${message.author.username}`);
+                    .setFooter(`User ID: ${message.author.id}`);
                 message.channel.send(embed);
             } else {
-                throw new Error('There was an issue adding money to that user');
+                throw new Error('There was an issue removing money to that user');
             }
         } else {
-            throw new Error(`Please make sure the money you're adding is greater than 1 and is a number`);
+            throw new Error(`Please make sure the money you're removing is greater than 1 and is a number`);
         }
     }
 };

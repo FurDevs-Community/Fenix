@@ -27,10 +27,7 @@ export async function addSchedule(client: HozolClient, record: ISchedule) {
                 );
             })(record);
         } else if (record.cron) {
-            if (
-                record.nextRun &&
-                client.moment().isBefore(client.moment(record.nextRun))
-            ) {
+            if (record.nextRun && client.moment().isBefore(client.moment(record.nextRun))) {
                 (async (record: ISchedule) => {
                     client.schedules[record.uid] = new CronJob(
                         client.moment(record.nextRun).toDate(),
@@ -65,10 +62,7 @@ export async function addSchedule(client: HozolClient, record: ISchedule) {
                         record.cron,
                         async () => {
                             await executeTask(client, record);
-                            await Schedules.updateOne(
-                                { uid: record.uid },
-                                { lastRun: client.moment().format() }
-                            );
+                            await Schedules.updateOne({ uid: record.uid }, { lastRun: client.moment().format() });
                         },
                         null,
                         true,
@@ -78,6 +72,12 @@ export async function addSchedule(client: HozolClient, record: ISchedule) {
             }
         }
     });
+}
+
+export async function updateSchedule(client: HozolClient, record: ISchedule) {
+    client.schedules[record.uid].stop();
+    delete client.schedules[record.uid];
+    return addSchedule(client, record);
 }
 
 export async function removeSchedule(client: HozolClient, record: ISchedule) {

@@ -2,6 +2,7 @@ import HozolClient from '../lib/HozolClient';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import { Event } from 'nukejs';
 import { send } from '../helper';
+import { Disciplines, Moderations } from '../database';
 
 module.exports = class extends Event {
     constructor() {
@@ -17,8 +18,6 @@ module.exports = class extends Event {
             await user.fetch();
         }
 
-        // TODO: appeal ban disciplines when bans are manually remove
-
         // Add a one second timeout for audit logs
         setTimeout(async () => {
             // Makes a varaible of the 5 audit logs that relates to unbanning a member
@@ -27,33 +26,26 @@ module.exports = class extends Event {
                 type: 'MEMBER_BAN_REMOVE',
             });
             // get the audit log that relates to unbanning this specific member
-            const auditLog = fetchedAuditLogs.entries.find(
-                (entries: any) => entries.target?.id === user.id
-            );
-            // If Vulpo Unbanned that user
+            const auditLog = fetchedAuditLogs.entries.find((entries: any) => entries.target?.id === user.id);
+            // The Bot Unbanned that user
             // * When it comes to Unbanning People make sure your **always** provide a reason
             if (auditLog && auditLog?.executor.id === client.user?.id) {
+                const moderation = await user.guildModeration(guild.id);
+                const modlog = moderation
+                    .filter((mod) => mod.type === 'ban')
+                    .slice(-1)
+                    .pop();
+                if (modlog) {
+                    Moderations.updateOne({ _id: modlog._id }, { appealed: true });
+                    Disciplines.updateOne({ cases: modlog.cases }, { status: 'appealed' });
+                }
                 const embed = new MessageEmbed()
                     .setTitle('🔨 User has been Unbanned')
-                    .setAuthor(
-                        client.user.tag,
-                        client.user.displayAvatarURL({ dynamic: true })
-                    )
+                    .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
                     .setDescription('A banned was remove by the bot')
                     .setColor('#dc3545')
                     .addField('User Unbanned', `${user.tag}`)
-                    .addField(
-                        'Reason for Unban',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'No reason was specified'
-                        }`
-                    )
-                    .addField(
-                        'Moderation Logs',
-                        'Do not forget to appeal the moderation relevant to this ban (if applicable)'
-                    )
+                    .addField('Reason for Unban', `${auditLog.reason ? auditLog.reason : 'No reason was specified'}`)
                     .setFooter('The ban was removed by the bot')
                     .setTimestamp();
                 await send('banLogChannel', guild, '', {
@@ -61,29 +53,23 @@ module.exports = class extends Event {
                 });
                 // If the ban wasen't lifted from the bot but the user
             } else if (auditLog && auditLog?.executor) {
+                const moderation = await user.guildModeration(guild.id);
+                const modlog = moderation
+                    .filter((mod) => mod.type === 'ban')
+                    .slice(-1)
+                    .pop();
+                if (modlog) {
+                    Moderations.updateOne({ _id: modlog._id }, { appealed: true });
+                    Disciplines.updateOne({ cases: modlog.cases }, { status: 'appealed' });
+                }
+
                 const embed = new MessageEmbed()
                     .setTitle('🔨 User has been Unbanned')
-                    .setAuthor(
-                        auditLog.executor.tag,
-                        auditLog.executor.displayAvatarURL({ dynamic: true })
-                    )
-                    .setDescription(
-                        `A banned was remove by the ${auditLog.executor.tag} (${auditLog.executor.id})`
-                    )
+                    .setAuthor(auditLog.executor.tag, auditLog.executor.displayAvatarURL({ dynamic: true }))
+                    .setDescription(`A banned was remove by the ${auditLog.executor.tag} (${auditLog.executor.id})`)
                     .setColor('#dc3545')
                     .addField('User Unbanned', `${user.tag}`)
-                    .addField(
-                        'Reason for Unban',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'No reason was specified'
-                        }`
-                    )
-                    .addField(
-                        'Moderation Logs',
-                        'Do not forget to appeal the moderation relevant to this ban (if applicable)'
-                    )
+                    .addField('Reason for Unban', `${auditLog.reason ? auditLog.reason : 'No reason was specified'}`)
                     .setFooter(`Executer ID: ${auditLog.executor.id}`)
                     .setTimestamp();
                 await send('banLogChannel', guild, '', {

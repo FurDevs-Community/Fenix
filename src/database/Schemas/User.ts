@@ -1,30 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema } from 'mongoose';
+import { ISchedule } from './Schedules';
 
-const UserSchema = new mongoose.Schema({
-    userID: {
-        type: String,
-        require: true,
-        unique: true,
-    },
-    usernameTag: {
-        type: String,
-        required: true,
-    },
-    avatar: {
-        type: String,
-        required: true,
-    },
-    guilds: {
+const User: Schema = new Schema({
+    reminders: {
         type: Array,
-        required: true,
     },
 });
 
-interface IUser extends Document {
-    userID: String;
-    usernameTag: String;
-    avatar: String;
-    guilds: Array<any>;
+export interface IUser extends Document {
+    reminders: ISchedule[];
 }
 
-export const User = mongoose.model('User', UserSchema);
+export const Users = mongoose.model<IUser>('User', User);

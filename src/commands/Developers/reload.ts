@@ -31,10 +31,7 @@ module.exports = class extends Command {
 
         // Sends an embed showing the it's updating the bot
         const embed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('⚠️ Reloading the Bot.')
             .setColor(primaryColor)
             .setDescription('⏲️ This may take a bit.')

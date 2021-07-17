@@ -29,4 +29,12 @@ Repository for Hozol's Dashboard: https://github.com/Dracy-Developments/Hozol
 1. Fill in the .env
 1. Run the bot by doing `yarn start` if the bot runs without errors, congrats you're ready to start developing Hozol Stuff
 
-### TODO: Put info here
+## Contributing
+
+Your Contributions to this Project is welcomed.
+
+To get started, it's recommended that you join the [support server](https:/discord.gg/bjkvvQ4N2Y), Then look at the Project Board (look at the Project Tab in the GitHub Page) and you can then Fork it then once you made your changes you can make a pull request
+
+**BEWARE** If you decide to add a feature that isn't in the Project Board it may/may not be accepted but are welcomed!
+
+## TODO: Add more stuff here

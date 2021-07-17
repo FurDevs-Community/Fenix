@@ -1,36 +1,22 @@
-import {
-    DMChannel,
-    Message,
-    NewsChannel,
-    ReactionCollector,
-    TextChannel,
-} from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 
 export class DiscordMenu {
-    // another of one those constructor things
-    public channel: TextChannel | DMChannel | NewsChannel;
-    public uid: string;
-    public pages: any[];
-    public messages: Message[];
-    public time: number;
-    public page: number;
-    public msg: Message;
-    public reactionCollector: ReactionCollector;
-    public reactions: {
-        first: string;
-        back: string;
-        next: string;
-        last: string;
-        stop: string;
-    };
-
+    channel: any;
+    pages: MessageEmbed[];
+    time: number;
+    reactions: { first: string; back: string; next: string; last: string; stop: string };
+    page: number;
+    messages: { message: string; fn: any }[];
+    msg: Message;
+    reactionCollector: any;
+    messageCollector: any;
     constructor(
-        channel: TextChannel | DMChannel | NewsChannel,
+        channel: TextChannel,
         uid: string,
-        pages = [],
-        messages = [],
+        pages: MessageEmbed[],
+        messages: { message: string; fn: any }[] = [],
         time = 180000,
-        reactions = { first: '⏮️', back: '◀', next: '▶', last: '⏭️', stop: '⏹' }
+        reactions = { first: '⏪', back: '◀', next: '▶', last: '⏩', stop: '⏹' }
     ) {
         this.channel = channel;
         this.pages = pages;
@@ -38,27 +24,23 @@ export class DiscordMenu {
         this.reactions = reactions;
         this.page = 1;
         this.messages = messages;
-        channel.send(pages[0]).then((msg) => {
+        channel.send(pages[0]).then((msg: any) => {
             this.msg = msg;
             this.addReactions();
             this.createReactionCollector(uid);
+            this.createMessageCollector(uid);
         });
     }
-
-    // select a page
     select(pg = 1) {
         this.page = pg;
         this.msg.edit(this.pages[pg - 1]);
     }
-
-    // i think im having deja vue from DiscordMenu.js
-    createReactionCollector(uid: string) {
-        const reactionCollector = this.msg.createReactionCollector(
-            (r, u) => u.id == uid,
-            { time: this.time }
-        );
+    createReactionCollector(uid: any) {
+        const reactionCollector = this.msg.createReactionCollector((r: any, u: { id: any }) => u.id == uid, {
+            time: this.time,
+        });
         this.reactionCollector = reactionCollector;
-        reactionCollector.on('collect', (r) => {
+        reactionCollector.on('collect', (r: { emoji: { name: any }; users: { remove: (arg0: any) => void } }) => {
             if (r.emoji.name == this.reactions.first) {
                 if (this.page != 1) this.select(1);
             } else if (r.emoji.name == this.reactions.back) {
@@ -66,8 +48,7 @@ export class DiscordMenu {
             } else if (r.emoji.name == this.reactions.next) {
                 if (this.page != this.pages.length) this.select(this.page + 1);
             } else if (r.emoji.name == this.reactions.last) {
-                if (this.page != this.pages.length)
-                    this.select(this.pages.length);
+                if (this.page != this.pages.length) this.select(this.pages.length);
             } else if (r.emoji.name == this.reactions.stop) {
                 reactionCollector.stop();
             }
@@ -77,26 +58,40 @@ export class DiscordMenu {
             this.endCollection();
         });
     }
-
-    // yep deja vue confirmed
-    async endCollection() {
-        this.msg.delete().catch((error) => {
-            // Only log the error if it is not an Unknown Message error
-            if (error.code !== 10008) {
-                console.error('Failed to delete the message:', error);
+    createMessageCollector(uid: any) {
+        const messageCollector = this.channel.createMessageCollector(
+            (m: { author: { id: any }; cleanContent: string }) =>
+                m.author.id === uid &&
+                this.messages.some((m2) => m2.message.toLowerCase() === m.cleanContent.toLowerCase()),
+            { time: this.time }
+        );
+        this.messageCollector = messageCollector;
+        messageCollector.on('collect', (m: { cleanContent: string }) => {
+            console.log('gay');
+            this.endCollection();
+            const msgTrigger = this.messages.find(
+                (m2: { message: string }) => m2.message.toLowerCase() === m.cleanContent.toLowerCase()
+            );
+            if (msgTrigger && msgTrigger.fn) {
+                msgTrigger.fn(m);
             }
         });
-        if (this.reactionCollector && !this.reactionCollector.ended) {
-            this.reactionCollector.stop();
-        }
+        messageCollector.on('end', () => {
+            this.endCollection();
+        });
     }
-
-    // add the reactions
+    async endCollection() {
+        this.msg.delete().catch(() => {});
+        if (this.reactionCollector && !this.reactionCollector.ended) this.reactionCollector.stop();
+        if (this.messageCollector && !this.messageCollector.ended) this.messageCollector.stop();
+    }
     async addReactions() {
-        if (this.reactions.first) await this.msg.react(this.reactions.first);
-        if (this.reactions.back) await this.msg.react(this.reactions.back);
-        if (this.reactions.next) await this.msg.react(this.reactions.next);
-        if (this.reactions.last) await this.msg.react(this.reactions.last);
-        if (this.reactions.stop) await this.msg.react(this.reactions.stop);
+        if (!this.msg.deleted) {
+            if (this.reactions.first) await this.msg.react(this.reactions.first).catch(() => {});
+            if (this.reactions.back) await this.msg.react(this.reactions.back).catch(() => {});
+            if (this.reactions.next) await this.msg.react(this.reactions.next).catch(() => {});
+            if (this.reactions.last) await this.msg.react(this.reactions.last).catch(() => {});
+            if (this.reactions.stop) await this.msg.react(this.reactions.stop).catch(() => {});
+        }
     }
 }

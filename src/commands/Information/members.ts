@@ -1,5 +1,5 @@
 import HozolClient from '../../lib/HozolClient';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Command } from 'nukejs';
 import { DiscordMenu, roleNameResolver } from '../../helper';
 import _ from 'lodash';
@@ -41,17 +41,13 @@ module.exports = class extends Command {
         for (const member of members.values()) {
             for (const role of member.roles.cache) {
                 if (role[0] == roleToSearch.id) {
-                    membersWithRole.push(
-                        `${member.user.username}#${member.user.discriminator}`
-                    );
+                    membersWithRole.push(`${member.user.username}#${member.user.discriminator}`);
                     break;
                 }
             }
         }
         if (!membersWithRole.length) {
-            throw Error(
-                `No Member found with the role \`${roleToSearch.name}\``
-            );
+            throw Error(`No Member found with the role \`${roleToSearch.name}\``);
         }
 
         // Stolen from roleNameResolvers.ts
@@ -78,7 +74,7 @@ module.exports = class extends Command {
         }
 
         new DiscordMenu(
-            message.channel,
+            message.channel as TextChannel,
             message.author.id,
             children2.map((group: any) => {
                 const groupEmbed = new MessageEmbed()
@@ -97,4 +93,4 @@ module.exports = class extends Command {
             })
         );
     }
-}
+};

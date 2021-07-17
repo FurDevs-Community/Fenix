@@ -3,15 +3,11 @@ import HozolClient from './lib/HozolClient';
 import { MessageEmbed } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { Clients } from './database';
-import {
-    defaultPrefix,
-    devs,
-    port,
-    primaryColor,
-    __prod__
-} from './settings';
+import { __prod__, defaultPrefix, devs, port, primaryColor } from './settings';
 import { api } from './api';
 import { cron } from './helper/general/cron';
+import discordButton from 'discord-buttons';
+
 dotenv.config();
 require('./structures/Guild');
 require('./structures/GuildMember');
@@ -44,31 +40,23 @@ const client = new HozolClient({
     },
 });
 
-process.on('unhandledRejection', (e: string) =>
-    client.error('unhandledErrorRejection!\n' + e)
-);
+discordButton(client);
+
+process.on('unhandledRejection', (e: string) => client.error('unhandledErrorRejection!\n' + e));
 
 // When the bot is ready, then change the status and do a Guild Blacklist Count
 client.on('ready', async () => {
     const clientSettings = await Clients.findOne({ id: 1 });
-    if (!clientSettings) Clients.create({ id: 1 });
-    cron(client);
+    if (!clientSettings) await Clients.create({ id: 1 });
+    await cron(client);
     api(client);
     const embed = new MessageEmbed()
         .setTitle('Hozol is ready!')
         .setColor(primaryColor)
         .addField('Version', require('./../package.json').version)
-        .addField(
-            'API',
-            __prod__ ? 'https://api.hozol.xyz' : `http://localhost:${port}`
-        )
-        .addField(
-            'Dashboard',
-            __prod__ ? 'https://hozol.xyz' : `http://localhost:3000`
-        )
-        .setThumbnail(
-            'https://cdn.discordapp.com/emojis/758388154465517578.png?v=1'
-        );
+        .addField('API', __prod__ ? 'https://api.hozol.xyz' : `http://localhost:${port}`)
+        .addField('Dashboard', __prod__ ? 'https://hozol.xyz' : `http://localhost:3000`)
+        .setThumbnail('https://cdn.discordapp.com/emojis/758388154465517578.png?v=1');
     client.users.cache.get('852070153804972043')?.send(embed);
 
     // Sets the Status

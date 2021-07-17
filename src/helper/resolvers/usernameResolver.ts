@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Message, MessageEmbed, User } from 'discord.js';
+import { Guild, GuildMember, Message, MessageEmbed, TextChannel, User } from 'discord.js';
 
 import { DiscordMenu } from '..';
 import { primaryColor } from '../../settings';
@@ -7,7 +7,7 @@ const { userResolver } = require('./../resolvers/userResolver');
 const userOrMemberRegex = /^(?:<@!?)?(\d{17,19})>?$/;
 const _ = require('lodash');
 
-export async function usernameResolver(message: Message, username: string): Promise<User> {
+export async function usernameResolver(message: Message, username: string) {
     if (!username) throw new Error('Username was not provided');
     const regExpEsc = (str: string) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
@@ -45,18 +45,18 @@ export async function usernameResolver(message: Message, username: string): Prom
             return querySearch[0];
         default:
             return await new Promise(async (resolve, reject) => {
-                const children: any = [];
-                let _children: any = [];
-                const children2: any = [];
-                const childrenMain: any = [];
-                querySearch.forEach((option: string) => {
-                    children.push(option);
-                    childrenMain.push(option);
+                const children: User[] = [];
+                let _children: User[] = [];
+                const children2 = [];
+                const childrenMain: User[] = [];
+                querySearch.forEach((options: any) => {
+                    children.push(options);
+                    childrenMain.push(options);
                 });
 
                 // Now, break the roles up into groups of 10 for pagination.
                 while (children.length > 0) {
-                    _children.push(children.shift());
+                    _children.push(children.shift()!);
                     if (_children.length > 9) {
                         children2.push(_.cloneDeep(_children));
                         _children = [];
@@ -67,19 +67,14 @@ export async function usernameResolver(message: Message, username: string): Prom
                 }
 
                 new DiscordMenu(
-                    message.channel,
+                    message.channel as TextChannel,
                     message.author.id,
-                    children2.map((group: any) => {
+                    children2.map((group) => {
                         const groupEmbed = new MessageEmbed()
-                            .setAuthor(
-                                `${message.author.tag}`,
-                                `${message.author.displayAvatarURL({
-                                    dynamic: true,
-                                })}`
-                            )
-                            .setTitle('Multiple users found!')
+                            .setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
+                            .setTitle(`Multiple users found!`)
                             .setDescription(
-                                `Multiple users matched the name "**${username}**". Use the menu to find which user you meant, and then type their name in a message.`
+                                `Multiple users matched the name **${username}**. Use the menu to find which user you meant, and then type their name in a message.`
                             )
                             .setColor(primaryColor)
                             .setFooter(`User ID: ${message.author.id}`)
@@ -89,11 +84,10 @@ export async function usernameResolver(message: Message, username: string): Prom
                         });
                         return groupEmbed;
                     }),
-                    childrenMain.map((child: User) => {
+                    childrenMain.map((child) => {
                         return {
                             message: child.username,
-                            fn: (senderMessage: Message) => {
-                                senderMessage.delete();
+                            fn: async () => {
                                 return resolve(child);
                             },
                         };

@@ -1,6 +1,6 @@
 // Imports
 import { Router } from 'express';
-import { Moderations } from '../../database/Schemas/Moderation';
+import { Moderations } from '../../database';
 // eslint-disable-next-line new-cap
 const router = Router();
 import GuildRouter from './guild';
@@ -14,4 +14,5 @@ router.get(`/modLogs`, async (req, res) => {
     const modLogs = await Moderations.find({});
     res.json({ modLogs: modLogs.length });
 });
+
 export default router;

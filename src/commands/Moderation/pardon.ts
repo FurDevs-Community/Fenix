@@ -2,7 +2,7 @@ import HozolClient from '../../lib/HozolClient';
 import { MessageEmbed, User } from 'discord.js';
 import { Message } from 'discord.js';
 import { Command } from 'nukejs';
-import { Moderations } from './../../database';
+import { IModeration, Moderations } from './../../database';
 import { askQuestion } from '../../helper/moderation/askRules';
 import { usernameResolver } from '../../helper/resolvers/usernameResolver';
 import { primaryColor } from '../../settings';
@@ -38,7 +38,7 @@ module.exports = class extends Command {
                 )
                 .setColor(primaryColor);
             const allowedCases: string[] = [];
-            userModerations.map((moderation) => {
+            userModerations.map((moderation: IModeration) => {
                 allowedCases.push(moderation.cases);
                 embed.addField(
                     `[Case: ${moderation.cases}] | ${moderation.type}`,
@@ -46,9 +46,7 @@ module.exports = class extends Command {
                 );
             });
             embed.setTimestamp().setFooter(`User ID: ${message.author.id}`);
-            const [msg, response] = <Message[]>(
-                await askQuestion(message, embed)
-            );
+            const [msg, response] = <Message[]>await askQuestion(message, embed);
             if (response.content.toLowerCase() === 'cancel') {
                 msg.delete();
             } else {
@@ -64,11 +62,7 @@ module.exports = class extends Command {
                             )
                         );
                         if (allowedCases.includes(newResponse.content)) {
-                            await pardonCase(
-                                message,
-                                user,
-                                newResponse.content
-                            );
+                            await pardonCase(message, user, newResponse.content);
                             success = true;
                             newMsg.delete();
                         }
@@ -77,7 +71,7 @@ module.exports = class extends Command {
             }
         } else {
             const allowedCases: string[] = [];
-            userModerations.map((moderation) => {
+            userModerations.map((moderation: IModeration) => {
                 allowedCases.push(moderation.cases);
             });
 
@@ -86,18 +80,13 @@ module.exports = class extends Command {
             } else {
                 const success = false;
                 while (!success) {
-                    const [newMsg] = <Message[]>(
-                        await askQuestion(
-                            message,
-                            "That case doesn't exist, try again"
-                        )
-                    );
+                    const [newMsg] = <Message[]>await askQuestion(message, "That case doesn't exist, try again");
                     newMsg.delete();
                 }
             }
         }
     }
-}
+};
 
 const pardonCase = async (message: Message, user: User, caseUID: string) => {
     if (!message.guild) return;
@@ -110,9 +99,7 @@ const pardonCase = async (message: Message, user: User, caseUID: string) => {
     if (memberModeration) {
         await memberModeration.delete();
     } else {
-        throw new Error(
-            'We had a problem trying to pardon this warning, please contact a developer'
-        );
+        throw new Error('We had a problem trying to pardon this warning, please contact a developer');
     }
     message.channel.send(`Case ${caseUID} has been pardoned`);
 };

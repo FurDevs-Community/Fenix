@@ -1,4 +1,4 @@
-import { Guild, Message, MessageEmbed, Role } from 'discord.js';
+import { Guild, Message, MessageEmbed, Role, TextChannel } from 'discord.js';
 
 import _ from 'lodash';
 import { primaryColor } from '../../settings';
@@ -6,17 +6,11 @@ import { DiscordMenu } from '../discord/paginator';
 
 const roleRegex = /^(?:<@&)?(\d{17,19})>?$/;
 
-export async function roleNameResolver(
-    message: Message,
-    roleName: string
-): Promise<Role> {
-    const regExpEsc = (str: string) =>
-        str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+export async function roleNameResolver(message: Message, roleName: string): Promise<Role> {
+    const regExpEsc = (str: string) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
     if (!message.guild) {
-        throw new Error(
-            'Invalid: rolename arguments cannot be used outside of a guild.'
-        );
+        throw new Error('Invalid: rolename arguments cannot be used outside of a guild.');
     }
     const resRole = resolveRole(roleName, message.guild);
     if (resRole) return resRole;
@@ -38,9 +32,7 @@ export async function roleNameResolver(
 
     switch (querySearch.length) {
         case 0:
-            throw new Error(
-                `Sorry, I could not find any roles that matched ${roleName}.`
-            );
+            throw new Error(`Sorry, I could not find any roles that matched ${roleName}.`);
         case 1:
             return querySearch[0];
         default:
@@ -67,7 +59,7 @@ export async function roleNameResolver(
                 }
 
                 new DiscordMenu(
-                    message.channel,
+                    message.channel as TextChannel,
                     message.author.id,
                     // @ts-ignore
                     children2.map((group) => {

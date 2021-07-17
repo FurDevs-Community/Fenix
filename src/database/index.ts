@@ -344,5 +344,4 @@ export * from './Schemas/Member';
 export * from './Schemas/Moderation';
 export * from './Schemas/Profile';
 export * from './Schemas/Rules';
-export * from './Schemas/User';
 export * from './Schemas/Schedules';
