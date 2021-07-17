@@ -2,14 +2,14 @@
 import { Event } from 'nukejs';
 import HozolClient from '../lib/HozolClient';
 import { Message } from 'discord.js';
-import { Members as Member } from '../database';
+import { Members as Member, Profiles } from '../database';
 import { MessageEmbed } from 'discord.js';
 // import { getSpamScore } from '../helper/moderation/getSpamScore';
 import { incrementMessageCount } from '../helper/guild/incrementMessage';
 import { primaryColor } from '../settings';
 import { applySpamScore } from '../helper/moderation/applySpamScore';
 import { getSpamScore } from '../helper/moderation/getSpamScore';
-import { getXPScore } from '../helper/leveling/leveling';
+import { getLevelFromXP, getXPScore } from '../helper/leveling/leveling';
 
 module.exports = class extends Event {
     constructor() {
@@ -22,7 +22,6 @@ module.exports = class extends Event {
     async run(message: Message) {
         if (!message.guild) return;
         const client = <HozolClient>message.client;
-        const xp = await getXPScore(client, message);
         const score = await getSpamScore(client, message);
         const memberSettings = await message.member?.settings();
         const antispamSettings = await message.guild.antispam();
@@ -43,7 +42,24 @@ module.exports = class extends Event {
         }
 
         incrementMessageCount(message);
-        console.log(`XP Earned for ${message.author.username}: ${xp}`);
+        const xp = (await getXPScore(client, message)) || 0;
+        if (xp != 0 || xp < 0) {
+            const profile = await message.member?.profile();
+            const currentXP = profile?.XP || 0;
+            const earningXP = profile?.XP! + xp;
+            const previousLevel = getLevelFromXP(currentXP)!;
+            const newLevel = getLevelFromXP(earningXP);
+            console.log(`Previous ${previousLevel}`);
+            console.log(`New ${newLevel}`);
+            await Profiles.findOneAndUpdate(
+                { guildID: message.guild.id, userID: message.author.id },
+                { XP: earningXP }
+            );
+            if (newLevel > previousLevel) {
+                // TODO: Make sure this becomes customizable & give roles based on level if set
+                await message.channel?.send(`You have earned ${xp} XP points and Reached level ${newLevel}!`);
+            }
+        }
 
         if (guildSettings.awaySystem) {
             if (memberSettings?.awayStatus) {

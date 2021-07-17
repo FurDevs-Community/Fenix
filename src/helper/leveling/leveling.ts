@@ -2,9 +2,7 @@ import { Message } from 'discord.js';
 import HozolClient from '../../lib/HozolClient';
 
 export const getXPScore = async (client: HozolClient, message: Message) => {
-    if (!client.user || !message.guild) return;
-    if (message.type !== 'DEFAULT' || message.author.id === client.user.id) return;
-
+    if (!message.guild) return;
     // Settings
     const leveling = await message.guild.leveling();
     let score = leveling.baseScore;
