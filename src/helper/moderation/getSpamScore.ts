@@ -102,8 +102,7 @@ export const getSpamScore = async (client: HozolClient, message: Message) => {
             )}`,
             `${msg.cleanContent || ''}${JSON.stringify(msg.embeds)}${JSON.stringify(msg.attachments.array())}`
         );
-        console.log(similarity);
-        console.log(antiSpamSettings.similarityPercent);
+
         if (similarity >= antiSpamSettings.similarityPercent * 0.01) {
             tempScore = Math.floor(
                 (10 - (1 - similarity) * antiSpamSettings.similarityScore) *
@@ -117,7 +116,6 @@ export const getSpamScore = async (client: HozolClient, message: Message) => {
     // Count uppercase and lowercase letters
     const uppercase = message.cleanContent.replace(/[^A-Z]/g, '').length;
     const percentage = uppercase / message.cleanContent.length;
-    console.log(percentage);
 
     // If 50% or more of the characters are uppercase, consider it shout spam,
     // and add a score of 5, plus 1 for every 12.5 uppercase characters.
@@ -171,7 +169,9 @@ export const getSpamScore = async (client: HozolClient, message: Message) => {
 
         // TODO: Conflict System vs AntiSpam
         score = score * multiplier;
-        console.log(reasons);
+        if (reasons) {
+            console.table(reasons);
+        }
         console.log(`Total score: ${score}`);
 
         // Flag messages with a high spam score

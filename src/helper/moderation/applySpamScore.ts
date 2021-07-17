@@ -24,10 +24,7 @@ export const applySpamScore = async (message: Message, amount: number) => {
     const newScore = memberSettings.spamScore + amount;
     const threshold = antiSpamSettings.threshold;
     const timestamp = memberSettings.spamScoreStamp;
-    await Members.updateOne(
-        { guildID: message.guild.id, userID: message.author.id },
-        { spamScore: newScore }
-    );
+    await Members.updateOne({ guildID: message.guild.id, userID: message.author.id }, { spamScore: newScore });
     if (
         (antiSpamSettings.warnAfterFirstASTrigger &&
             previousScore < threshold &&
@@ -48,14 +45,10 @@ export const applySpamScore = async (message: Message, amount: number) => {
             `⚠️ **ANTISPAM** - Heya ${
                 message.member
             } can you stop triggering the antispam system. Failure to do so within the next ${moment.duration(
-                antiSpamSettings.decayFast > 0
-                    ? newScore / antiSpamSettings.decayFast + 1
-                    : 0,
+                antiSpamSettings.decayFast > 0 ? newScore / antiSpamSettings.decayFast + 1 : 0,
                 'minute'
             )} minute(s) will lead you into getting ${
-                muted
-                    ? 'Getting Kick out of the server'
-                    : 'Getting muted in the server indefinitly'
+                muted ? 'Getting Kick out of the server' : 'Getting muted in the server indefinitly'
             }`
         );
         await Members.updateOne(
@@ -73,17 +66,9 @@ export const applySpamScore = async (message: Message, amount: number) => {
             return;
         }
         if (antiSpamSettings.warnAfterFirstASTrigger) {
-            if (
-                moment()
-                    .subtract(5, 'seconds')
-                    .isAfter(moment(memberSettings.spamScoreStamp))
-            ) {
+            if (moment().subtract(5, 'seconds').isAfter(moment(memberSettings.spamScoreStamp))) {
                 if (muted) {
-                    const autoMod = new IssueDiscipline(
-                        message.author,
-                        message.guild,
-                        message.client.user!
-                    );
+                    const autoMod = new IssueDiscipline(message.author, message.guild, message.client.user!);
                     await autoMod.initialize();
                     await autoMod.kickUser();
                     await autoMod.finish();
@@ -91,11 +76,7 @@ export const applySpamScore = async (message: Message, amount: number) => {
                         `✅ ${message.member} is now kicked out of the server (since they are muted). You may now continue chat in peace :)`
                     );
                 } else {
-                    const autoMod = new IssueDiscipline(
-                        message.author,
-                        message.guild,
-                        message.client.user!
-                    );
+                    const autoMod = new IssueDiscipline(message.author, message.guild, message.client.user!);
                     await autoMod.initialize();
                     await autoMod.antiSpam();
                     await autoMod.finish();
@@ -105,17 +86,11 @@ export const applySpamScore = async (message: Message, amount: number) => {
                 }
             }
         } else {
-            const autoMod = new IssueDiscipline(
-                message.author,
-                message.guild,
-                message.client.user!
-            );
+            const autoMod = new IssueDiscipline(message.author, message.guild, message.client.user!);
             await autoMod.initialize();
             await autoMod.antiSpam();
             await autoMod.finish();
-            message.channel.send(
-                `✅ ${message.member} is now muted indefintly. You may now continue chat in peace :)`
-            );
+            message.channel.send(`✅ ${message.member} is now muted indefintly. You may now continue chat in peace :)`);
         }
     }
 };

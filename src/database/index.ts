@@ -41,7 +41,7 @@ export async function findOrCreateLeveling(guildID: Snowflake) {
     if (data) {
         return data;
     } else {
-        data = new Levelings({ id: 1 });
+        data = new Levelings({ guildID: guildID });
         await data.save().catch((err: any) => {
             return err;
         });

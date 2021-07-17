@@ -12,7 +12,7 @@ module.exports = class extends Command {
             name: 'serverinfo',
             category: 'Information',
             runIn: ['text'],
-            aliases: ['si', 'server'],
+            aliases: ['si', 'server', 'guild', 'guildinfo'],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'See information on this guild.',
             enabled: true,
@@ -30,29 +30,20 @@ module.exports = class extends Command {
     async run(message: Message, args: string[], client: HozolClient) {
         if (!message.guild) return;
         const serverEmbed = new MessageEmbed()
-            .setAuthor(
-                message.author.tag,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
-            .setThumbnail(
-                message.guild.iconURL() || message.author.defaultAvatarURL
-            )
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(message.guild.iconURL() || message.author.defaultAvatarURL)
             .setTitle(`Server information - ${message.guild.name}`)
             .addField('Server name: ', message.guild.name, true)
             .addField('Server ID: ', message.guild.id, true)
             .addField('Server Owner: ', message.guild.owner, true)
             .addField(
                 'Online Member: ',
-                message.guild.members.cache.filter(
-                    (member) => member.presence.status === 'online'
-                ).size,
+                message.guild.members.cache.filter((member) => member.presence.status === 'online').size,
                 true
             )
             .addField(
                 'Offline Member:',
-                message.guild.members.cache.filter(
-                    (member) => member.presence.status === 'offline'
-                ).size,
+                message.guild.members.cache.filter((member) => member.presence.status === 'offline').size,
                 true
             )
             .addField('Total Members: ', message.guild.members.cache.size, true)
@@ -67,11 +58,7 @@ module.exports = class extends Command {
                 }`,
                 true
             )
-            .addField(
-                'Ban Count:',
-                (await message.guild.fetchBans()).size,
-                true
-            )
+            .addField('Ban Count:', (await message.guild.fetchBans()).size, true)
             .setColor(primaryColor)
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);

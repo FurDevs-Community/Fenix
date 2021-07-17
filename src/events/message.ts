@@ -9,7 +9,7 @@ import { incrementMessageCount } from '../helper/guild/incrementMessage';
 import { primaryColor } from '../settings';
 import { applySpamScore } from '../helper/moderation/applySpamScore';
 import { getSpamScore } from '../helper/moderation/getSpamScore';
-import { getXPScore } from '../helper/leveling/generateXP';
+import { getXPScore } from '../helper/leveling/leveling';
 
 module.exports = class extends Event {
     constructor() {
@@ -22,6 +22,7 @@ module.exports = class extends Event {
     async run(message: Message) {
         if (!message.guild) return;
         const client = <HozolClient>message.client;
+        const xp = await getXPScore(client, message);
         const score = await getSpamScore(client, message);
         const memberSettings = await message.member?.settings();
         const antispamSettings = await message.guild.antispam();
@@ -36,13 +37,13 @@ module.exports = class extends Event {
             if (memberSettings?.muted && !message.member?.roles.cache.has(guildSettings.muteRole)) {
                 message.member?.roles.add(
                     guildSettings.muteRole,
-                    "The useru is supposed to be muted (If this is a mistake go ahead and unmute the user by using the unmute command or remove the user's mute role)"
+                    "The user is supposed to be muted (If this is a mistake go ahead and unmute the user by using the unmute command or remove the user's mute role)"
                 );
             }
         }
 
         incrementMessageCount(message);
-        console.log(getXPScore(client, message));
+        console.log(`XP Earned for ${message.author.username}: ${xp}`);
 
         if (guildSettings.awaySystem) {
             if (memberSettings?.awayStatus) {

@@ -22,3 +22,8 @@ export const getXPScore = async (client: HozolClient, message: Message) => {
 
     return score;
 };
+
+export const getLevelFromXP = (xp: number) => {
+    // Calculates the level from xp
+    return Math.floor(0.177 * Math.sqrt(xp)) + 1;
+};
