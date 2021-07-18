@@ -8,6 +8,7 @@ import { Clients as Client } from './../database/Schemas/Client';
 import { Automoderation as AutoModeration } from './Schemas/AutoModeration';
 import { IMember, Members as Member } from './Schemas/Member';
 import { Profiles as Profile } from './Schemas/Profile';
+import { Levelings } from './Schemas/Leveling';
 
 export async function findOrCreateAntiRaid(guildID: Snowflake) {
     let data = await AntiRaid.findOne({ guildID: guildID });
@@ -28,6 +29,19 @@ export async function findOrCreateClient(guildID: Snowflake) {
         return data;
     } else {
         data = new Client({ id: 1 });
+        await data.save().catch((err: any) => {
+            return err;
+        });
+        return data;
+    }
+}
+
+export async function findOrCreateLeveling(guildID: Snowflake) {
+    let data = await Levelings.findOne({ guildID: guildID });
+    if (data) {
+        return data;
+    } else {
+        data = new Levelings({ guildID: guildID });
         await data.save().catch((err: any) => {
             return err;
         });
@@ -96,6 +110,15 @@ export async function findOrCreateGuilds(guildID: Snowflake) {
 
 export async function findGuild(guildID: Snowflake) {
     const data = await Guild.findOne({ guildID: guildID })
+        .exec()
+        .catch((err: any) => {
+            return err;
+        });
+    return data;
+}
+
+export async function findLeveling(guildID: Snowflake) {
+    const data = await Levelings.findOne({ guildID: guildID })
         .exec()
         .catch((err: any) => {
             return err;
