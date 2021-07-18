@@ -46,6 +46,11 @@ const Leveling: Schema = new Schema({
         type: Array,
         default: [],
     },
+
+    xpCooldown: {
+        type: String,
+        default: '1m',
+    },
 });
 
 export interface ILeveling {
@@ -58,6 +63,7 @@ export interface ILeveling {
     attachmentXP: number;
     scorePer128Character: number;
     ignoreChannel: string[];
+    xpCooldown: string;
 }
 
 export const Levelings = mongoose.model<ILeveling>('Leveling', Leveling);

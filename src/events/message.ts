@@ -10,6 +10,8 @@ import { primaryColor } from '../settings';
 import { applySpamScore } from '../helper/moderation/applySpamScore';
 import { getSpamScore } from '../helper/moderation/getSpamScore';
 import { getLevelFromXP, getXPScore } from '../helper/leveling/leveling';
+import ms from 'ms';
+import { removeItem } from '../helper/general/removeElement';
 
 module.exports = class extends Event {
     constructor() {
@@ -21,10 +23,13 @@ module.exports = class extends Event {
 
     async run(message: Message) {
         if (!message.guild) return;
+        if (!message.client.user || (!message.guild && message.author.bot)) return;
+        if (message.type !== 'DEFAULT' || message.author.id === message.client.user.id) return;
         const client = <HozolClient>message.client;
         const score = await getSpamScore(client, message);
         const memberSettings = await message.member?.settings();
         const antispamSettings = await message.guild.antispam();
+        const levelingSettings = await message.guild.leveling();
         // const guildAutoModSettings = await message.guild.automoderation();
         const guildSettings = await message.guild.settings();
         if (!guildSettings) return;
@@ -38,26 +43,33 @@ module.exports = class extends Event {
                     guildSettings.muteRole,
                     "The user is supposed to be muted (If this is a mistake go ahead and unmute the user by using the unmute command or remove the user's mute role)"
                 );
+                return;
             }
         }
 
         incrementMessageCount(message);
-        const xp = (await getXPScore(client, message)) || 0;
-        if (xp != 0 || xp < 0) {
-            const profile = await message.member?.profile();
-            const currentXP = profile?.XP || 0;
-            const earningXP = profile?.XP! + xp;
-            const previousLevel = getLevelFromXP(currentXP)!;
-            const newLevel = getLevelFromXP(earningXP);
-            console.log(`Previous ${previousLevel}`);
-            console.log(`New ${newLevel}`);
-            await Profiles.findOneAndUpdate(
-                { guildID: message.guild.id, userID: message.author.id },
-                { XP: earningXP }
-            );
-            if (newLevel > previousLevel) {
-                // TODO: Make sure this becomes customizable & give roles based on level if set
-                await message.channel?.send(`You have earned ${xp} XP points and Reached level ${newLevel}!`);
+        if (!client.xpCooldown.includes(message.author.id)) {
+            const xp = (await getXPScore(message)) || 0;
+            if (xp > 0 && levelingSettings.enabled) {
+                const profile = await message.member?.profile();
+                const currentXP = profile?.XP || 0;
+                const earningXP = profile?.XP! + xp;
+                const previousLevel = getLevelFromXP(currentXP)!;
+                const newLevel = getLevelFromXP(earningXP);
+                console.log(currentXP);
+                console.log(earningXP);
+                console.log(previousLevel);
+                console.log(newLevel);
+                await Profiles.findOneAndUpdate(
+                    { guildID: message.guild.id, userID: message.author.id },
+                    { XP: earningXP }
+                );
+                if (newLevel > previousLevel) {
+                    // TODO: Make sure this becomes customizable & give roles based on level if set
+                    await message.channel?.send(`You have earned ${xp} XP points and Reached level ${newLevel}!`);
+                }
+                client.xpCooldown.push(message.author.id);
+                setInterval(() => removeItem(client.xpCooldown, message.author.id), ms(levelingSettings.xpCooldown));
             }
         }
 
