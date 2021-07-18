@@ -1,20 +1,15 @@
 import HozolClient from '../lib/HozolClient';
 import { Guild, MessageEmbed, Structures } from 'discord.js';
-import {
-    IAntiRaid,
-    IAntiSpam,
-    IAutoModeration,
-    IGuild,
-    IModeration,
-    IRules,
-} from '../database/';
+import { IAntiRaid, IAntiSpam, IAutoModeration, IGuild, IModeration, IRules } from '../database/';
 import * as db from './../database/index';
 import { dashboardBaseURL, defaultPrefix, primaryColor } from '../settings';
+import { ILeveling } from '../database/Schemas/Leveling';
 
 declare module 'discord.js' {
     export interface Guild {
         antiraid(): Promise<IAntiRaid>;
         antispam(): Promise<IAntiSpam>;
+        leveling(): Promise<ILeveling>;
         rules(): Promise<IRules>;
         moderation(): Promise<IModeration>;
         settings(): Promise<IGuild>;
@@ -32,12 +27,11 @@ Structures.extend('Guild', (Guild) => {
          */
         constructor(client: HozolClient, data: object) {
             super(client, data);
-            db.findOrCreateGuilds(this.id).then((result) =>
-                sendGuildMessage(this, result)
-            );
+            db.findOrCreateGuilds(this.id).then((result) => sendGuildMessage(this, result));
             db.findOrCreateAntiRaid(this.id).then((r: any) => {});
             db.findOrCreateAntiSpam(this.id).then((r: any) => {});
             db.findOrCreateAutoModeration(this.id).then((r: any) => {});
+            db.findOrCreateLeveling(this.id).then((r: any) => {});
         }
 
         /**
@@ -46,6 +40,14 @@ Structures.extend('Guild', (Guild) => {
          */
         public async settings() {
             return db.findGuild(this.id);
+        }
+
+        /**
+         * This will show the settings for the guild
+         * @return The settings for the guild
+         */
+        public async leveling() {
+            return db.findLeveling(this.id);
         }
 
         /**
@@ -111,12 +113,10 @@ const sendGuildMessage = (guild: Guild, result: any[]) => {
 
                 if (a.parent && b.parent) {
                     // If both channels do have a parent, but the parents are not the same, use position of the parent.
-                    if (a.parentID !== b.parentID)
-                        return a.parent.position - b.parent.position;
+                    if (a.parentID !== b.parentID) return a.parent.position - b.parent.position;
 
                     // If both channels have the same parent, use inner position.
-                    if (a.parentID === b.parentID)
-                        return a.position - b.position;
+                    if (a.parentID === b.parentID) return a.position - b.position;
                 }
 
                 return 0;
@@ -125,9 +125,7 @@ const sendGuildMessage = (guild: Guild, result: any[]) => {
                 (chan: any) =>
                     chan.type === 'text' &&
                     chan.permissionsFor(guild.me).has('SEND_MESSAGES') &&
-                    chan
-                        .permissionsFor(guild.roles.everyone)
-                        .has('SEND_MESSAGES')
+                    chan.permissionsFor(guild.roles.everyone).has('SEND_MESSAGES')
             );
         if (channel) {
             const newGuild = new MessageEmbed()

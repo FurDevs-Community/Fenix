@@ -1,14 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable require-jsdoc */
 /* eslint-disable prettier/prettier */
-import {
-    Client,
-    Command,
-    CommandLoader,
-    EventLoader,
-    NukeClientOptions,
-    InhibitorLoader,
-} from 'nukejs';
+import { Client, Command, CommandLoader, EventLoader, NukeClientOptions, InhibitorLoader } from 'nukejs';
 import { blue, cyan } from 'chalk';
 import mongoose, { Connection } from 'mongoose';
 import { Collection, Snowflake } from 'discord.js';
@@ -32,6 +25,7 @@ export default class HozolClient extends Client {
     public eventLoader: EventLoader;
     public inhibitorLoader: InhibitorLoader;
     public logger: Logger;
+    public xpCooldown: string[];
     public constructor(options: NukeClientOptions) {
         super(options);
 
@@ -89,6 +83,8 @@ export default class HozolClient extends Client {
             ],
         });
 
+        this.xpCooldown = [];
+
         // Start Sentry
         Sentry.init({
             dsn: process.env.SENTRYDSN,
@@ -99,9 +95,7 @@ export default class HozolClient extends Client {
         this.connectDB(process.env.DB);
 
         // Login the Bot
-        this.login(process.env.TOKEN).catch((e) =>
-            this.error('Problems Running the bot!: ' + e)
-        );
+        this.login(process.env.TOKEN).catch((e) => this.error('Problems Running the bot!: ' + e));
 
         this.moment.tz.setDefault('UTC');
 

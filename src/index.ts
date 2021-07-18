@@ -45,7 +45,7 @@ discordButton(client);
 process.on('unhandledRejection', (e: string) => client.error('unhandledErrorRejection!\n' + e));
 
 // When the bot is ready, then change the status and do a Guild Blacklist Count
-client.on('ready', async () => {
+client.once('ready', async () => {
     const clientSettings = await Clients.findOne({ id: 1 });
     if (!clientSettings) await Clients.create({ id: 1 });
     await cron(client);

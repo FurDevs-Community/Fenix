@@ -4,6 +4,12 @@ import { ISchedule } from './Schedules';
 const User: Schema = new Schema({
     reminders: {
         type: Array,
+        default: [],
+    },
+
+    weatherInfo: {
+        type: Object,
+        default: {},
     },
 });
 
