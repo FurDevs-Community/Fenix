@@ -1,5 +1,6 @@
 <div align=center>
 <h1>Hozol</h1>
+<img src="https://wakatime.com/badge/github/Dracy-Developments/Hozol.svg" />
 <p>A General Purpose Discord Bot with Tons of Commands to bring your guild together with a very unique and powerful moderation system! </p>
 <img src="https://hozol.xyz/images/main/banner.png" /> 
 </div>
