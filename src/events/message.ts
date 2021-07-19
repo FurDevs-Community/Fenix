@@ -66,7 +66,14 @@ module.exports = class extends Event {
                 );
                 if (newLevel > previousLevel) {
                     // TODO: Make sure this becomes customizable & give roles based on level if set
-                    await message.channel?.send(`${message.author.username}, You have earned ${xp} XP points and Reached level ${newLevel}!`);
+                    // Per each 5 level it'll send a message
+                    if (newLevel % 5 === 0) {
+                        await message.channel
+                            ?.send(
+                                `${message.author.username}, You have earned ${xp} XP points and Reached level ${newLevel}!`
+                            )
+                            .then((msg) => msg.delete({ timeout: 10000 }));
+                    }
                 }
                 client.xpCooldown.push(message.author.id);
                 setInterval(() => removeItem(client.xpCooldown, message.author.id), ms(levelingSettings.xpCooldown));
