@@ -260,6 +260,11 @@ const Guild: Schema = new Schema({
         type: Boolean,
         default: true,
     },
+
+    levelingMsg: {
+        type: String,
+        default: 'Channel',
+    },
 });
 
 export interface IGuild extends Document {
@@ -292,6 +297,7 @@ export interface IGuild extends Document {
     reputationSystem: boolean;
     reputationEmoji: string;
     selfModeration: number;
+    levelingMsg: 'Channel' | 'DM' | string;
     selfModerationMintes: number;
     flagChannel: string;
     vptDecayXP: number;

@@ -12,6 +12,7 @@ import { getSpamScore } from '../helper/moderation/getSpamScore';
 import { getLevelFromXP, getXPScore } from '../helper/leveling/leveling';
 import ms from 'ms';
 import { removeItem } from '../helper/general/removeElement';
+import { checkTextChannel } from '../helper';
 
 module.exports = class extends Event {
     constructor() {
@@ -65,7 +66,6 @@ module.exports = class extends Event {
                     { XP: earningXP }
                 );
                 if (newLevel > previousLevel) {
-                    // TODO: Make sure this becomes customizable & give roles based on level if set
                     // Per each 5 level it'll send a message
                     if (newLevel % 5 === 0) {
                         const embed = new MessageEmbed()
@@ -74,9 +74,21 @@ module.exports = class extends Event {
                             .setDescription(`Congrats ${message.author.username}! You've reached level ${newLevel}!`)
                             .setTimestamp()
                             .setFooter(`User ID: ${message.author.id}`);
-                        await message.channel.send(embed).then((msg) => msg.delete({ timeout: 10000 }));
+                        if (guildSettings.levelingMsg === 'Channel')
+                            await message.channel.send(embed).then((msg) => msg.delete({ timeout: 10000 }));
+                        else if (guildSettings.levelingMsg === 'DM')
+                            await message.author.send(embed).then((msg) => msg.delete({ timeout: 10000 }));
+                        else if (typeof guildSettings.levelingMsg !== null) {
+                            const channel = message.guild.channels.cache.get(guildSettings.levelingMsg) || null;
+                            if (channel) {
+                                if (checkTextChannel(channel)) {
+                                    await channel.send(embed).then((msg) => msg.delete({ timeout: 10000 }));
+                                }
+                            }
+                        }
                     }
                 }
+                // TODO: Make this guild wide rather than global
                 client.xpCooldown.push(message.author.id);
                 setInterval(() => removeItem(client.xpCooldown, message.author.id), ms(levelingSettings.xpCooldown));
             }
