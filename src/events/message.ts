@@ -68,11 +68,13 @@ module.exports = class extends Event {
                     // TODO: Make sure this becomes customizable & give roles based on level if set
                     // Per each 5 level it'll send a message
                     if (newLevel % 5 === 0) {
-                        await message.channel
-                            ?.send(
-                                `${message.author.username}, You have earned ${xp} XP points and Reached level ${newLevel}!`
-                            )
-                            .then((msg) => msg.delete({ timeout: 10000 }));
+                        const embed = new MessageEmbed()
+                            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
+                            .setTitle('Level Up!')
+                            .setDescription(`Congrats ${message.author.username}! You've reached level ${newLevel}!`)
+                            .setTimestamp()
+                            .setFooter(`User ID: ${message.author.id}`);
+                        await message.channel.send(embed).then((msg) => msg.delete({ timeout: 10000 }));
                     }
                 }
                 client.xpCooldown.push(message.author.id);
