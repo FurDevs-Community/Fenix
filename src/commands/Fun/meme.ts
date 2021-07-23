@@ -2,7 +2,7 @@ import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
 import { primaryColor } from '../../settings';
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
 module.exports = class extends Command {
     /**
