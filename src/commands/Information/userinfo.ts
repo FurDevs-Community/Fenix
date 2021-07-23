@@ -4,6 +4,7 @@ import { GuildMember, Message, MessageEmbed, Role } from 'discord.js';
 import { Command } from 'nukejs';
 import { usernameResolver } from './../../helper/resolvers/usernameResolver';
 import { primaryColor } from '../../settings';
+import { User } from 'discord.js';
 
 module.exports = class extends Command {
     /**
@@ -14,7 +15,7 @@ module.exports = class extends Command {
             name: 'userinfo',
             category: 'Information',
             runIn: ['text'],
-            aliases: ['ui', 'whois'],
+            aliases: ['ui', 'whois', 'user'],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'See information on a Guild Member.',
             enabled: true,
@@ -33,12 +34,15 @@ module.exports = class extends Command {
         let user;
         const allowedPerms: any[] = [];
         const disallowedPerms: any[] = [];
-        if (!args) user = message.author;
-        else user = usernameResolver(message, args.slice(0).join(' '));
-        const member =
+        if (args[0]) {
+            await usernameResolver(message, args[0]).then((resolved: User) => {
+                user = resolved;
+            });
+        }
+        const target =
             // @ts-ignore
-            <GuildMember>message.guild?.members.cache.get(user?.id) || message.member;
-        let rolemap: any[] | any = member?.roles.cache
+            <GuildMember>message.guild.members.cache.get(user?.id) || message.member;
+        let rolemap: any[] | any = target?.roles.cache
             .sort((a: Role, b: Role) => b.position - a.position)
             .map((r) => r)
             .join(' ');
@@ -46,13 +50,13 @@ module.exports = class extends Command {
             rolemap = 'This User has Too Many Roles to be display.';
         }
         if (!rolemap) rolemap = 'No roles';
-        if (member) {
-            const joinDate = await member.joinedAt;
-            const createdDate = await member.user.createdAt;
+        if (target) {
+            const joinDate = await target.joinedAt;
+            const createdDate = await target.user.createdAt;
             const embed = new MessageEmbed()
                 .setAuthor(
-                    `User Information - ${member.user.username}`,
-                    member.user.displayAvatarURL({ dynamic: true })
+                    `User Information - ${target.user.username}`,
+                    target.user.displayAvatarURL({ dynamic: true })
                 )
                 .addField(
                     'Joined At',
@@ -62,10 +66,10 @@ module.exports = class extends Command {
                     'Registered At:',
                     `${client.moment(createdDate).format('LLLL')} (${client.moment(createdDate).fromNow()})`
                 )
-                .addField('User ID', member.id)
+                .addField('User ID', target.id)
                 .addField('Roles', rolemap)
-                .setThumbnail(member.user.avatarURL({ dynamic: true }) || member.user.defaultAvatarURL)
-                .setColor(colors(member.id))
+                .setThumbnail(target.user.avatarURL({ dynamic: true }) || target.user.defaultAvatarURL)
+                .setColor(colors(target.id))
                 .setTimestamp()
                 .setFooter(`Requester ID: ${message.author.id}`);
             const allPermissions: any[] = [
@@ -101,7 +105,7 @@ module.exports = class extends Command {
                 'MANAGE_WEBHOOKS',
                 'MANAGE_EMOJIS',
             ];
-            const perms = member.permissions.toArray();
+            const perms = target.permissions.toArray();
             perms.forEach((perm) => {
                 allowedPerms.push(allPermissions.splice(allPermissions.indexOf(perm), 1));
             });
