@@ -1,5 +1,6 @@
 // Imports
 import { Router } from 'express';
+import { IProfile, Profiles } from '../../database';
 // eslint-disable-next-line new-cap
 const router = Router();
 
@@ -16,8 +17,6 @@ const router = Router();
 
 router.get('/:guildID/settings', async (req, res) => {
     const bearer = req.headers['authorization']!.slice(7);
-    console.log('bearer');
-    console.log(bearer);
     if (bearer === process.env.BOTAPISECRET) {
         console.log('passed');
         const { guildID } = req.params;
@@ -50,6 +49,23 @@ router.get('/:guildID/settings', async (req, res) => {
         res.json({ error: 'haha you tried lmfao, go suck a duck' });
     }
 });
+
+// Public API, just in case some dev wanna add like leaderboards to the their website :)
+// router.get('/:guildID/top10', async (req, res) => {
+//     const { guildID } = req.params;
+//     const guild = req.client.guilds.cache.get(guildID);
+//     if (guild) {
+//         const members = await (await Profiles.find({ guild: guild.id })).forEach(mem => [...mems, mem])
+//         .sort((memberOne: IProfile, memberTwo: IProfile) => {
+//             return memberTwo.XP - memberOne.XP;
+//         });
+//         // members.slice(0, 10);
+//         console.log(members);
+//         res.json(members);
+//     } else {
+//         res.json({ error: 'Guild cannot be found' });
+//     }
+// });
 
 // router.post('/:guildID/user/:id/moderation/new', async (req, res) => {
 //     // TODO
