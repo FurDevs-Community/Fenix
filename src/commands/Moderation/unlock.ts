@@ -16,8 +16,7 @@ module.exports = class extends Command {
             userPerms: ['MANAGE_CHANNELS'],
             description: 'Unlock a channel',
             enabled: true,
-            extendedHelp:
-                "Unlock a channel preventing everyone with the verified role won't be able to send message.",
+            extendedHelp: "Unlock a channel preventing everyone with the verified role won't be able to send message.",
             usage: '',
         });
     }
@@ -43,11 +42,9 @@ module.exports = class extends Command {
                 'You need to set up a verified role (the verified role is like how members are able to get full access of the server)'
             );
         }
-        if (channel.permissionsFor(memberRole)?.has('SEND_MESSAGES'))
-            throw new Error('This channel is not locked');
+        if (channel.permissionsFor(memberRole)?.has('SEND_MESSAGES')) throw new Error('This channel is not locked');
         const botPosition = message.guild?.me?.roles.highest.position;
-        const verifiedRolePosition =
-            message.guild?.roles.cache.get(memberRole)?.position;
+        const verifiedRolePosition = message.guild?.roles.cache.get(memberRole)?.position;
         if (botPosition! <= verifiedRolePosition!) {
             throw new Error(
                 `The bot's highest role (${
@@ -90,4 +87,4 @@ module.exports = class extends Command {
                 });
         }
     }
-}
+};

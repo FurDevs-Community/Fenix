@@ -57,9 +57,7 @@ module.exports = class extends Command {
             .setFooter(
                 `${
                     duration
-                        ? `Ends at ${client
-                              .moment(client.moment().add(duration, 'ms'))
-                              .format('LLLL')}`
+                        ? `Ends at ${client.moment(client.moment().add(duration, 'ms')).format('LLLL')}`
                         : 'This vote will never last.'
                 }`
             );

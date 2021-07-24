@@ -32,15 +32,10 @@ module.exports = class extends Command {
         if (!message.guild) return;
         await message.delete();
         if (!args[0]) {
-            throw new Error(
-                'Please mention, provide a User ID, or username of that user you would like to kick'
-            );
+            throw new Error('Please mention, provide a User ID, or username of that user you would like to kick');
         }
         const user = await usernameResolver(message, args[0]);
-        if (
-            message.author.id === '679145795714416661' &&
-            user.id === '679145795714416661'
-        ) {
+        if (message.author.id === '679145795714416661' && user.id === '679145795714416661') {
             return message.channel.send(
                 'Mhm, Okay Vulpo\n\nhttps://cdn.discordapp.com/attachments/614909956881121308/809620338027266048/kotc.jpg'
             );
@@ -79,21 +74,14 @@ module.exports = class extends Command {
         } else {
             await mod.setReason(reason);
         }
-        if (guildSettings.rulesSpecify !== 'ignore')
-            await askRules(message, mod);
+        if (guildSettings.rulesSpecify !== 'ignore') await askRules(message, mod);
         await mod.initialize();
         await mod.kickUser();
         await mod.finish().then((discipline) => {
             const embed = new MessageEmbed()
                 .setTitle('Kick')
-                .setAuthor(
-                    `Issued By: ${discipline.issuer.tag}`,
-                    discipline.issuer.displayAvatarURL({ dynamic: true })
-                )
-                .addField(
-                    'Violator',
-                    `${discipline.user.username}(${discipline.user.id})`
-                )
+                .setAuthor(`Issued By: ${discipline.issuer.tag}`, discipline.issuer.displayAvatarURL({ dynamic: true }))
+                .addField('Violator', `${discipline.user.username}(${discipline.user.id})`)
                 .addField('Reason:', discipline.reason)
                 .setTimestamp()
                 .setFooter(`User ID: ${discipline.issuer.id}`)
@@ -101,4 +89,4 @@ module.exports = class extends Command {
             message.channel.send(embed);
         });
     }
-}
+};

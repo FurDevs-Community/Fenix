@@ -40,21 +40,10 @@ module.exports = class extends Event {
 
         if (!_.isEqual(_.sortBy(oldActivities), _.sortBy(newActivities))) {
             const activityTag = new MessageEmbed()
-                .setAuthor(
-                    `${newPresence.user?.tag}`,
-                    `${newPresence.user?.displayAvatarURL({ dynamic: true })}`
-                )
-                .setTitle(
-                    ':video_game: A member changed their presence / status.'
-                )
-                .addField(
-                    'Old Presence',
-                    `\`\`\`${JSON.stringify(oldActivities)}\`\`\``
-                )
-                .addField(
-                    'New Presence',
-                    `\`\`\`${JSON.stringify(newActivities)}\`\`\``
-                )
+                .setAuthor(`${newPresence.user?.tag}`, `${newPresence.user?.displayAvatarURL({ dynamic: true })}`)
+                .setTitle(':video_game: A member changed their presence / status.')
+                .addField('Old Presence', `\`\`\`${JSON.stringify(oldActivities)}\`\`\``)
+                .addField('New Presence', `\`\`\`${JSON.stringify(newActivities)}\`\`\``)
                 .setColor('#6610f2')
                 .setTimestamp()
                 .setFooter(`User ID: ${newPresence.user?.id}`);

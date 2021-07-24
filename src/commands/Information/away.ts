@@ -42,9 +42,7 @@ module.exports = class extends Command {
                 { awayStatus: awayMessage }
             );
         } catch (e) {
-            client.error(
-                `An error occured trying to update a away message!\n\n${e}`
-            );
+            client.error(`An error occured trying to update a away message!\n\n${e}`);
             throw Error('An error occured setting your away Status.');
         }
         const embed = new MessageEmbed()
@@ -63,4 +61,4 @@ module.exports = class extends Command {
             .setTimestamp();
         message.channel.send(embed);
     }
-}
+};

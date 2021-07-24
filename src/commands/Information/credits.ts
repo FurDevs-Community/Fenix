@@ -32,8 +32,7 @@ module.exports = class extends Command {
         const credits = [
             {
                 names: ['Sector Seven#3820', 'LostNuke#9114'],
-                contributions:
-                    'Help out with the Development of Hozol and NukeJS',
+                contributions: 'Help out with the Development of Hozol and NukeJS',
             },
             {
                 names: ['That Duck David#9502'],
@@ -43,14 +42,9 @@ module.exports = class extends Command {
         ];
 
         const creditsEmbed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('Credits - Bot Developers and Supporters')
-            .setDescription(
-                'Please give a warm thanks to the people who made this bot possible:'
-            )
+            .setDescription('Please give a warm thanks to the people who made this bot possible:')
             .setColor(primaryColor)
             .setTimestamp()
             .setFooter(
@@ -58,11 +52,8 @@ module.exports = class extends Command {
                 botCreator.displayAvatarURL({ dynamic: true })
             );
         credits.map((credit) =>
-            creditsEmbed.addField(
-                `${credit.names.map((name) => `**${name}**`).join(', ')}`,
-                credit.contributions
-            )
+            creditsEmbed.addField(`${credit.names.map((name) => `**${name}**`).join(', ')}`, credit.contributions)
         );
         await message.channel.send(creditsEmbed);
     }
-}
+};

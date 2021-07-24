@@ -20,8 +20,7 @@ module.exports = class extends Command {
             userPerms: ['MANAGE_MESSAGES'],
             description: 'Interogate a guild member',
             enabled: true,
-            extendedHelp:
-                'Creates a private channel between a member and staff for interogation.',
+            extendedHelp: 'Creates a private channel between a member and staff for interogation.',
             usage: '',
         });
     }
@@ -34,10 +33,7 @@ module.exports = class extends Command {
     async run(message: Message, args: string[], client: HozolClient) {
         if (!message.guild) return;
         const settings = await message.guild.settings();
-        if (!settings.muteRole)
-            throw new Error(
-                'You need to setup a mute role in order to use the interogate comand'
-            );
+        if (!settings.muteRole) throw new Error('You need to setup a mute role in order to use the interogate comand');
         await message.delete();
         const user = await usernameResolver(message, args[0]);
         const member = await message.guild.members.cache.get(user.id);
@@ -56,23 +52,12 @@ module.exports = class extends Command {
                 );
             }
         } else {
-            throw new Error(
-                'The user must be in the guild in order to be interogated'
-            );
+            throw new Error('The user must be in the guild in order to be interogated');
         }
-        const interogationChannel = await createChannel(
-            'interrogation',
-            message.guild,
-            [member, message.member]
-        );
+        const interogationChannel = await createChannel('interrogation', message.guild, [member, message.member]);
         const embed = new MessageEmbed()
-            .setAuthor(
-                message.author.username,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
-            .setTitle(
-                `⚠️ Interogation ${interogationChannel?.name.split('-')[1]}`
-            )
+            .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
+            .setTitle(`⚠️ Interogation ${interogationChannel?.name.split('-')[1]}`)
             .setColor(`YELLOW`)
             .setFooter(`User ID: ${message.author.id}`)
             .setDescription(
@@ -85,12 +70,10 @@ module.exports = class extends Command {
         member.roles
             .add(
                 settings.muteRole,
-                `Interogation ${
-                    interogationChannel?.name.split('-')[1]
-                } - From ${message.author.tag}`
+                `Interogation ${interogationChannel?.name.split('-')[1]} - From ${message.author.tag}`
             )
             .then(async () => {
                 await muteUser(message.guild!.id, member.user.id);
             });
     }
-}
+};

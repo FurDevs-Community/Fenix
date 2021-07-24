@@ -24,37 +24,18 @@ module.exports = class extends Command {
      * @param client
      */
     async run(message: Message, args: string[], client: Client) {
-        if (!args[0])
-            throw new Error(
-                'Provide a case you would like to see information on'
-            );
+        if (!args[0]) throw new Error('Provide a case you would like to see information on');
         const caseInfo = await Moderations.findOne({ cases: args[0] });
-        if (!caseInfo)
-            throw new Error(
-                "No cases were found. Please check if there's a typo"
-            );
+        if (!caseInfo) throw new Error("No cases were found. Please check if there's a typo");
         const embed = new MessageEmbed()
             .setTitle(`Case ${caseInfo.cases} - ${caseInfo.type}`)
-            .setAuthor(
-                message.author.tag,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
-            .addField(
-                `Issuer`,
-                `${client.users.cache.get(caseInfo.issuer)?.username} (${
-                    caseInfo.issuer
-                })`
-            )
-            .addField(
-                `User`,
-                `${client.users.cache.get(caseInfo.userID)?.username} (${
-                    caseInfo.userID
-                })`
-            )
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
+            .addField(`Issuer`, `${client.users.cache.get(caseInfo.issuer)?.username} (${caseInfo.issuer})`)
+            .addField(`User`, `${client.users.cache.get(caseInfo.userID)?.username} (${caseInfo.userID})`)
             .addField(`Rules Violated`, caseInfo.rules.join(' '))
             .setColor(primaryColor)
             .addField(`Reason`, caseInfo.reason)
             .setFooter(`User ID: ${message.author.id}`);
         message.channel.send(embed);
     }
-}
+};

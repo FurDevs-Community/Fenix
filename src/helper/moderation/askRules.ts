@@ -16,14 +16,11 @@ export async function askRules(message: Message, discipline: IssueDiscipline) {
         }`
     );
 
-    const rulesSpecified = await msg.channel.awaitMessages(
-        (m) => m.author == message.author,
-        {
-            max: 1,
-            time: 1000 * 60 * 10,
-            errors: ['time'],
-        }
-    );
+    const rulesSpecified = await msg.channel.awaitMessages((m) => m.author == message.author, {
+        max: 1,
+        time: 1000 * 60 * 10,
+        errors: ['time'],
+    });
     if (rulesSpecified) {
         const rules = rulesSpecified.first()?.content.split(' ');
         if (rules![0].toLowerCase() === 'none') {
@@ -41,20 +38,15 @@ export async function askRules(message: Message, discipline: IssueDiscipline) {
                         }`
                     );
 
-                    const rulesSpecified = await msg.channel.awaitMessages(
-                        (m) => m.author == message.author,
-                        {
-                            max: 1,
-                            time: 1000 * 60 * 10,
-                            errors: ['time'],
-                        }
-                    );
+                    const rulesSpecified = await msg.channel.awaitMessages((m) => m.author == message.author, {
+                        max: 1,
+                        time: 1000 * 60 * 10,
+                        errors: ['time'],
+                    });
                     const rules = rulesSpecified.first()?.content.split(' ');
                     if (rules && rules![0].toLowerCase() !== 'none') {
                         incorrect = false;
-                        rules.forEach(
-                            async (rule) => await discipline.addRules(rule)
-                        );
+                        rules.forEach(async (rule) => await discipline.addRules(rule));
                         return;
                     }
                 }
@@ -87,14 +79,11 @@ export async function askReason(message: Message, discipline: IssueDiscipline) {
                 : 'You can provide no reason or the default reason by saying "none" to skip'
         }`
     );
-    const reasonProvided = await msg.channel.awaitMessages(
-        (m) => m.author == message.author,
-        {
-            max: 1,
-            time: 1000 * 60 * 10,
-            errors: ['time'],
-        }
-    );
+    const reasonProvided = await msg.channel.awaitMessages((m) => m.author == message.author, {
+        max: 1,
+        time: 1000 * 60 * 10,
+        errors: ['time'],
+    });
     const reason = reasonProvided.first()?.content;
     if (reason === 'none') {
         await msg.delete();
@@ -110,14 +99,11 @@ export async function askReason(message: Message, discipline: IssueDiscipline) {
                             : 'You can provide no reason or the default reason by saying "none" to skip'
                     }`
                 );
-                const reasonProvided = await msg.channel.awaitMessages(
-                    (m) => m.author == message.author,
-                    {
-                        max: 1,
-                        time: 1000 * 60 * 10,
-                        errors: ['time'],
-                    }
-                );
+                const reasonProvided = await msg.channel.awaitMessages((m) => m.author == message.author, {
+                    max: 1,
+                    time: 1000 * 60 * 10,
+                    errors: ['time'],
+                });
                 const reason = reasonProvided.first()?.content;
                 if (reason && reason !== 'none') {
                     incorrect = false;
@@ -135,10 +121,7 @@ export async function askReason(message: Message, discipline: IssueDiscipline) {
     }
 }
 
-export async function askQuestion(
-    message: Message,
-    question: string | MessageEmbed
-) {
+export async function askQuestion(message: Message, question: string | MessageEmbed) {
     const msg = await message.channel.send(question);
     const response = await msg.channel
         .awaitMessages((m) => m.author == message.author, {
@@ -147,9 +130,7 @@ export async function askQuestion(
             errors: ['time'],
         })
         .catch(() => {
-            throw new Error(
-                'No response in 10 minutes was provided, cancelling'
-            );
+            throw new Error('No response in 10 minutes was provided, cancelling');
             msg.delete();
         });
 

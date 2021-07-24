@@ -14,9 +14,7 @@ module.exports = class extends Inhibitor {
         const settings = await message.guild.settings();
         const disableCommands = settings.disabledCommands;
         if (disableCommands.indexOf(command.name) !== -1) {
-            throw new Error(
-                'This command is disabled. You can re-enable it by using the enable command'
-            );
+            throw new Error('This command is disabled. You can re-enable it by using the enable command');
         }
     }
 };

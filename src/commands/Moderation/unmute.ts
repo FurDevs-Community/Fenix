@@ -48,24 +48,14 @@ module.exports = class extends Command {
         }
         const memberSettings = await member.settings();
         console.log(member.roles.cache.has(settings['muteRole']));
-        if (
-            !memberSettings.muted &&
-            !member.roles.cache.has(settings['muteRole'])
-        ) {
+        if (!memberSettings.muted && !member.roles.cache.has(settings['muteRole'])) {
             throw new Error(`The user is not muted`);
         }
         let reason: string | undefined;
         if (settings.reasonSpecify !== 'ignore') {
             let correct = false;
             while (!correct) {
-                reason = <string>(
-                    (<unknown>(
-                        await askQuestion(
-                            message,
-                            `Why should the user be unumuted`
-                        )
-                    ))
-                );
+                reason = <string>(<unknown>await askQuestion(message, `Why should the user be unumuted`));
                 if (reason && reason !== 'none') {
                     correct = true;
                 }
@@ -78,20 +68,12 @@ module.exports = class extends Command {
         const result = await removeRole(
             member,
             'muteRole',
-            `${
-                reason
-                    ? reason
-                    : 'No reason was provided; contact ' + message.author.tag
-            }`
+            `${reason ? reason : 'No reason was provided; contact ' + message.author.tag}`
         );
-        if (!result)
-            throw new Error("Couldn't removed the mute role from that use");
+        if (!result) throw new Error("Couldn't removed the mute role from that use");
         const embed = new MessageEmbed()
             .setTitle('Unmute')
-            .setAuthor(
-                `Unmuted By: ${message.author.tag}`,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
+            .setAuthor(`Unmuted By: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
             .addField('Violator', `${member.user.username}(${member.user.id})`)
             .addField('Reason:', reason)
             .setTimestamp()

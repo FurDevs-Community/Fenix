@@ -13,11 +13,7 @@ export async function cron(client: HozolClient) {
             .then(() => {
                 client.debug('Loaded Schedule: ' + record.uid);
             })
-            .catch((e) =>
-                client.error(
-                    'Problem Loading Schedule: ' + record.uid + 'Error:\n' + e
-                )
-            );
+            .catch((e) => client.error('Problem Loading Schedule: ' + record.uid + 'Error:\n' + e));
     });
 
     const SYSMIN = await Schedules.findOne({ uid: `SYS-MIN` });
@@ -34,11 +30,7 @@ export async function cron(client: HozolClient) {
                 .then(() => {
                     client.debug('Loaded Schedule: ' + data.uid);
                 })
-                .catch((e) =>
-                    client.error(
-                        'Problem Loading Schedule: ' + data.uid + 'Error:\n' + e
-                    )
-                );
+                .catch((e) => client.error('Problem Loading Schedule: ' + data.uid + 'Error:\n' + e));
         });
     }
 
@@ -60,14 +52,7 @@ export async function cron(client: HozolClient) {
                     .then(() => {
                         client.debug('Loaded Schedule: ' + data.uid);
                     })
-                    .catch((e) =>
-                        client.error(
-                            'Problem Loading Schedule: ' +
-                                data.uid +
-                                'Error:\n' +
-                                e
-                        )
-                    );
+                    .catch((e) => client.error('Problem Loading Schedule: ' + data.uid + 'Error:\n' + e));
             });
         }
     });

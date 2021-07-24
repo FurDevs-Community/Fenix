@@ -19,8 +19,7 @@ module.exports = class extends Event {
         if (
             newState.member &&
             newState.channel?.id &&
-            (oldState.member?.partial ||
-                oldState.channel?.id !== newState.channel.id)
+            (oldState.member?.partial || oldState.channel?.id !== newState.channel.id)
         ) {
             // Check if the member is muted. If so, kick them out of the voice channel.
             // TODO: Use muted helper when developed
@@ -31,12 +30,7 @@ module.exports = class extends Event {
 
             // Check if the member has a restriction on voice channel use. If so, kick them.
             const memberModeration = (await newState.member.moderation) as any;
-            if (
-                await checkActions(
-                    memberModeration,
-                    'Cannot use voice channels'
-                )
-            ) {
+            if (await checkActions(memberModeration, 'Cannot use voice channels')) {
                 newState.kick('Use is not allowed to use voice channels');
 
                 // Add some spam score to prevent the potential of someone spamming the general channel by means of quickly and repeatedly trying to join a voice channel.

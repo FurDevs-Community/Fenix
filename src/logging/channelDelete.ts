@@ -20,24 +20,19 @@ module.exports = class extends Event {
         // Gives the audit log a second to process
         setTimeout(async () => {
             // makes a varaiable containing the 5 audit logs that relates to deleting a channel
-            const fetchedLogs: GuildAuditLogs =
-                await channel.guild.fetchAuditLogs({
-                    limit: 5,
-                    type: 'CHANNEL_DELETE',
-                });
+            const fetchedLogs: GuildAuditLogs = await channel.guild.fetchAuditLogs({
+                limit: 5,
+                type: 'CHANNEL_DELETE',
+            });
             // Get the audit log channel that has the same id as the one tht was deleted
-            const audits = fetchedLogs.entries.find(
-                (entry: any) => entry.target?.id === channel.id
-            );
+            const audits = fetchedLogs.entries.find((entry: any) => entry.target?.id === channel.id);
             // If the text channel is a text channel
             if (channel.guild && channel.type === 'text') {
                 // Type Guard
                 if (!checkTextChannel(channel)) return;
-                let data = `ARCHIVE (cached messages only) of deleted text channel ${
-                    channel.name
-                }, ID ${channel.id}\nCreated on ${client
-                    .moment(channel.createdAt)
-                    .format()}\nDeleted on ${client.moment().format()}\n\n`;
+                let data = `ARCHIVE (cached messages only) of deleted text channel ${channel.name}, ID ${
+                    channel.id
+                }\nCreated on ${client.moment(channel.createdAt).format()}\nDeleted on ${client.moment().format()}\n\n`;
 
                 // Iterate through the messages, sorting by ID, and add them to data
                 const messages = channel.messages.cache;
@@ -49,9 +44,7 @@ module.exports = class extends Event {
                     .map((message) => {
                         // Write each message to data
                         data += `+++Message by ${message.author.username}#${message.author.discriminator} (${message.author.id}), ID ${message.id}+++\n`;
-                        data += `-Time: ${client
-                            .moment(message.createdAt)
-                            .format()}\n`;
+                        data += `-Time: ${client.moment(message.createdAt).format()}\n`;
                         // Write attachment URLs
                         message.attachments.array().map((attachment) => {
                             data += `-Attachment: ${attachment.url}\n`;
@@ -72,9 +65,7 @@ module.exports = class extends Event {
                     .setTitle(':wastebasket: A text channel was deleted.')
                     .addField(
                         'Deleted Channel',
-                        `${channel.parent ? `${channel.parent.name} => ` : ''}${
-                            channel.name
-                        } (${channel.id})`
+                        `${channel.parent ? `${channel.parent.name} => ` : ''}${channel.name} (${channel.id})`
                     )
                     .setColor('#d81b60')
                     .setTimestamp();
@@ -98,9 +89,7 @@ module.exports = class extends Event {
                     .setTitle(':wastebasket: A channel was deleted.')
                     .addField(
                         'Deleted Channel',
-                        `${channel.parent ? `${channel.parent.name} => ` : ''}${
-                            channel.name
-                        } (${channel.id})`
+                        `${channel.parent ? `${channel.parent.name} => ` : ''}${channel.name} (${channel.id})`
                     )
                     .setColor('#d81b60')
                     .setTimestamp();

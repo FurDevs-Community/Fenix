@@ -33,9 +33,7 @@ module.exports = class extends Event {
                 limit: 5,
                 type: 'MESSAGE_DELETE',
             });
-            const auditLog = fetchedLogs.entries.find(
-                (entry: any) => entry.target.id === message.id
-            );
+            const auditLog = fetchedLogs.entries.find((entry: any) => entry.target.id === message.id);
             if (!checkTextChannel(message.channel)) return;
 
             // TODO
@@ -53,42 +51,26 @@ module.exports = class extends Event {
             const display = new MessageEmbed()
                 .setTitle(':wastebasket: A message was deleted')
                 .setDescription(`${message.cleanContent}`)
-                .setAuthor(
-                    `${message.author.tag}`,
-                    `${message.author.displayAvatarURL({ dynamic: true })}`
-                )
+                .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
                 .setColor('#d81b60')
                 .setTimestamp()
                 .setFooter(
-                    `Channel: ${
-                        message.channel.parent
-                            ? `${message.channel.parent.name} -> `
-                            : ''
-                    }${message.channel.name} | Channel ID: ${
-                        message.channel.id
-                    } | Message ID: ${message.id}`
+                    `Channel: ${message.channel.parent ? `${message.channel.parent.name} -> ` : ''}${
+                        message.channel.name
+                    } | Channel ID: ${message.channel.id} | Message ID: ${message.id}`
                 );
             if (auditLog) {
                 display.setFooter(
-                    `Deleted by ${auditLog.executor.tag} | User ID: ${
-                        auditLog.executor.id
-                    } | Channel: ${
-                        message.channel.parent
-                            ? `${message.channel.parent.name} -> `
-                            : ''
-                    }${message.channel.name} | Channel ID: ${
-                        message.channel.id
-                    } | Message ID: ${message.id}`,
+                    `Deleted by ${auditLog.executor.tag} | User ID: ${auditLog.executor.id} | Channel: ${
+                        message.channel.parent ? `${message.channel.parent.name} -> ` : ''
+                    }${message.channel.name} | Channel ID: ${message.channel.id} | Message ID: ${message.id}`,
                     `${auditLog.executor.displayAvatarURL({ dynamic: true })}`
                 );
             }
 
             // Write attachment URLs
             message.attachments.array().map((attachment) => {
-                display.addField(
-                    'Contained Attachment',
-                    JSON.stringify(attachment)
-                );
+                display.addField('Contained Attachment', JSON.stringify(attachment));
             });
             // Write embeds as JSON
             message.embeds.map((embed) => {

@@ -31,11 +31,7 @@ module.exports = class extends Event {
 
         // First, update spam score if new score is bigger than old score. Do NOT update if new score is less than old score; we don't want to lower it.
         try {
-            if (
-                message.type === 'DEFAULT' &&
-                typeof message.member !== 'undefined' &&
-                message.member !== null
-            ) {
+            if (message.type === 'DEFAULT' && typeof message.member !== 'undefined' && message.member !== null) {
                 // var oldscore = old.spamScore || message.spamScore;
                 // var newscore = message.spamScore;
                 // if (newscore > oldscore) {
@@ -79,23 +75,14 @@ module.exports = class extends Event {
 
         const display = new MessageEmbed()
             .setTitle(':pencil: A message was edited')
-            .setDescription(
-                `${old.partial ? 'Unknown Message' : old.cleanContent}`
-            )
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setDescription(`${old.partial ? 'Unknown Message' : old.cleanContent}`)
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setColor('#6610f2')
             .setTimestamp()
             .setFooter(
-                `Channel: ${
-                    message.channel.parent
-                        ? `${message.channel.parent.name} -> `
-                        : ''
-                }${message.channel.name} | Channel ID: ${
-                    message.channel.id
-                } | Message ID: ${message.id}`
+                `Channel: ${message.channel.parent ? `${message.channel.parent.name} -> ` : ''}${
+                    message.channel.name
+                } | Channel ID: ${message.channel.id} | Message ID: ${message.id}`
             );
 
         let changes = false;
@@ -116,20 +103,14 @@ module.exports = class extends Event {
 
         oldAttachments.map((attachment) => {
             if (newAttachments.indexOf(attachment.url) === -1) {
-                display.addField(
-                    'Attachment removed',
-                    JSON.stringify(attachment)
-                );
+                display.addField('Attachment removed', JSON.stringify(attachment));
                 changes = true;
             }
         });
 
         newAttachments.map((attachment) => {
             if (oldAttachments.indexOf(attachment.url) === -1) {
-                display.addField(
-                    'Attachment added',
-                    JSON.stringify(attachment)
-                );
+                display.addField('Attachment added', JSON.stringify(attachment));
                 changes = true;
             }
         });
@@ -164,10 +145,7 @@ module.exports = class extends Event {
         });
 
         // Get the differences between old and new content
-        const diff = jsdiff.diffSentences(
-            old.partial ? '' : old.cleanContent,
-            message.cleanContent
-        );
+        const diff = jsdiff.diffSentences(old.partial ? '' : old.cleanContent, message.cleanContent);
         diff.map(async function (part: any) {
             let content;
             if (part.value.length > 1024) {

@@ -27,15 +27,9 @@ module.exports = class extends Event {
 
         // Send a join log
         const joinEmbed = new MessageEmbed()
-            .setAuthor(
-                `${member.user.tag}`,
-                `${member.user.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${member.user.tag}`, `${member.user.displayAvatarURL({ dynamic: true })}`)
             .setTitle(':tada: Member joined the guild')
-            .addField(
-                'Account Created On',
-                `${client.moment(member.user.createdAt).format('LLLL Z')}`
-            )
+            .addField('Account Created On', `${client.moment(member.user.createdAt).format('LLLL Z')}`)
             .addField('Moderation Logs on Record', `${modLogs.length}`)
             .setFooter(`User ID: ${member.user.id}`)
             .setColor('#00ff00')
@@ -84,13 +78,9 @@ module.exports = class extends Event {
                     channel.topic.includes(`${member.id}|`)
             );
             if (!welcomeChannel) {
-                welcomeChannel = await createChannel('welcome', member.guild, [
-                    member,
-                ]);
+                welcomeChannel = await createChannel('welcome', member.guild, [member]);
                 // @ts-ignore
-                welcomeChannel?.send(
-                    `<@${member.id}>, ${guildSettings.welcomeIncidentText}`
-                );
+                welcomeChannel?.send(`<@${member.id}>, ${guildSettings.welcomeIncidentText}`);
             } else {
                 console.dir(welcomeChannel);
             }
@@ -181,12 +171,7 @@ module.exports = class extends Event {
   }
   */
 
-        if (
-            client
-                .moment()
-                .subtract(7, 'days')
-                .isBefore(client.moment(member.user.createdAt))
-        ) {
+        if (client.moment().subtract(7, 'days').isBefore(client.moment(member.user.createdAt))) {
             // await send(
             //     "flagLogChannel",
             //     member.guild,

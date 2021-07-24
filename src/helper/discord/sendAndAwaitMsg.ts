@@ -2,10 +2,7 @@ import { Message } from 'discord.js';
 
 export function check(item: Message) {
     if (!item) return false;
-    else if (
-        item.content.toLowerCase() == 'cancel' ||
-        item.content.toLowerCase() === 'stop'
-    ) {
+    else if (item.content.toLowerCase() == 'cancel' || item.content.toLowerCase() === 'stop') {
         return false;
     } else {
         return true;

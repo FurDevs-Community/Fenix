@@ -33,9 +33,7 @@ module.exports = class extends Command {
         await message.delete();
         if (!message.guild) return;
         if (!args[0])
-            throw new Error(
-                "Hey please specify a username, mention or the user's id of whoever you're looking at"
-            );
+            throw new Error("Hey please specify a username, mention or the user's id of whoever you're looking at");
         const user = await userResolver(client, args[0]);
         const moderations = await user.guildModeration(message.guild.id);
         const embed = new MessageEmbed();
@@ -43,9 +41,7 @@ module.exports = class extends Command {
         if (moderations.length > 0) {
             moderations.map((moderation) => {
                 embed.addField(
-                    `**[${
-                        moderation.appealed ? 'APPEALED' : 'NOT APPEALED'
-                    }]**`,
+                    `**[${moderation.appealed ? 'APPEALED' : 'NOT APPEALED'}]**`,
                     `\nCase: **${moderation.cases}**\nRules Violated: ${moderation.rules}\nReason: ${moderation.reason}`
                 );
             });
@@ -55,10 +51,7 @@ module.exports = class extends Command {
                 'This user does not have any Moderation Actions Logged into the bot'
             );
         }
-        embed
-            .setColor(primaryColor)
-            .setTimestamp()
-            .setFooter(`User ID: ${message.author.id}`);
+        embed.setColor(primaryColor).setTimestamp().setFooter(`User ID: ${message.author.id}`);
         message.channel.send(embed);
     }
 };

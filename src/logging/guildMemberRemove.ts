@@ -35,34 +35,17 @@ module.exports = class extends Event {
                 limit: 5,
                 type: 'MEMBER_KICK',
             });
-            const auditLog = fetchedLogs.entries.find(
-                (entry: any) => entry.target?.id === member.id
-            );
+            const auditLog = fetchedLogs.entries.find((entry: any) => entry.target?.id === member.id);
 
             // If the kick was executed by the bot
             if (auditLog && auditLog.executor.id === client.user?.id) {
                 const kickedEmbedBot = new MessageEmbed()
-                    .setAuthor(
-                        `${client.user?.tag}`,
-                        `${client.user?.displayAvatarURL({ dynamic: true })}`
-                    )
+                    .setAuthor(`${client.user?.tag}`, `${client.user?.displayAvatarURL({ dynamic: true })}`)
                     .setTitle(':athletic_shoe: User kicked')
-                    .setDescription(
-                        'A member was kicked from the guild by the bot.'
-                    )
+                    .setDescription('A member was kicked from the guild by the bot.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Kicked',
-                        `<@${member.id}> (${member.user.tag} / ${member.id})`
-                    )
-                    .addField(
-                        'Reason for Kick',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'Unspecified or Unknown'
-                        }`
-                    )
+                    .addField('User Kicked', `<@${member.id}> (${member.user.tag} / ${member.id})`)
+                    .addField('Reason for Kick', `${auditLog.reason ? auditLog.reason : 'Unspecified or Unknown'}`)
                     .setFooter('The kick was executed by the bot')
                     .setTimestamp();
                 await send('kickLogChannel', member.guild, '', {
@@ -80,18 +63,8 @@ module.exports = class extends Event {
                     .setTitle(':athletic_shoe: User kicked')
                     .setDescription('A member was kicked from the guild.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Kicked',
-                        `<@${member.id}> (${member.user.tag} / ${member.id})`
-                    )
-                    .addField(
-                        'Reason for Kick',
-                        `${
-                            auditLog.reason
-                                ? auditLog.reason
-                                : 'Unspecified or Unknown'
-                        }`
-                    )
+                    .addField('User Kicked', `<@${member.id}> (${member.user.tag} / ${member.id})`)
+                    .addField('Reason for Kick', `${auditLog.reason ? auditLog.reason : 'Unspecified or Unknown'}`)
                     .setFooter(`Executor ID: ${auditLog.executor.id}`)
                     .setTimestamp();
                 await send('kickLogChannel', member.guild, '', {
@@ -104,10 +77,7 @@ module.exports = class extends Event {
                     .setTitle(':athletic_shoe: User kicked')
                     .setDescription('A member was kicked from the guild.')
                     .setColor('#DC3545')
-                    .addField(
-                        'User Kicked',
-                        `<@${member.id}> (${member.user.tag} / ${member.id})`
-                    )
+                    .addField('User Kicked', `<@${member.id}> (${member.user.tag} / ${member.id})`)
                     .addField('Reason for Kick', 'Unknown Reason')
                     .setTimestamp();
                 await send('kickLogChannel', member.guild, '', {
@@ -118,18 +88,12 @@ module.exports = class extends Event {
 
         // send a log to the channel
         const leaveEmbed = new MessageEmbed()
-            .setAuthor(
-                `${member.user.tag}`,
-                `${member.user.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${member.user.tag}`, `${member.user.displayAvatarURL({ dynamic: true })}`)
             .setTitle(':wave: Member left the guild.')
             .addField(
                 'Time Spent in Guild',
                 `${client.moment
-                    .duration(
-                        client.moment().diff(client.moment(member.joinedAt)),
-                        'milliseconds'
-                    )
+                    .duration(client.moment().diff(client.moment(member.joinedAt)), 'milliseconds')
                     .format()}`
             )
             .addField('Moderation Logs on Record', `${modLogs.length}`)
@@ -195,9 +159,7 @@ module.exports = class extends Event {
                     channel.parentID === guildSettings.incidentsCategory &&
                     channel.topic.includes(`${member.id}|`)
             )
-            .map((channel: any) =>
-                channel.send(`:wave: Member <@${member.id}> left the guild.`)
-            );
+            .map((channel: any) => channel.send(`:wave: Member <@${member.id}> left the guild.`));
 
         // Post in general if the member left within 1 hour of joining
         // TODO
