@@ -93,6 +93,7 @@ module.exports = class extends Event {
             .addField(
                 'Time Spent in Guild',
                 `${client.moment
+                    // @ts-expect-error
                     .duration(client.moment().diff(client.moment(member.joinedAt)), 'milliseconds')
                     .format()}`
             )
