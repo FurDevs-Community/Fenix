@@ -15,7 +15,8 @@ import winston, { Logger } from 'winston';
 export default class HozolClient extends Client {
     public schedules: any;
     public mongo: Connection;
-    public moment: any;
+    // @ts-ignore
+    public moment(inp?: moment.MomentInput, strict?: boolean | undefined): moment.Moment;
     public port: Number;
     public loader: CommandLoader;
     public commands: Collection<string, Command>;
@@ -97,6 +98,7 @@ export default class HozolClient extends Client {
         // Login the Bot
         this.login(process.env.TOKEN).catch((e) => this.error('Problems Running the bot!: ' + e));
 
+        // @ts-expect-error
         this.moment.tz.setDefault('UTC');
 
         this.on('rateLimit', () => {

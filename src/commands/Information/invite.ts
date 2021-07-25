@@ -10,7 +10,7 @@ module.exports = class extends Command {
     constructor(file: any) {
         super(file, {
             name: 'invite',
-            category: 'Information',
+            category: 'Information,
             runIn: ['text'],
             aliases: [],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
