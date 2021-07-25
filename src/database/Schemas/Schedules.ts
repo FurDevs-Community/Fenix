@@ -32,12 +32,13 @@ const ScheduleSchema = new Schema({
 
 export interface ISchedule extends Document {
     uid: string;
-    task: 'removeMute' | 'removeBan' | 'minuteTask' | 'updateStats' | 'SYSMIN' | 'voteEnd';
+    task: 'removeMute' | 'removeBan' | 'minuteTask' | 'updateStats' | 'SYSMIN' | 'voteEnd' | 'reminder';
     data: {
         user: string;
         guild: string;
         messageID?: string;
         channel?: string;
+        reminder?: string;
     };
     lastRun: string;
     nextRun: string;

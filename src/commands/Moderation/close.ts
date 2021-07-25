@@ -1,14 +1,7 @@
 import { Client } from 'nukejs';
 import { Message, TextChannel } from 'discord.js';
 import { Command } from 'nukejs';
-const types = [
-    'support',
-    'interrogation',
-    'discipline',
-    'inactive',
-    'inquiry',
-    'welcome',
-];
+const types = ['support', 'interrogation', 'discipline', 'inactive', 'inquiry', 'welcome'];
 
 module.exports = class extends Command {
     constructor(file: any) {
@@ -31,13 +24,11 @@ module.exports = class extends Command {
      * @param client
      */
     async run(message: Message, args: string[], client: Client) {
-        if (
-            types.includes((message.channel as TextChannel).name.split('-')[0])
-        ) {
+        if (types.includes((message.channel as TextChannel).name.split('-')[0])) {
             message.channel.send(`Closing Incidents Channel...`);
             await message.channel.delete();
         } else {
             throw new Error('You can only close an incidents channel');
         }
     }
-}
+};

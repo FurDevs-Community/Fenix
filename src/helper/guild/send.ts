@@ -37,14 +37,10 @@ export async function send(
         const channel = guild.channels.resolve(settings[type]);
         // TODO: Figure out a way the user can get this message
         if (!channel) {
-            return console.error(
-                "Tried sending something to channel, but was removed or don't have access to it"
-            );
+            return console.error("Tried sending something to channel, but was removed or don't have access to it");
         }
         if (!checkTextChannel(channel)) return;
-        return await channel
-            .send(content, options)
-            .catch((err) => console.error(err));
+        return await channel.send(content, options).catch((err) => console.error(err));
     } else {
         throw new Error('This function can be only operated in Guilds');
     }

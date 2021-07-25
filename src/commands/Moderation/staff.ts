@@ -18,11 +18,9 @@ module.exports = class extends Command {
             aliases: ['inquiry'],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
             userPerms: [],
-            description:
-                'Discord Staff Command to create a private text channel between staff member and member(s)',
+            description: 'Discord Staff Command to create a private text channel between staff member and member(s)',
             enabled: true,
-            extendedHelp:
-                'Discord Staff Command to create a private text channel between staff member and member(s).',
+            extendedHelp: 'Discord Staff Command to create a private text channel between staff member and member(s).',
             usage: '',
         });
     }
@@ -37,10 +35,7 @@ module.exports = class extends Command {
         await message.delete();
         const moderation = await message.member!.moderation();
         const guild: any = message.guild;
-        const hasActions = await checkActions(
-            moderation,
-            'Cannot use staff command'
-        );
+        const hasActions = await checkActions(moderation, 'Cannot use staff command');
         if (moderation.length > 0 && hasActions) {
             throw new Error(
                 `You are not allowed to use the staff command due to past abuse. Please contact a staff member via DMs instead.`
@@ -52,38 +47,28 @@ module.exports = class extends Command {
 
             // Count open channels if not staff and error if they already have 3 channels open
             if (!isStaff) {
-                const channels: any = message.guild?.channels.cache.filter(
-                    (channel): any => {
-                        if (!checkTextChannel(channel)) return;
-                        channel.type === 'text' &&
-                            guildSettings?.incidentsCategory &&
-                            channel.parent &&
-                            channel.parent.id ===
-                                guildSettings.incidentsCategory &&
-                            channel.name.startsWith('inquiry-') &&
-                            channel.topic?.includes(`${message.author.id}|`);
-                    }
-                );
+                const channels: any = message.guild?.channels.cache.filter((channel): any => {
+                    if (!checkTextChannel(channel)) return;
+                    channel.type === 'text' &&
+                        guildSettings?.incidentsCategory &&
+                        channel.parent &&
+                        channel.parent.id === guildSettings.incidentsCategory &&
+                        channel.name.startsWith('inquiry-') &&
+                        channel.topic?.includes(`${message.author.id}|`);
+                });
 
                 if (channels?.length > 2) {
                     // await sails.helpers.spam.add(message.member, 20, message);
-                    throw new Error(
-                        'You may only have up to 3 staff/inquiry channels open at a time.'
-                    );
+                    throw new Error('You may only have up to 3 staff/inquiry channels open at a time.');
                 }
             }
 
             // Create the channel
-            const channel = await createChannel('inquiry', guild, [
-                message.member,
-            ]);
+            const channel = await createChannel('inquiry', guild, [message.member]);
 
             // Create the intro message
             const inquiryIntro = new MessageEmbed()
-                .setAuthor(
-                    message.author.username,
-                    message.author.displayAvatarURL({ dynamic: true })
-                )
+                .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
                 .setTitle(`🗨️ Inquiry ${channel?.name.split('-')[1]}`)
                 .setColor(`BLUE`)
                 .setFooter(`User ID: ${message.author.id}`);
@@ -104,4 +89,4 @@ module.exports = class extends Command {
             }
         }
     }
-}
+};

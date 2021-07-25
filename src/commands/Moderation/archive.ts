@@ -34,9 +34,7 @@ module.exports = class extends Command {
         const currentChannel: Channel = message.channel;
         if (!checkTextChannel(currentChannel)) return;
         const newChannel: TextChannel = await currentChannel.clone({
-            reason:
-                'Channel archive - Responsible Person : ' +
-                message.author.username,
+            reason: 'Channel archive - Responsible Person : ' + message.author.username,
         });
         await newChannel.setPosition(currentChannel.position);
         // Remove all permissions; set deny on everyone
@@ -58,19 +56,14 @@ module.exports = class extends Command {
         // Send a cloned channel message
         const clonedEmbed = new MessageEmbed()
             .setTitle(':exclamation: Archive - Original channel was cloned')
-            .setDescription(
-                'This is a cloned channel; the original channel by the same name has been archived.'
-            )
+            .setDescription('This is a cloned channel; the original channel by the same name has been archived.')
             .setColor(primaryColor)
             .setTimestamp();
         await newChannel.send(clonedEmbed);
 
         // Send a notice in the channel archived
         const archivedEmbed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle(':exclamation: Archive - This channel is Archived')
             .setDescription(
                 `This channel has been archived; all permissions were removed and everyone has "deny" for read messages.
@@ -79,9 +72,7 @@ module.exports = class extends Command {
             )
             .setColor(primaryColor)
             .setTimestamp()
-            .setFooter(
-                `Requester ID: ${message.author.id} | New Channel ID: ${newChannel.id}`
-            );
+            .setFooter(`Requester ID: ${message.author.id} | New Channel ID: ${newChannel.id}`);
         return currentChannel.send(archivedEmbed);
     }
 };

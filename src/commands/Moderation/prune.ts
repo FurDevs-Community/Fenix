@@ -17,11 +17,9 @@ module.exports = class extends Command {
             aliases: ['purge', 'clear'],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
             userPerms: ['MANAGE_MESSAGES'],
-            description:
-                'Discord Staff Command to create a private text channel between staff member and member(s)',
+            description: 'Discord Staff Command to create a private text channel between staff member and member(s)',
             enabled: true,
-            extendedHelp:
-                'Discord Staff Command to create a private text channel between staff member and member(s).',
+            extendedHelp: 'Discord Staff Command to create a private text channel between staff member and member(s).',
             usage: '',
         });
     }
@@ -37,9 +35,7 @@ module.exports = class extends Command {
         const count = args[0];
         if (count) {
             if (parseInt(count) === 0 || parseInt(count) > 1000) {
-                throw new Error(
-                    "Please provide a number that's Between 0 and 1000"
-                );
+                throw new Error("Please provide a number that's Between 0 and 1000");
             }
         }
 
@@ -47,10 +43,7 @@ module.exports = class extends Command {
 
         // Initialize
         const embed1 = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setColor('BLUE')
             .setTitle('Prune - Pruning...')
             .setTimestamp()
@@ -63,10 +56,7 @@ module.exports = class extends Command {
 
         // Edit with complete message
         const embed2 = new MessageEmbed()
-            .setAuthor(
-                `${message.author.tag}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.tag}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('Prune - Messages Pruned!')
             .setTimestamp()
             .setColor(errors > 0 ? 'YELLOW' : 'GREEN')
@@ -74,24 +64,16 @@ module.exports = class extends Command {
             .setFooter(`User ID: ${message.author.id} | Errors: ${errors}`);
         return (await msg.edit(embed2)).delete({ timeout: 15000 });
     }
-}
+};
 
-function getFilter(
-    client: HozolClient,
-    message: Message,
-    filter: string,
-    user: any
-) {
+function getFilter(client: HozolClient, message: Message, filter: string, user: any) {
     switch (filter) {
         // Here we use Regex to check for the diffrent types of prune options
         case 'link':
-            return (mes: Message) =>
-                /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
+            return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
         case 'invite':
             return (mes: Message) =>
-                /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discord\.com\/invite)\/.+/.test(
-                    mes.content
-                );
+                /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discord\.com\/invite)\/.+/.test(mes.content);
         case 'bots':
             return (mes: Message) => mes.author.bot;
         case 'you':
@@ -110,12 +92,7 @@ function getFilter(
 }
 
 // Main process function for executing the prunes in iteration until done.
-function process(
-    client: HozolClient,
-    message: Message,
-    limit: any,
-    filter: string
-) {
+function process(client: HozolClient, message: Message, limit: any, filter: string) {
     return new Promise((resolve) => {
         let iteration = 0;
         let before = message.id;
@@ -123,44 +100,35 @@ function process(
         // eslint-disable-next-line no-var
         var fn = () => {
             // @ts-ignore
-            _process(client, message, limit, filter, before).then(
-                (filtered: any) => {
-                    errors += filtered[2];
-                    if (filtered[0] <= 0) limit = -1;
-                    // @ts-ignore
-                    before = filtered[1];
-                    limit -= filtered[0];
-                    iteration++;
+            _process(client, message, limit, filter, before).then((filtered: any) => {
+                errors += filtered[2];
+                if (filtered[0] <= 0) limit = -1;
+                // @ts-ignore
+                before = filtered[1];
+                limit -= filtered[0];
+                iteration++;
 
-                    if (limit > 0 && iteration < 10) {
-                        setTimeout(() => {
-                            fn();
-                        }, 1000);
-                    } else {
-                        return resolve(errors);
-                    }
+                if (limit > 0 && iteration < 10) {
+                    setTimeout(() => {
+                        fn();
+                    }, 1000);
+                } else {
+                    return resolve(errors);
                 }
-            );
+            });
         };
         fn();
     });
 }
 
 // An iteration of pruning
-async function _process(
-    client: HozolClient,
-    message: Message,
-    amount: number,
-    filter: string,
-    before: any
-) {
+async function _process(client: HozolClient, message: Message, amount: number, filter: string, before: any) {
     const mID: any[] = [];
     let errors = 0;
-    let messages: Collection<string, Message> =
-        await message.channel.messages.fetch({
-            limit: 100,
-            before: before,
-        });
+    let messages: Collection<string, Message> = await message.channel.messages.fetch({
+        limit: 100,
+        before: before,
+    });
     if (messages.array().length <= 0) return [-1];
     before = messages.lastKey();
     if (filter) {

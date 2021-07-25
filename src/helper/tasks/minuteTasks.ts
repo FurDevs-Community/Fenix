@@ -19,10 +19,7 @@ export const minuteTasks = async (client: HozolClient, guild: Guild) => {
                     newSpamScore = 0;
                 }
                 // Update User's Data
-                Members.updateOne(
-                    { userID: member.id, guildID: guild.id },
-                    { spamScore: newSpamScore }
-                );
+                Members.updateOne({ userID: member.id, guildID: guild.id }, { spamScore: newSpamScore });
             }
         });
     }

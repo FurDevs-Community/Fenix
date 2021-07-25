@@ -17,26 +17,18 @@ module.exports = class extends Event {
 
         setTimeout(async () => {
             // makes a varaiable containing the 5 audit logs that relates to deleting a channel
-            const fetchedLogs: GuildAuditLogs =
-                await newChannel.guild.fetchAuditLogs({
-                    limit: 5,
-                    type: 'CHANNEL_UPDATE',
-                });
+            const fetchedLogs: GuildAuditLogs = await newChannel.guild.fetchAuditLogs({
+                limit: 5,
+                type: 'CHANNEL_UPDATE',
+            });
             // Get the audit log channel that has the same id as the one tht was deleted
-            const audits = fetchedLogs.entries.find(
-                (entry: any) => entry.target?.id === newChannel.id
-            );
+            const audits = fetchedLogs.entries.find((entry: any) => entry.target?.id === newChannel.id);
 
             if (audits && audits.executor.id) {
                 const embed = new MessageEmbed()
                     .setTitle('🔄 A Channel was updated')
-                    .setAuthor(
-                        audits.executor.tag,
-                        audits.executor.displayAvatarURL({ dynamic: true })
-                    )
-                    .setDescription(
-                        `${newChannel} (${newChannel.id}) settings has been updated!`
-                    )
+                    .setAuthor(audits.executor.tag, audits.executor.displayAvatarURL({ dynamic: true }))
+                    .setDescription(`${newChannel} (${newChannel.id}) settings has been updated!`)
                     .setColor('#6610f2')
                     .setTimestamp()
                     .setFooter(`Executor's ID: ${audits.executor.id}`);
@@ -47,10 +39,7 @@ module.exports = class extends Event {
                 const newName = newChannel.name;
 
                 if (oldName !== newName) {
-                    embed.addField(
-                        'Slowmode Settings were changed',
-                        `${oldName} => ${newName}`
-                    );
+                    embed.addField('Slowmode Settings were changed', `${oldName} => ${newName}`);
                     changes = true;
                 }
 
@@ -70,24 +59,16 @@ module.exports = class extends Event {
                     const newSlowmode = newChannel.rateLimitPerUser;
 
                     if (oldTopic !== newTopic) {
-                        embed.addField(
-                            'Channel Topics Before',
-                            `\`\`\`${oldTopic}\`\`\``
-                        );
+                        embed.addField('Channel Topics Before', `\`\`\`${oldTopic}\`\`\``);
 
-                        embed.addField(
-                            'Channel Topics After',
-                            `\`\`\`${newTopic}\`\`\``
-                        );
+                        embed.addField('Channel Topics After', `\`\`\`${newTopic}\`\`\``);
                         changes = true;
                     }
 
                     if (oldNSFW !== newNSFW) {
                         embed.addField(
                             'NSFW Settings were changed',
-                            `${oldNSFW ? 'Enabled' : 'Disabed'} => ${
-                                newNSFW ? 'Enabled' : 'Disabled'
-                            }`
+                            `${oldNSFW ? 'Enabled' : 'Disabed'} => ${newNSFW ? 'Enabled' : 'Disabled'}`
                         );
                         changes = true;
                     }
@@ -95,9 +76,7 @@ module.exports = class extends Event {
                     if (oldSlowmode !== newSlowmode) {
                         embed.addField(
                             'Slowmode Settings were changed. Format: (hh:mm:ss)',
-                            `${new Date(oldSlowmode * 1000)
-                                .toISOString()
-                                .substr(11, 8)} => ${new Date(
+                            `${new Date(oldSlowmode * 1000).toISOString().substr(11, 8)} => ${new Date(
                                 newSlowmode * 1000
                             )
                                 .toISOString()
@@ -118,18 +97,12 @@ module.exports = class extends Event {
                     const newUserlimit = newChannel.userLimit;
 
                     if (oldBitrate !== newBitrate) {
-                        embed.addField(
-                            'Bitrate Settings were changed',
-                            `${oldBitrate} => ${newBitrate}`
-                        );
+                        embed.addField('Bitrate Settings were changed', `${oldBitrate} => ${newBitrate}`);
                         changes = true;
                     }
 
                     if (oldUserlimit !== newUserlimit) {
-                        embed.addField(
-                            'User Limit Settings were changed',
-                            `${oldUserlimit} => ${newUserlimit}`
-                        );
+                        embed.addField('User Limit Settings were changed', `${oldUserlimit} => ${newUserlimit}`);
                         changes = true;
                     }
                 }

@@ -4,13 +4,7 @@ import { Guild } from 'discord.js';
 import { uid } from './../';
 
 export async function createChannel(
-    type:
-        | 'support'
-        | 'interrogation'
-        | 'discipline'
-        | 'inactive'
-        | 'inquiry'
-        | 'welcome',
+    type: 'support' | 'interrogation' | 'discipline' | 'inactive' | 'inquiry' | 'welcome',
     guild: Guild,
     members: any
 ) {
@@ -87,9 +81,7 @@ export async function createChannel(
     // Create the channel
     const channel = await guild.channels.create(`${type}-${await uid()}`, {
         type: 'text',
-        topic: `${type} channel. Members (used by bot): |${memberString.join(
-            '|'
-        )}|`,
+        topic: `${type} channel. Members (used by bot): |${memberString.join('|')}|`,
         parent: guildSettings.incidentsCategory,
         rateLimitPerUser: 15,
     });
@@ -99,11 +91,7 @@ export async function createChannel(
 
     // Now apply overwrites
     const maps = overwrites.map(async (overwrite) => {
-        await channel.updateOverwrite(
-            overwrite.id,
-            overwrite.options,
-            `${type} channel`
-        );
+        await channel.updateOverwrite(overwrite.id, overwrite.options, `${type} channel`);
     });
     await Promise.all(maps);
 

@@ -35,9 +35,7 @@ module.exports = class extends Command {
         }
         const user = await userResolver(client, args[0]);
         if (user === message.author) {
-            throw new Error(
-                "You can't unban yourself!? But the real question is why :think:."
-            );
+            throw new Error("You can't unban yourself!? But the real question is why :think:.");
         }
         let reason = args.slice(1).join(' ');
         const guildSettings = await message.guild?.settings();
@@ -65,10 +63,7 @@ module.exports = class extends Command {
             .then(async () => {
                 const embed = new MessageEmbed()
                     .setTitle('Unban')
-                    .setAuthor(
-                        `Issued By: ${message.author.tag}`,
-                        message.author.displayAvatarURL({ dynamic: true })
-                    )
+                    .setAuthor(`Issued By: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
                     .addField('Unbanned User', `${user}(${user.id})`)
                     .addField('Reason:', reason)
                     .setTimestamp()

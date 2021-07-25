@@ -15,11 +15,9 @@ module.exports = class extends Command {
             aliases: [],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS', 'MANAGE_CHANNELS'],
             userPerms: ['MANAGE_MESSAGES'],
-            description:
-                'Discord Staff Command to create a private text channel between staff member and member(s)',
+            description: 'Discord Staff Command to create a private text channel between staff member and member(s)',
             enabled: true,
-            extendedHelp:
-                'Discord Staff Command to create a private text channel between staff member and member(s).',
+            extendedHelp: 'Discord Staff Command to create a private text channel between staff member and member(s).',
             usage: '',
         });
     }
@@ -43,9 +41,7 @@ module.exports = class extends Command {
         ) {
             // await sails.helpers.spam.add(message.member, 20, message);
             client.error('Error');
-            throw new Error(
-                'This command may only be used in an incidents channel.'
-            );
+            throw new Error('This command may only be used in an incidents channel.');
         }
 
         // Reject if: not a support channel and not staff, or support channel and not author.
@@ -54,9 +50,7 @@ module.exports = class extends Command {
                 // await sails.helpers.spam.add(message.member, 20, message);
                 client.error('Error');
 
-                throw new Error(
-                    'Only the person who created the support channel may use the grant command.'
-                );
+                throw new Error('Only the person who created the support channel may use the grant command.');
             }
         }
         const user = await usernameResolver(message, member);
@@ -78,22 +72,16 @@ module.exports = class extends Command {
 
         // Add message
         if (message.channel.name.startsWith('support-')) {
-            message.channel.send(
-                ':white_check_mark: Member has been granted access to this channel.'
-            );
+            message.channel.send(':white_check_mark: Member has been granted access to this channel.');
         } else if (message.channel.name.startsWith('inquiry-')) {
             message.channel.send(
                 `<@${mem.id}>, **staff would like to speak with you** in this private text channel. Usually, inquiry channels do not mean you are in trouble. Please wait until a staff member addresses you.`
             );
         } else if (message.channel.name.startsWith('interrogation-')) {
-            await addRole(
-                mem,
-                'muteRole',
-                `grant command on ${message.channel.name}`
-            );
+            await addRole(mem, 'muteRole', `grant command on ${message.channel.name}`);
             message.channel.send(
                 `<@${mem.id}>, **staff would like to ask you some questions about something recent you did**. You are muted in the guild during this interrogation for the safety of others. You are expected to be respectful of staff and answer their questions with honesty. You may request at any time for the interrogation to end; staff will use what they have at that point to decide on disciplinary action, if necessary, but you forego the opportunity to defend yourself.`
             );
         }
     }
-}
+};

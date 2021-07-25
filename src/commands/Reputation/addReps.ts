@@ -26,14 +26,9 @@ module.exports = class extends Command {
      */
     async run(message: Message, args: string[], client: HozolClient) {
         if (!message.guild) return;
-        if (!args[0])
-            throw new Error(
-                'Please provide an user you would like to add reps to'
-            );
+        if (!args[0]) throw new Error('Please provide an user you would like to add reps to');
         if (!args[1] || isNaN(parseInt(args[1])) || parseInt(args[1]) > 0)
-            throw new Error(
-                'Please provide an valid amount of reps you would like to give'
-            );
+            throw new Error('Please provide an valid amount of reps you would like to give');
         const userTarget = await usernameResolver(message, args[0]);
         const target = await message.guild.members.cache.get(userTarget.id);
         if (!target) throw new Error("Couldn't get the member");
@@ -44,15 +39,9 @@ module.exports = class extends Command {
         console.log(reps);
         if (success) {
             const embed = new MessageEmbed()
-                .setAuthor(
-                    message.author.tag,
-                    message.author.displayAvatarURL({ dynamic: true })
-                )
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setTitle(`Added Reps to ${target.user.username}`)
-                .addField(
-                    `Reps:`,
-                    `${numberToEmoji(before)} ➡️ ${numberToEmoji(reps)}`
-                )
+                .addField(`Reps:`, `${numberToEmoji(before)} ➡️ ${numberToEmoji(reps)}`)
                 .setColor(primaryColor)
                 .setTimestamp()
                 .setFooter(`User ID: ${message.author.id}`);

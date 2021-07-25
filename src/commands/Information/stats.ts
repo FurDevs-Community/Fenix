@@ -18,8 +18,7 @@ module.exports = class extends Command {
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: "Get the bot's Stats",
             enabled: true,
-            extendedHelp:
-                "Get the bot's Stats which includes the bot's uptime, Version, Guilds, Discord Version.",
+            extendedHelp: "Get the bot's Stats which includes the bot's uptime, Version, Guilds, Discord Version.",
             usage: '',
         });
     }
@@ -32,10 +31,7 @@ module.exports = class extends Command {
     async run(message: Message, args: string[], client: HozolClient) {
         await message.delete();
         const embed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.username}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('📊 Hozols Stats!');
         const botCreator = await client.users.fetch('679145795714416661');
         const msg = await message.channel.send('Getting the Stats...');
@@ -54,13 +50,9 @@ module.exports = class extends Command {
         }
         let guildsCount;
         if (client.shard) {
-            client.shard
-                .fetchClientValues('guilds.cache.size')
-                .then((guildArr) => {
-                    guildsCount = guildArr.reduce(
-                        (total, next) => total + next
-                    );
-                });
+            client.shard.fetchClientValues('guilds.cache.size').then((guildArr) => {
+                guildsCount = guildArr.reduce((total, next) => total + next);
+            });
         } else {
             guildsCount = client.guilds.cache.size;
         }
@@ -68,11 +60,7 @@ module.exports = class extends Command {
             .addField("I'm currently in", `${guildsCount} Guilds!`, true)
             .addField('The API Latency', `${Math.round(client.ws.ping)}ms`)
             .addField('My Bot Version', `${pjson.version}`, true)
-            .addField(
-                'Discord Version',
-                `${pjson.dependencies['discord.js'].slice(1)}`,
-                true
-            )
+            .addField('Discord Version', `${pjson.dependencies['discord.js'].slice(1)}`, true)
             .addField('Bot Owner', `${botCreator.tag}`)
             .addField('NukeJS Version:', pjson.dependencies.nukejs)
             .setColor(primaryColor)

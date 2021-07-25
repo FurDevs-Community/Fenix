@@ -15,7 +15,7 @@ module.exports = class extends Command {
             name: 'avatar',
             category: 'Information',
             runIn: ['text'],
-            aliases: ['ui', 'whois'],
+            aliases: ['ua'],
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: "Displays the user's avatar.",
             enabled: true,
@@ -39,19 +39,13 @@ module.exports = class extends Command {
         }
         const target =
             // @ts-ignore
-            <GuildMember>message.guild.members.cache.get(user?.id) ||
-            message.member;
+            <GuildMember>message.guild.members.cache.get(user?.id) || message.member;
         const avatarEmbed = new MessageEmbed()
-            .setAuthor(
-                `${target.user.tag}`,
-                `${target.user.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setTitle(`👓 ${target.user.username}'s Avatar!`)
-            .setImage(
-                `${target.user.displayAvatarURL({ dynamic: true })}?size=512`
-            )
+            .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=512`)
             .setTimestamp()
             .setFooter(`Requester ID: ${target.user.id}`);
         return message.channel.send(avatarEmbed);
     }
-}
+};

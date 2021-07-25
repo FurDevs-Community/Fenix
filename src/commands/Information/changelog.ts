@@ -18,8 +18,7 @@ module.exports = class extends Command {
             botPerms: ['SEND_MESSAGES', 'EMBED_LINKS'],
             description: 'Get a list of changes made with Hozol.',
             enabled: true,
-            extendedHelp:
-                'Get a list of what has been added, removed or updated with Hozol.',
+            extendedHelp: 'Get a list of what has been added, removed or updated with Hozol.',
             usage: '',
         });
     }
@@ -33,11 +32,7 @@ module.exports = class extends Command {
         await message.delete();
         changelogParser('CHANGELOG.md')
             .then(async (result: any) => {
-                if (
-                    result.versions &&
-                    result.versions[0] &&
-                    result.versions[0].parsed
-                ) {
+                if (result.versions && result.versions[0] && result.versions[0].parsed) {
                     // Construct embed
                     const changelog = new MessageEmbed()
                         .setAuthor(
@@ -47,30 +42,18 @@ module.exports = class extends Command {
                             })}`
                         )
                         .setFooter(`User ID: ${message.author.id}`)
-                        .setTitle(
-                            `Changelog - Current bot version is ${pjson.version}`
-                        )
+                        .setTitle(`Changelog - Current bot version is ${pjson.version}`)
                         .setColor(primaryColor)
                         .setTimestamp();
 
                     // Only get the most recent changes on the changelog
                     const version = result.versions[0];
-                    changelog.setDescription(
-                        `The following changelog is for version ${version.title}`
-                    );
+                    changelog.setDescription(`The following changelog is for version ${version.title}`);
                     for (const key in version.parsed) {
-                        if (
-                            Object.prototype.hasOwnProperty.call(
-                                version.parsed,
-                                key
-                            ) &&
-                            key !== '_'
-                        ) {
+                        if (Object.prototype.hasOwnProperty.call(version.parsed, key) && key !== '_') {
                             changelog.addField(
                                 key,
-                                version.parsed[key].map(
-                                    (data: string) => `🔹 ${data}`
-                                ).join(`
+                                version.parsed[key].map((data: string) => `🔹 ${data}`).join(`
                     `)
                             );
                         }
@@ -89,4 +72,4 @@ module.exports = class extends Command {
                 throw err;
             });
     }
-}
+};

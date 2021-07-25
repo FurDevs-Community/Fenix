@@ -18,8 +18,7 @@ module.exports = class extends Command {
             userPerms: ['MANAGE_CHANNELS'],
             description: 'Lock a channel',
             enabled: true,
-            extendedHelp:
-                "Lock a channel preventing everyone with the verified role won't be able to send message.",
+            extendedHelp: "Lock a channel preventing everyone with the verified role won't be able to send message.",
             usage: '',
         });
     }
@@ -36,13 +35,8 @@ module.exports = class extends Command {
         let duration: number;
         let reason: string;
         if (args[0]) {
-            if (
-                message.guild?.channels.cache.get(args[0]) ||
-                message.mentions.channels.first()
-            ) {
-                channel =
-                    <TextChannel>message.guild?.channels.cache.get(args[0]) ||
-                    message.mentions.channels.first();
+            if (message.guild?.channels.cache.get(args[0]) || message.mentions.channels.first()) {
+                channel = <TextChannel>message.guild?.channels.cache.get(args[0]) || message.mentions.channels.first();
                 if (args[1]) {
                     if (ms(args[1])) {
                         duration = ms(args[1]);
@@ -80,8 +74,7 @@ module.exports = class extends Command {
         if (!channel.permissionsFor(memberRole)?.has('SEND_MESSAGES'))
             throw new Error('This channel is already locked');
         const botPosition = message.guild?.me?.roles.highest.position;
-        const verifiedRolePosition =
-            message.guild?.roles.cache.get(memberRole)?.position;
+        const verifiedRolePosition = message.guild?.roles.cache.get(memberRole)?.position;
         if (botPosition! <= verifiedRolePosition!) {
             throw new Error(
                 `The bot's highest role (${
@@ -123,4 +116,4 @@ module.exports = class extends Command {
                 });
         }
     }
-}
+};

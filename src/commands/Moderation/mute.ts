@@ -33,16 +33,11 @@ module.exports = class extends Command {
         if (!message.guild) return;
         await message.delete();
         const settings = await message.guild?.settings();
-        if (
-            !settings?.muteRole ||
-            !message.guild.roles.cache.get(settings.muteRole)
-        ) {
+        if (!settings?.muteRole || !message.guild.roles.cache.get(settings.muteRole)) {
             throw new Error("Mute role doesn't exist please set one up!");
         }
         if (!args[0]) {
-            throw new Error(
-                'Please mention, provide a User ID, or username of that user you would like to mute'
-            );
+            throw new Error('Please mention, provide a User ID, or username of that user you would like to mute');
         }
         const user = await usernameResolver(message, args[0]);
         if (user === message.author) {
@@ -67,8 +62,7 @@ module.exports = class extends Command {
         }
         const muteRole = settings.muteRole;
         const member = message.guild.members.cache.get(user.id);
-        if (member?.roles.cache.has(muteRole))
-            throw new Error('The User is already muted!');
+        if (member?.roles.cache.has(muteRole)) throw new Error('The User is already muted!');
         if (member) {
             const botPosition = message.guild.me?.roles.highest.position;
             const userPosition = member.roles.highest.position;
@@ -84,9 +78,7 @@ module.exports = class extends Command {
                 );
             }
         } else {
-            throw new Error(
-                'The user must be in the guild in order to be muted'
-            );
+            throw new Error('The user must be in the guild in order to be muted');
         }
 
         const guildSettings = await message.guild.settings();
@@ -98,22 +90,15 @@ module.exports = class extends Command {
         } else {
             await mod.setReason(reason);
         }
-        if (guildSettings.rulesSpecify !== 'ignore')
-            await askRules(message, mod);
+        if (guildSettings.rulesSpecify !== 'ignore') await askRules(message, mod);
         await mod.setMuteDuration(duration);
         await mod.initialize();
         await mod.muteUser();
         await mod.finish().then((discipline) => {
             const embed = new MessageEmbed()
                 .setTitle('Mute')
-                .setAuthor(
-                    `Issued By: ${discipline.issuer.tag}`,
-                    discipline.issuer.displayAvatarURL({ dynamic: true })
-                )
-                .addField(
-                    'Violator',
-                    `${discipline.user.username}(${discipline.user.id})`
-                )
+                .setAuthor(`Issued By: ${discipline.issuer.tag}`, discipline.issuer.displayAvatarURL({ dynamic: true }))
+                .addField('Violator', `${discipline.user.username}(${discipline.user.id})`)
                 .addField('Reason:', discipline.reason)
                 .setTimestamp()
                 .setFooter(`User ID: ${discipline.issuer.id}`)

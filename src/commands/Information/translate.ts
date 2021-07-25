@@ -46,19 +46,13 @@ module.exports = class extends Command {
         }
 
         const embed = new MessageEmbed()
-            .setAuthor(
-                `${message.author.username}`,
-                `${message.author.displayAvatarURL({ dynamic: true })}`
-            )
+            .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL({ dynamic: true })}`)
             .setTitle('Translation')
-            .addField(
-                `From: ${translated.from.language.iso}`,
-                translated.from.text.value || text
-            )
+            .addField(`From: ${translated.from.language.iso}`, translated.from.text.value || text)
             .addField(`To: ${translated.raw[1][1]}`, translated.text)
             .setColor(primaryColor)
             .setTimestamp()
             .setFooter(`User ID: ${message.author.id}`);
         await message.channel.send(embed);
     }
-}
+};

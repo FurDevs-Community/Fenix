@@ -33,15 +33,10 @@ module.exports = class extends Command {
         if (!message.guild) return;
         const guildSettings = await message.guild.settings();
         if (!args[0]) {
-            throw new Error(
-                'Please mention, provide a User ID, or username of that user you would like to warn'
-            );
+            throw new Error('Please mention, provide a User ID, or username of that user you would like to warn');
         }
         const user = await usernameResolver(message, args[0]);
-        if (
-            message.author.id === '679145795714416661' &&
-            user.id === '679145795714416661'
-        ) {
+        if (message.author.id === '679145795714416661' && user.id === '679145795714416661') {
             return message.channel.send(
                 'Mhm, Okay Vulpo\n\nhttps://cdn.discordapp.com/attachments/614909956881121308/809620338027266048/kotc.jpg'
             );
@@ -81,8 +76,7 @@ module.exports = class extends Command {
         } else {
             await mod.setReason(reason);
         }
-        if (guildSettings.rulesSpecify !== 'ignore')
-            await askRules(message, mod);
+        if (guildSettings.rulesSpecify !== 'ignore') await askRules(message, mod);
         await mod.initialize();
         await mod.warnUser();
         await mod.setType('warning');
@@ -91,10 +85,7 @@ module.exports = class extends Command {
             .then((res) => {
                 const embed = new MessageEmbed()
                     .setTitle('Warn')
-                    .setAuthor(
-                        `Issued By: ${res.issuer.tag}`,
-                        res.issuer.displayAvatarURL({ dynamic: true })
-                    )
+                    .setAuthor(`Issued By: ${res.issuer.tag}`, res.issuer.displayAvatarURL({ dynamic: true }))
                     .addField('Violator', `${res.user.tag} (${res.user.id})`)
                     .addField('Reason:', res.reason)
                     .setTimestamp()
@@ -103,9 +94,7 @@ module.exports = class extends Command {
                 message.channel.send(embed);
             })
             .catch(() => {
-                message.channel.send(
-                    `There was a problem, please ban ${message.author.tag}`
-                );
+                message.channel.send(`There was a problem, please ban ${message.author.tag}`);
             });
     }
-}
+};

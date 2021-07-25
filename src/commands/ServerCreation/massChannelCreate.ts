@@ -31,9 +31,7 @@ module.exports = class extends Command {
         if (!args) throw new Error('Please provide args');
         const category = message.guild.channels.cache.get(args[0]);
         if (!(category?.type === 'category')) {
-            throw new Error(
-                'Please make sure the first argument is a category'
-            );
+            throw new Error('Please make sure the first argument is a category');
         } else {
             const channelNames = args.slice(1);
             channelNames.forEach((name) => {

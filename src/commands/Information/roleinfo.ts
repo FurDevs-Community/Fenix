@@ -25,17 +25,12 @@ module.exports = class extends Command {
      */
     async run(message: Message, args: string[], client: Client) {
         if (!args[0])
-            throw new Error(
-                'Please provide an Role (Mention|Name|ID) that you want to see information about'
-            );
+            throw new Error('Please provide an Role (Mention|Name|ID) that you want to see information about');
         const allowedPerms: any[] = [];
         const disallowedPerms: any[] = [];
         const role = await roleNameResolver(message, args[0]);
         const embed = new MessageEmbed()
-            .setAuthor(
-                message.author.tag,
-                message.author.displayAvatarURL({ dynamic: true })
-            )
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
             .setTitle(`Role Information for ${role.name}`)
             .setDescription('Below are information about the role')
             .addField('Name', role.name, true)
@@ -79,30 +74,20 @@ module.exports = class extends Command {
         ];
         const perms = role.permissions.toArray();
         perms.forEach((perm) => {
-            allowedPerms.push(
-                allPermissions.splice(allPermissions.indexOf(perm), 1)
-            );
+            allowedPerms.push(allPermissions.splice(allPermissions.indexOf(perm), 1));
         });
         disallowedPerms.push(...allPermissions);
 
         embed.addField(
             'Allowed Permissions',
-            `${
-                allowedPerms.length > 0
-                    ? `✅ \`${allowedPerms.join('`, `')}\``
-                    : 'No Allowed Permission'
-            }`,
+            `${allowedPerms.length > 0 ? `✅ \`${allowedPerms.join('`, `')}\`` : 'No Allowed Permission'}`,
             true
         );
         embed.addField(
             'Disallowed Permissions',
-            `${
-                disallowedPerms.length > 0
-                    ? `❌ \`${disallowedPerms.join('`, `')}\``
-                    : 'No Disallowed Permission'
-            }`,
+            `${disallowedPerms.length > 0 ? `❌ \`${disallowedPerms.join('`, `')}\`` : 'No Disallowed Permission'}`,
             true
         );
         message.channel.send(embed);
     }
-}
+};

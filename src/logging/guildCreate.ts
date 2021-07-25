@@ -19,9 +19,7 @@ module.exports = class extends Event {
         if (!guild.available) return;
         if (clientSettings?.blacklisted.includes(guild.id)) {
             guild.leave();
-            client.warn(
-                `Blacklisted guild detected: ${guild.name} [${guild.id}]. Bot left.`
-            );
+            client.warn(`Blacklisted guild detected: ${guild.name} [${guild.id}]. Bot left.`);
             // TODO: Make it so when it comes to blacklisted guilds, it'll send an embed to the support server
         } else {
             client.log(`${client.log} Bot joined a server`);

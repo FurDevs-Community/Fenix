@@ -29,9 +29,7 @@ module.exports = class extends Command {
         message.delete();
         const vc = await message.member.voice;
         if (!vc.channel)
-            throw new Error(
-                'I cannot find the VC Channel, does the bot has permission to see that channe'
-            );
+            throw new Error('I cannot find the VC Channel, does the bot has permission to see that channe');
         if (!vc) throw new Error("Please make sure you're in a voice channel");
 
         await vc.channel.leave();

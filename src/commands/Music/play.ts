@@ -31,30 +31,21 @@ module.exports = class extends Command {
         message.delete();
         const vc = await message.member.voice;
         if (!vc.channel)
-            throw new Error(
-                'I cannot find the VC Channel, does the bot has permission to see that channe'
-            );
+            throw new Error('I cannot find the VC Channel, does the bot has permission to see that channe');
         if (!vc) throw new Error("Please make sure you're in a voice channel");
         if (
             !vc.channel.permissionsFor(client.user!)?.has('CONNECT') &&
             !vc.channel.permissionsFor(client.user!)?.has('SPEAK')
         ) {
-            throw new Error(
-                "I don't have permission to conntect nor speak in this voice channel"
-            );
+            throw new Error("I don't have permission to conntect nor speak in this voice channel");
         }
-        if (!args)
-            throw new Error('Please Provide a song you would like me to play');
+        if (!args) throw new Error('Please Provide a song you would like me to play');
         const connection = await vc.channel?.join();
         try {
             const videos = (await ytSearch(args.slice(0).join(' '))).all;
             const video = videos.length > 0 ? videos[0] : null;
             if (!video) {
-                throw new Error(
-                    `There's no video with the search of ${args
-                        .slice(0)
-                        .join(' ')}`
-                );
+                throw new Error(`There's no video with the search of ${args.slice(0).join(' ')}`);
             }
             const stream = await ytdl(video.url, { filter: 'audioonly' });
             connection.play(stream, { seek: 0, volume: 1 });

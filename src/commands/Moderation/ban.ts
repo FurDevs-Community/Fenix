@@ -34,9 +34,7 @@ module.exports = class extends Command {
         await message.delete();
         if (!message.guild) return;
         if (!args[0]) {
-            throw new Error(
-                'Please mention, provide a User ID, or username of that user you would like to ban'
-            );
+            throw new Error('Please mention, provide a User ID, or username of that user you would like to ban');
         }
         const user = await usernameResolver(message, args[0]);
         if (user === message.author) {
@@ -77,22 +75,15 @@ module.exports = class extends Command {
         } else {
             await mod.setReason(reason);
         }
-        if (guildSettings.rulesSpecify !== 'ignore')
-            await askRules(message, mod);
+        if (guildSettings.rulesSpecify !== 'ignore') await askRules(message, mod);
         await mod.setBanDuration(duration);
         await mod.initialize();
         await mod.banUser();
         await mod.finish().then(async (discipline) => {
             const embed = new MessageEmbed()
                 .setTitle('Ban')
-                .setAuthor(
-                    `Issued By: ${discipline.issuer.tag}`,
-                    discipline.issuer.displayAvatarURL({ dynamic: true })
-                )
-                .addField(
-                    'Violator',
-                    `${discipline.user} (${discipline.user.id})`
-                )
+                .setAuthor(`Issued By: ${discipline.issuer.tag}`, discipline.issuer.displayAvatarURL({ dynamic: true }))
+                .addField('Violator', `${discipline.user} (${discipline.user.id})`)
                 .addField('Reason:', discipline.reason)
                 .setTimestamp()
                 .setFooter(`User ID: ${discipline.issuer.id}`)

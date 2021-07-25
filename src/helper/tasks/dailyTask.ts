@@ -9,8 +9,5 @@ export const dailyTask = async (client: HozolClient, guild: Guild) => {
     const count: number = settings.messagesSent24hr;
     const day = moment().toISOString();
     const newMsgCountHistory = [...msgCountHistory, { day, count }];
-    Guilds.findOneAndUpdate(
-        { guildID: guild.id },
-        { messagesSent24hr: 0, messagesCountHistory: newMsgCountHistory }
-    );
+    Guilds.findOneAndUpdate({ guildID: guild.id }, { messagesSent24hr: 0, messagesCountHistory: newMsgCountHistory });
 };
