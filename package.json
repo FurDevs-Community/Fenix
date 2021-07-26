@@ -1,6 +1,6 @@
 {
     "name": "hozol",
-    "version": "0.9.0-alpha.4",
+    "version": "0.9.5",
     "description": "A General Purposen bot with moderation that's Unique, Powerful and For Everyone!",
     "main": "dist/index.js",
     "repository": "https://github.com/Dracy-Developments/Hozol.git",
