@@ -1674,7 +1674,7 @@
   "resolved" "https://registry.npmjs.org/cssbeautify/-/cssbeautify-0.3.1.tgz"
   "version" "0.3.1"
 
-"cz-conventional-changelog@3.2.0":
+"cz-conventional-changelog@^3.2.0", "cz-conventional-changelog@3.2.0":
   "integrity" "sha512-yAYxeGpVi27hqIilG1nh4A9Bnx4J3Ov+eXy4koL3drrR+IO9GaWPsKjik20ht608Asqi8TQPf0mczhEeyAtMzg=="
   "resolved" "https://registry.npmjs.org/cz-conventional-changelog/-/cz-conventional-changelog-3.2.0.tgz"
   "version" "3.2.0"
