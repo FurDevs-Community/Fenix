@@ -1,7 +1,7 @@
 import HozolClient from '../../lib/HozolClient';
 import { Message, MessageEmbed } from 'discord.js';
 import { Command } from 'nukejs';
-import { uid } from '../../helper';
+import { chronoTimeResolver, uid } from '../../helper';
 import ms from 'ms';
 import { Schedules } from '../../database';
 import { addSchedule } from '../../helper/schedules/schedules';
@@ -32,9 +32,18 @@ module.exports = class extends Command {
         if (!message.guild) return;
         await message.delete();
         if (!args[0]) throw new Error('Please provide the time you would like to be reminded');
-        const duration: number = ms(args[0]);
-        if (!args[1]) throw new Error('Please provide what you want to reminded');
-        const reminder = args.slice(1).join(' ');
+        let duration;
+        let reminder: string;
+        if (args[0].toLowerCase() === 'smart') {
+            if (!args[1]) throw new Error('Please provide what you want to reminded');
+            reminder = args.slice(1).join(' ');
+            const date = await chronoTimeResolver(client, args.slice(1).join(' '));
+            duration = ms(date.toString());
+        } else {
+            duration = ms(args[0]);
+            if (!args[1]) throw new Error('Please provide what you want to reminded');
+            reminder = args.slice(0).join(' ');
+        }
         const id = await uid();
         await Schedules.create({
             uid: `reminder-${id}`,

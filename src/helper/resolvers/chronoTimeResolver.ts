@@ -1,5 +1,5 @@
 import HozolClient from '../../lib/HozolClient';
-import chrono from 'chrono-node';
+import * as chrono from 'chrono-node';
 
 export async function chronoTimeResolver(client: HozolClient, dateString: string) {
     const date = chrono.parseDate(dateString, new Date(), {
