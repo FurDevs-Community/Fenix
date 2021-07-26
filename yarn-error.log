@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  SyntaxError: /home/vulpo/Hozol/package.json: Unexpected token < in JSON at position 3198
+  SyntaxError: /home/vulpo/Hozol/package.json: Unexpected token > in JSON at position 3644
       at JSON.parse (<anonymous>)
       at /usr/lib/node_modules/yarn/lib/cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -105,15 +105,12 @@ npm manifest:
       },
       "scripts": {
           "start": "rm -rf dist/; tsc; node dist/index.js",
-          "production": "rm -rf dist/ && tsc && node dist/index.js",
+          "production": "rm -rf dist/ && tsc && npm run production && node dist/index.js",
           "win": "del /Q /S dist && tsc && node dist/index.js",
           "lint": "eslint --fix src/*/*/*",
           "format": "prettier --check .",
           "format:fix": "prettier --write .",
           "dev:build": "tsc -w",
-  <<<<<<< HEAD
-          "dev:run": "nodemon dist/index.js"
-  =======
           "dev:run": "nodemon dist/index.js",
           "cp": "mkdir dist/api/cert/; cp src/api/cert/ca.pem dist/api/cert/; cp src/api/cert/cert.pem dist/api/cert/ ;cp src/api/cert/key.pem dist/api/cert/;",
           "commit": "cz"

@@ -81,7 +81,7 @@
     },
     "scripts": {
         "start": "rm -rf dist/; tsc; node dist/index.js",
-        "production": "rm -rf dist/ && tsc && npm run production && node dist/index.js",
+        "production": "rm -rf dist/ && tsc && npm run cp && node dist/index.js",
         "win": "del /Q /S dist && tsc && node dist/index.js",
         "lint": "eslint --fix src/*/*/*",
         "format": "prettier --check .",
@@ -98,6 +98,6 @@
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
->>>>>>> 0bb3854c63de900a3e106f208a4ced76bdca7ef7
     }
 }
+
