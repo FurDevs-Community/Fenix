@@ -37,7 +37,9 @@ module.exports = class extends Command {
         if (args[0].toLowerCase() === 'smart') {
             if (!args[1]) throw new Error('Please provide what you want to reminded');
             reminder = args.slice(1).join(' ');
-            const date = await chronoTimeResolver(client, args.slice(1).join(' '));
+            const date = await chronoTimeResolver(client, args.slice(1).join(' ')).catch(() => {
+                throw new Error('unable to get the data from your reminder');
+            });
             duration = ms(date.toString());
         } else {
             duration = ms(args[0]);
