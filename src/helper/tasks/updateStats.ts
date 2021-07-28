@@ -1,9 +1,16 @@
-import { Client, Guild, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, MessageEmbed, TextChannel } from 'discord.js';
 import moment from 'moment';
+import { ISchedule } from '../../database';
 import { primaryColor } from '../../settings';
 
-export const updateStats = async (client: Client, guild: Guild) => {
+export const task = async (client: Client, record: ISchedule) => {
+    if (!record) return;
+    const guild = client.guilds.cache.get(record.data.guild);
+    if (!guild) return;
+    const member = guild?.members.cache.get(record.data.user);
+    if (!member) return;
     const settings = await guild.settings();
+    if (!settings) return;
     const antiRaidSettings = await guild.antiraid();
     const embed = new MessageEmbed()
         .setAuthor(guild.name, guild.iconURL({ dynamic: true }) || '')

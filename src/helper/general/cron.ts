@@ -16,12 +16,12 @@ export async function cron(client: HozolClient) {
             .catch((e) => client.error('Problem Loading Schedule: ' + record.uid + 'Error:\n' + e));
     });
 
-    const SYSMIN = await Schedules.findOne({ uid: `SYS-MIN` });
+    const SYSMIN = await Schedules.findOne({ uid: `globalMinute` });
     if (!SYSMIN) {
         client.warn(`Creating new Minute Task Schdule for the Bot`);
         await Schedules.create({
-            uid: `SYS-MIN`,
-            task: 'SYSMIN',
+            uid: `globalMinute`,
+            task: 'globalMinute',
             data: {},
             nextRun: client.moment().add(1, 'minute').toISOString(true),
             cron: '0 * * * * *',
@@ -41,7 +41,7 @@ export async function cron(client: HozolClient) {
             client.warn(`Creating new Minute Task Schdule for ${g.id}`);
             await Schedules.create({
                 uid: `MIN-${g.id}`,
-                task: 'minuteTask',
+                task: 'minuteTasks',
                 data: {
                     guild: g.id,
                 },

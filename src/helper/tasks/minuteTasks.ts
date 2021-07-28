@@ -1,8 +1,9 @@
-import { Guild } from 'discord.js';
-import { Members } from '../../database';
+import { ISchedule, Members } from '../../database';
 import HozolClient from '../../lib/HozolClient';
 
-export const minuteTasks = async (client: HozolClient, guild: Guild) => {
+export const task = async (client: HozolClient, record: ISchedule) => {
+    if (!record) return;
+    const guild = client.guilds.cache.get(record.data.guild);
     if (guild && guild.available) {
         const antiRaidSettings = await guild.antiraid();
         const antiSpamSettings = await guild.antispam();
@@ -23,4 +24,5 @@ export const minuteTasks = async (client: HozolClient, guild: Guild) => {
             }
         });
     }
+    return;
 };
