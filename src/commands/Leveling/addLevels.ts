@@ -35,7 +35,7 @@ module.exports = class extends Command {
         await message.delete();
         if (!args[0]) throw new Error('Please provide a user you would like to add levels');
         const target = await usernameResolver(message, args[0]);
-        if (!args[1] || isNaN(parseInt(args[1])) || parseInt(args[1]) < 0)
+        if (!args[1] || isNaN(parseInt(args[1])) || parseInt(args[1]) <= 0)
             throw new Error('Please provide how many levels you would want to add to this user');
         const member = message.guild?.members.cache.get(target.id);
         const levelToXP = getXPFromLevel(parseInt(args[1]));
