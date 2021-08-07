@@ -61,7 +61,7 @@ module.exports = class extends Command {
                 .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
                 .setTitle('Reminder Set')
                 .setDescription(
-                    `You'll be reminded on ${client.moment(data.nextRun).format('LLLL')} UTC to ${reminder}`
+                    `You'll be reminded on ${client.moment(data.nextRun).utc().format('LLLL')} UTC to ${reminder}`
                 )
                 .setColor(primaryColor)
                 .setTimestamp()
