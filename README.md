@@ -1,13 +1,14 @@
 <div align=center>
 <h1>Hozol</h1>
+   
+## WARNING: ⚠️ Hozol will only do support updates as of right now
+
+Due to the changes discord.js v13 brings to the table, I made the decision to rewrite it in C# using DSharpPlus. Feel free to look at my journey on how to use/build with it since I never made anything C# related 
+
 <img src="https://wakatime.com/badge/github/Dracy-Developments/Hozol.svg" />
 <p>A General Purpose Discord Bot with Tons of Commands to bring your guild together with a very unique and powerful moderation system! </p>
 <img src="https://hozol.xyz/images/main/banner.png" /> 
 </div>
-
-## ⚠️ Hozol will only do support updates as of right now
-
-Due to the changes discord.js v13 brings to the table, I made the decision to rewrite it in C# using DSharpPlus. Feel free to look at my journey on how to use/build with it since I never made anything C# related 
 
 ## Branches
 
