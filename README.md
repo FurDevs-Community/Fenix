@@ -5,6 +5,10 @@
 <img src="https://hozol.xyz/images/main/banner.png" /> 
 </div>
 
+## ⚠️ Hozol will only do support updates as of right now
+
+Due to the changes discord.js v13 brings to the table, I made the decision to rewrite it in C# using DSharpPlus. Feel free to look at my journey on how to use/build with it since I never made anything C# related 
+
 ## Branches
 
 `master` - Production Branch
