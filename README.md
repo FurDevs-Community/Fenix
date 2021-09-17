@@ -7,37 +7,9 @@
 <img src="https://hozol.xyz/images/main/banner.png" /> 
 </div>
 
-## Branches
+## ⚠ This Project is now Abandoned
 
-`master` - Production Branch
+Due to my motivation, time, and hopes for the project I decided that it's now time to close the book for Hozol, I've been working on this project for about 1.5 years now and yet no success. I would like to thanks everyone who helped with the development wheither it's just one commit or many and yeah I'll won't be working on this bot no more and moving on to better projects
 
-`dev` - Development Branch
-
-`ptb` - Public Test Build Branch
-
-## Website/Dashboard
-
-Website for Hozol: https://hozol.xyz
-Repository for Hozol's Dashboard: https://github.com/Dracy-Developments/Hozol
-
-## Instructions for Developing it
-
-1. Get this repository onto your system.
-   3 Ways you can do this get this repository is...
-1. You can download it from here
-1. Use `git clone git@github.com:Dracy-Developments/Hozol`
-1. Do `git remote add origin git@github.com:Dracy-Developments/Hozol;cd Hozol;git pull origin master`
-1. Install Dependencies by doing `npm install` or `yarn install`
-1. Get the Bot Token from https://discord.com/developers/applications and MongoDB from either localhost or https://www.mongodb.com/cloud/atlas
-1. Fill in the .env
-1. Run the bot by doing `yarn start` if the bot runs without errors, congrats you're ready to start developing Hozol Stuff
-
-## Contributing
-
-Your Contributions to this Project is welcomed.
-
-To get started, it's recommended that you join the [support server](https:/discord.gg/bjkvvQ4N2Y), Then look at the Project Board (look at the Project Tab in the GitHub Page) and you can then Fork it then once you made your changes you can make a pull request
-
-**BEWARE** If you decide to add a feature that isn't in the Project Board it may/may not be accepted but are welcomed!
-
-## TODO: Add more stuff here
+Thanks
+Jason Diaz Jimenez (Vulpo)
