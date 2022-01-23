@@ -55,7 +55,7 @@
         "ffmpeg": "^0.0.4",
         "fluent-ffmpeg": "^2.1.2",
         "hastebin-gen": "^2.0.5",
-        "i": "^0.3.6",
+        "i": "^0.3.7",
         "lodash": "^4.17.20",
         "mariadb": "^2.5.2",
         "moment-duration-format": "^2.3.2",
