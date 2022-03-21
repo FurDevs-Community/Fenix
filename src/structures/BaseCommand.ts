@@ -1,5 +1,5 @@
-import { Message, PermissionResolvable } from 'discord.js';
-import FenixClient from '../lib/FenixClient';
+import { Message, PermissionResolvable } from "discord.js";
+import FenixClient from "../lib/FenixClient";
 
 export default abstract class BaseInteraction {
     public client: FenixClient;

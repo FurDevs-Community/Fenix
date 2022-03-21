@@ -1,4 +1,10 @@
-import { ApplicationCommandOptionChoice, ApplicationCommandOptionType, ApplicationCommandType, CommandOptionDataTypeResolvable, PermissionFlags } from 'discord.js';
+import {
+    ApplicationCommandOptionChoice,
+    ApplicationCommandOptionType,
+    ApplicationCommandType,
+    CommandOptionDataTypeResolvable,
+    PermissionFlags,
+} from "discord.js";
 
 export interface ICommandOptions {
     args?: ICommandArgsOptions[];
@@ -8,7 +14,7 @@ export interface ICommandOptions {
     name: string;
     ownerOnly?: boolean;
     type: ApplicationCommandType;
-    runIn?: 'both' | 'dms' | 'servers';
+    runIn?: "both" | "dms" | "servers";
     shortDescription?: string;
     usage?: string;
     userPermissions: Array<keyof PermissionFlags>;

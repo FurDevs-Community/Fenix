@@ -12,6 +12,6 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-**DO NOT CREATE AN ISSUE** 
+**DO NOT CREATE AN ISSUE**
 
 Email: [vulpothedev@outlook.com](mailto:vulpothedev@gmail.com)

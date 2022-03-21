@@ -1,6 +1,11 @@
-import { ApplicationCommandPermissions, ApplicationCommandType, Interaction, PermissionFlags } from 'discord.js';
-import FenixClient from '../lib/FenixClient';
-import type { ICommandArgsOptions, ICommandOptions } from '../utils/types';
+import {
+    ApplicationCommandPermissions,
+    ApplicationCommandType,
+    Interaction,
+    PermissionFlags,
+} from "discord.js";
+import FenixClient from "../lib/FenixClient";
+import type { ICommandArgsOptions, ICommandOptions } from "../utils/types";
 
 export default abstract class BaseInteraction {
     public client: FenixClient;
@@ -12,7 +17,7 @@ export default abstract class BaseInteraction {
     public name: string;
     public description: string;
     public ownerOnly?: boolean;
-    public runIn?: 'both' | 'dms' | 'servers';
+    public runIn?: "both" | "dms" | "servers";
     public usage?: string;
     public userPermissions: Array<keyof PermissionFlags>;
     public botPermissions: Array<keyof PermissionFlags>;
@@ -29,7 +34,7 @@ export default abstract class BaseInteraction {
         this.ownerOnly = options.ownerOnly || false;
         this.runIn = options.runIn;
         this.usage = options.usage;
-        this.description = options.shortDescription || '';
+        this.description = options.shortDescription || "";
         this.userPermissions = options.userPermissions || [];
         this.botPermissions = options.botPermissions || [];
     }

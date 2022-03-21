@@ -6,47 +6,45 @@ Listed below are the changes of the moderation bot in each version
 
 ### Changes
 
-- Hozol will be dedicated towards Furry Servers
-- Hozol will no longer use NukeJS
-- Hozol will be now considered as "Fenix"
-- Hozol will be rewritten to have some commands use Slash Commands and use Discord.js v13
+-   Hozol will be dedicated towards Furry Servers
+-   Hozol will no longer use NukeJS
+-   Hozol will be now considered as "Fenix"
+-   Hozol will be rewritten to have some commands use Slash Commands and use Discord.js v13
 
 ### Added
 
-- InteractionCreate event which will be used for Interactions
+-   InteractionCreate event which will be used for Interactions
 
-## 0.9.0-alpha.4 -  2021-07-26
+## 0.9.0-alpha.4 - 2021-07-26
 
 ### Changes
 
-- Hozol is now Open Source check it out (here)[https://github.com/VulpoTheDev/Hozol]
-- Changed Hastebin link
-- Update Command now uses yarn to update any dependencies
-- Suggestion/Bug Commands so you would need to make an issue on the Hozol GitHub Repository
-
+-   Hozol is now Open Source check it out (here)[https://github.com/VulpoTheDev/Hozol]
+-   Changed Hastebin link
+-   Update Command now uses yarn to update any dependencies
+-   Suggestion/Bug Commands so you would need to make an issue on the Hozol GitHub Repository
 
 ### Added
 
-- Case command which can be used to get more details on a case
-- (WORK IN PROGRESS setup command which is used to setup your settings easily
-- Reputation Commands such as `J>addReps` `J>removeReps` `J>rep`
-- Per Guild Schedules which is used for AutoModeration 
-- Mass Channel, Role creation commands for faster server building
-- (WORK IN PROGRESS) Play Command
-- Votes
-- Subscribe Commands (Which is used for the support server)
+-   Case command which can be used to get more details on a case
+-   (WORK IN PROGRESS setup command which is used to setup your settings easily
+-   Reputation Commands such as `J>addReps` `J>removeReps` `J>rep`
+-   Per Guild Schedules which is used for AutoModeration
+-   Mass Channel, Role creation commands for faster server building
+-   (WORK IN PROGRESS) Play Command
+-   Votes
+-   Subscribe Commands (Which is used for the support server)
 
 ### Removed
 
-- CPX which was basically used to copy certificate stuff from the src to the dist folder and used cp
-- View Reports/Suggestion Commands
+-   CPX which was basically used to copy certificate stuff from the src to the dist folder and used cp
+-   View Reports/Suggestion Commands
 
 ### Fixed
 
-- Mute Command
-- Unban Command
-- Reload Command
-
+-   Mute Command
+-   Unban Command
+-   Reload Command
 
 ## 0.9.0-alpha.3 - 2021-06-04
 
