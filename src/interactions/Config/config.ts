@@ -1,12 +1,18 @@
 import BaseInteraction from "../../structures/BaseInteraction";
 import FenixClient from "../../lib/FenixClient";
 import {
-  ApplicationCommandOptionType,
-  ApplicationCommandType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-  EmbedFieldData
-} from "discord.js";
+    ActionRowBuilder,
+    APISelectMenuOption,
+    ApplicationCommandOptionType,
+    ApplicationCommandType, ButtonBuilder, ButtonStyle,
+    ChatInputCommandInteraction,
+    ComponentType,
+    EmbedBuilder,
+    EmbedFieldData,
+    Message,
+    SelectMenuBuilder,
+    UnsafeSelectMenuOptionBuilder
+} from 'discord.js';
 import { Guild, IVerificationaInterface } from "../../models/GuildModel";
 
 export default class ConfigCommand extends BaseInteraction {
@@ -120,11 +126,41 @@ export default class ConfigCommand extends BaseInteraction {
                     case "verificationLoggingChannelID":
                     case "welcomeChannelID":
                     case "pendingVerificationChannelID":
-                        // TODO: Wait for a member's response with channelNameResolver
-                        break;
+                        const channels: (APISelectMenuOption | UnsafeSelectMenuOptionBuilder)[] = [];
+                        interaction.guild!.channels.cache.filter(channel => channel.isText()).forEach(channel => {
+                            channels.push({
+                                label: channel.name,
+                                value: channel.idx
+                            });
+                        });
+                        const channelSelectMenu = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId("channel_select_menu").setMinValues(1).setMaxValues(1).setOptions(...channels));
+                        const awaitChannelID = new EmbedBuilder()
+                            .setTitle("Configuration - Setting Channel")
+                            .setDescription("Select which channel you would like the messages to go related to that settings with the dropdown")
+                            .setColor(0x8800FF)
+                            .setFooter({
+                                text: `User ID: ${interaction.user.id}`,
+                                iconURL: interaction.user.displayAvatarURL()!
+                            });
+                        // @ts-ignore
+                        interaction.reply({ embeds: [awaitChannelID], components: [channelSelectMenu] });
+                        const msg = await interaction.fetchReply() as Message;
+                        const channel = await msg.awaitMessageComponent({
+                            componentType: ComponentType.SelectMenu,
+                            filter: m => m.user.id === interaction.user.id,
+                            time: 10 * 60000
+                        });
+                        if(!channel) throw new Error("There was a problem setting the channel");
+                        await Guild.updateOne({ guildID: interaction.guild!.id }, { [interaction.options.getString("options") as any]: channel.values[0] });
+                        const guildChannel = interaction.guild!.channels.cache.get(channel.values[0] as string)
+                        const successfulMsg = new EmbedBuilder().setTitle("Updated Channel").setColor(0x8800FF).setDescription(`Channel has been set to ${guildChannel!.name} (${guildChannel!.id})`));
+                        return interaction.editReply({ embeds: [successfulMsg], components: [] })
                     case "unverifiedRolesID":
                     case "verifiedRolesID":
-                        // TODO: Embed to add/remove roles
+                        const rolesListEmbed = new EmbedBuilder()
+                            .setTitle("List of roles")
+                            .setDescription("Add/Remove the list of roles");
+                        const actions = new ActionRowBuilder().addComponents(new ButtonBuilder().setCustomId("update").setLabel("Add").setStyle(ButtonStyle.Primary), new ButtonBuilder().setStyle(ButtonStyle.Danger).setLabel("Remove").setCustomId("remove"))
                         break;
                     case "welcomeRoleID":
                         // TODO: wait for member's response with role
