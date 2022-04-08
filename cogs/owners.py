@@ -1,6 +1,8 @@
 import inspect
+
 import disnake
 from disnake.ext import commands
+
 
 class Owner(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -35,9 +37,6 @@ class Owner(commands.Cog):
             await interaction.response.send_message(f"An Error Occured with the exec command: \n{e}")
             return
         await interaction.response.send_message(f"Input:\n```py\n{script}\n```\nOutput```py\n{result}\n```")
-
-
-
 
 
 def setup(bot: commands.Bot):

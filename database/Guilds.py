@@ -1,5 +1,7 @@
-import disnake
 import uuid
+
+import disnake
+
 from .Core import Database
 
 
@@ -54,7 +56,7 @@ class AntiRaid(Database):
             "_id": guild.id,
             # Scores
             "score": 0,
-            "decay": 1, # (Per Minute)
+            "decay": 1,  # (Per Minute)
             "newMemberScore": 0,
             "warnScore": 0,
             "muteScore": 0,
@@ -73,6 +75,7 @@ class AntiRaid(Database):
             "phoneNumberVerificaionThreshold": 0,
             "lockdownThreshold": 0
         })
+
 
 class GuildSettings(Database):
     def __init__(self):
@@ -99,8 +102,8 @@ class GuildSettings(Database):
             "userLogChannel": None,
             "generalChannel": None,
             "announcementChannel": None,
-            "selfModeration": 0, # Number of reports by user to mute,
-            "selfModerationMinutes": 60, # Minutes for mute,
+            "selfModeration": 0,  # Number of reports by user to mute,
+            "selfModerationMinutes": 60,  # Minutes for mute,
             "vptsDecay": 0,
             "reasonRequired": False,
             "welcomeMessage": None,
@@ -108,10 +111,10 @@ class GuildSettings(Database):
         })
 
     def getGuild(self, guild: disnake.Guild):
-        return self.col.find_one({ "_id": guild.id })
+        return self.col.find_one({"_id": guild.id})
 
-    def findOrCreate(self, guild:disnake.Guild):
-        data = self.col.find_one({ "_id": guild.id})
+    def findOrCreate(self, guild: disnake.Guild):
+        data = self.col.find_one({"_id": guild.id})
         if data:
             return data
         else:

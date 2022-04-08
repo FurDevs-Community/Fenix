@@ -1,5 +1,6 @@
 from .Core import Database
 
+
 class Module(Database):
     def __init__(self, guild_id, module):
         self.guild = str(guild_id)
@@ -11,7 +12,7 @@ class Module(Database):
         })
 
     def is_disabled(self, mod):
-        DOC =  self.db["modules"].find_one({
+        DOC = self.db["modules"].find_one({
             "_id": self.guild
         })
 

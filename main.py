@@ -1,13 +1,17 @@
-from disnake.ext import commands
 import os
-from database import Module, Database, GuildSettings
+
+from disnake.ext import commands
 from dotenv import load_dotenv
+
+from database import GuildSettings
+
 load_dotenv()
 
 bot = commands.Bot(
     command_prefix="J>",
     test_guilds=[874378015285608568]
 )
+
 
 @bot.event
 async def on_ready():
@@ -22,5 +26,6 @@ async def on_ready():
                 print(f"Failed to load extension {extension}\nError: {e}")
     for guild in bot.guilds:
         database.findOrCreate(guild)
+
 
 bot.run(os.getenv("TOKEN"))

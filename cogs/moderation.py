@@ -1,7 +1,8 @@
-from disnake.ext import commands
 import disnake
+from disnake.ext import commands
+
+from database.Guilds import Moderation as ModLogs
 from utils import check_reason
-from database.Guilds import GuildSettings, Moderation as ModLogs
 
 
 class Moderation(commands.Cog):
@@ -39,9 +40,6 @@ class Moderation(commands.Cog):
         check_reason(interaction, str)
         modlogs.createModLog(interaction.guild, interaction.author, member, reason, [], "mute")
         await interaction.guild.get_member(member.id).timeout()
-
-
-
 
 
 def setup(bot: commands.Bot):
