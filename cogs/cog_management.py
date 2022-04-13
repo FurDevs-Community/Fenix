@@ -1,6 +1,6 @@
 import disnake
 from disnake.ext import commands
-from utils import check_cog_loaded
+from utils import check_cog_loaded, fenix_embed
 from disnake.ext.commands.errors import ExtensionNotLoaded, ExtensionNotFound
 import os
 
@@ -38,12 +38,15 @@ class CogManagement(commands.Cog):
                             fail += 1
                         except ExtensionNotFound:
                             fail += 1
-                await interaction.response.send_message("All Cogs are now reloaded")
-            return
-        checker = await check_cog_loaded(interaction, extention)
-        if checker:
-            self.bot.reload_extension("cogs." + extention)
-            await interaction.response.send_message(f"Cog: {extention} is now reloaded!")
+            embed = fenix_embed(interaction.author)
+            embed.description = "All Cogs are now reloaded."
+            await interaction.response.send_message(embed=embed)
+        else:
+            checker = await check_cog_loaded(interaction, extention)
+            if checker:
+                self.bot.reload_extension("cogs." + extention)
+                await interaction.response.send_message(f"Cog: {extention} is now reloaded!")
+        return
 
 
 def setup(bot: commands.Bot):

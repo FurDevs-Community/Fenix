@@ -22,6 +22,7 @@ class Owner(commands.Cog):
         except Exception as e:
             await interaction.response.send_message(f"An Error Occured with the eval command: \n{e}")
             return
+        fenix_em
         await interaction.response.send_message(f"Input:\n```py\n{script}\n```\nOutput```py\n{result}\n```")
 
     @commands.is_owner()

@@ -2,7 +2,6 @@ import os
 
 from disnake.ext import commands
 from dotenv import load_dotenv
-
 from database import GuildSettings
 
 load_dotenv()

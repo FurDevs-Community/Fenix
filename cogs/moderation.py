@@ -2,7 +2,7 @@ import disnake
 from disnake.ext import commands
 
 from database.Guilds import Moderation as ModLogs
-from utils import check_reason
+from utils import check_reason, fenix_embed
 
 
 class Moderation(commands.Cog):
